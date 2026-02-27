@@ -1,0 +1,1732 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iLeaf Solutions | Enterprise Intelligence</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@600;700&display=swap');
+
+        :root {
+            /* Exact 3-Tier Greens */
+            --g-tier1: #7ED957;
+            --g-tier2: #90E06D;
+            --g-tier3: #A2E884;
+            --g-shadow: rgba(126, 217, 87, 0.35);
+
+            /* Exact 3-Tier Blacks */
+            --b-tier1: #0F172A;
+            /* Deep slate black */
+            --b-tier2: #1E293B;
+            --b-tier3: #334155;
+            --b-shadow: rgba(15, 23, 42, 0.4);
+
+            --bg-page: #F8FAFC;
+            --bg-card: #FFFFFF;
+            --text-main: #0F172A;
+            --text-muted: #6B7280;
+            /* Elegant minimal gray */
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-page);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            overflow-x: hidden;
+        }
+
+        /* --- ADVANCED CSS GRID (Fixes Mobile Order) --- */
+        .hero-section {
+            max-width: 1440px;
+            width: 100%;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            grid-template-rows: min-content min-content auto;
+            grid-template-areas:
+                "text chart"
+                "card chart"
+                "cta  chart";
+            gap: 0px 60px;
+            padding: 60px 40px;
+            align-items: start;
+        }
+
+        .hero-text {
+            grid-area: text;
+            display: flex;
+            flex-direction: column;
+            z-index: 10;
+            margin-bottom: 20px;
+        }
+
+        /* --- CREATIVE ILEAF TYPOGRAPHY --- */
+        .hero-h1 {
+            font-size: clamp(3rem, 4.2vw, 4.5rem);
+            line-height: 1.08;
+            letter-spacing: -1.5px;
+            margin-bottom: 24px;
+        }
+
+        .hero-h1 .text-black {
+            color: #0F172A;
+            font-weight: 700;
+        }
+
+        .hero-h1 .text-green {
+            color: var(--g-tier1);
+            font-weight: 700;
+        }
+
+        .hero-h1 .text-gray {
+            color: #9CA3AF;
+            font-weight: 300;
+        }
+
+        .lead-desc {
+            font-size: 1.15rem;
+            line-height: 1.6;
+            color: #4B5563;
+            margin-bottom: 20px;
+            max-width: 95%;
+            font-weight: 400;
+        }
+
+        .lead-desc strong {
+            font-weight: 700;
+        }
+
+        .lead-desc .text-green {
+            color: var(--g-tier1);
+            font-weight: 800;
+        }
+
+        /* Stylish ileaf.ai link */
+        .ileaf-link {
+            color: #0F172A;
+            text-decoration: none;
+            font-weight: 800;
+            position: relative;
+            display: inline-block;
+            transition: color 0.3s ease;
+        }
+
+        .ileaf-link::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            transform: scaleX(0);
+            height: 2px;
+            bottom: 0px;
+            left: 0;
+            background-color: var(--g-tier1);
+            transform-origin: bottom right;
+            transition: transform 0.3s ease-out;
+        }
+
+        .ileaf-link:hover {
+            color: var(--g-tier1);
+        }
+
+        .ileaf-link:hover::after {
+            transform: scaleX(1);
+            transform-origin: bottom left;
+        }
+
+        /* --- LOCKED HEIGHT CARD (ZERO BOUNCING) --- */
+        .info-card {
+            grid-area: card;
+            background: var(--bg-card);
+            border: 1px solid rgba(0, 0, 0, 0.04);
+            border-left: 6px solid var(--b-tier2);
+            border-radius: 12px;
+            padding: 32px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+            height: 560px;
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 30px;
+            transition: border-color 0.4s ease;
+        }
+
+        .card-eyebrow {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 10px;
+            transition: opacity 0.3s ease;
+        }
+
+        .card-title {
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: var(--b-tier1);
+            margin-bottom: 16px;
+            letter-spacing: -0.5px;
+            transition: opacity 0.3s ease;
+        }
+
+        .card-main-desc {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #E2E8F0;
+            height: 125px;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 5;
+            -webkit-box-orient: vertical;
+            transition: opacity 0.3s ease;
+        }
+
+        .card-features {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            flex-grow: 1;
+            transition: opacity 0.3s ease;
+        }
+
+        .feat-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+        }
+
+        .feat-icon {
+            width: 20px;
+            height: 20px;
+            background: #E2E8F0;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .feat-icon div {
+            width: 8px;
+            height: 8px;
+            background: var(--b-tier2);
+            border-radius: 50%;
+        }
+
+        .feat-text h4 {
+            font-size: 1.05rem;
+            font-weight: 800;
+            color: var(--b-tier1);
+            margin-bottom: 4px;
+        }
+
+        .feat-text p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+
+        /* --- MEET WITH US CTA BUTTON --- */
+        .cta-wrapper {
+            grid-area: cta;
+            display: flex;
+            justify-content: flex-start;
+        }
+
+        .open-modal-btn {
+            background: var(--b-tier1);
+            color: #fff;
+            padding: 18px 36px;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 10px 20px rgba(11, 17, 32, 0.15);
+            font-family: 'Inter', sans-serif;
+        }
+
+        .open-modal-btn:hover {
+            background: var(--g-tier1);
+            color: var(--b-tier1);
+            transform: translateY(-2px);
+        }
+
+        /* --- MODAL STYLES --- */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal-content {
+            background: #fff;
+            width: 100%;
+            max-width: 600px;
+            border-radius: 16px;
+            padding: 40px;
+            position: relative;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
+            overflow-y: auto;
+            max-height: 90vh;
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: translateY(0);
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: #F1F5F9;
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            color: var(--text-muted);
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            transition: all 0.2s;
+        }
+
+        .close-modal:hover {
+            background: #E2E8F0;
+            color: var(--b-tier1);
+        }
+
+        .modal-header h2 {
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: #0F172A;
+            margin-bottom: 8px;
+        }
+
+        .modal-header p {
+            color: #6B7280;
+            font-size: 0.95rem;
+            margin-bottom: 25px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 14px 18px;
+            border: 1px solid #E2E8F0;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            background: #F8FAFC;
+            transition: all 0.3s;
+            font-family: inherit;
+            color: var(--b-tier1);
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--g-tier1);
+            box-shadow: 0 0 0 4px rgba(126, 217, 87, 0.1);
+            background: #fff;
+        }
+
+        .phone-input-group {
+            display: grid;
+            grid-template-columns: 110px 1fr;
+            gap: 10px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 16px;
+            background: var(--b-tier1);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .submit-btn:hover {
+            background: var(--g-tier1);
+            color: var(--b-tier1);
+        }
+
+        .submit-btn:disabled {
+            background: #CBD5E1;
+            cursor: not-allowed;
+        }
+
+        #success-state {
+            display: none;
+            text-align: center;
+            padding: 20px 0;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .success-icon {
+            width: 80px;
+            height: 80px;
+            background: rgba(126, 217, 87, 0.1);
+            color: var(--g-tier1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 24px;
+            font-size: 40px;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* --- RIGHT SIDE: WHIRLING SVG ENGINE --- */
+        .right-column {
+            grid-area: chart;
+            position: sticky;
+            top: 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            max-width: 650px;
+            margin: 0 auto;
+            margin-top: 10px;
+        }
+
+        .chart-layer {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.6s ease;
+            transform-origin: center;
+        }
+
+        .chart-layer.zoom-in-hidden {
+            transform: scale(1.6) rotate(90deg);
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .chart-layer.zoom-out-hidden {
+            transform: scale(0.4) rotate(-90deg);
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .chart-layer.active {
+            transform: scale(1) rotate(0deg);
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        svg {
+            width: 100%;
+            height: 100%;
+            transform: rotate(-90deg);
+            filter: drop-shadow(0 15px 30px rgba(0, 0, 0, 0.06));
+            overflow: visible;
+        }
+
+        .slice-group {
+            cursor: pointer;
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.3s ease;
+            transform-origin: center;
+        }
+
+        .slice-path {
+            stroke: var(--bg-page);
+            stroke-width: 4px;
+            transition: fill 0.3s ease;
+        }
+
+        .slice-group.active-explode {
+            transform: translate(var(--ex-x), var(--ex-y)) scale(1.03);
+            filter: drop-shadow(0 15px 25px var(--glow-color)) brightness(1.15);
+        }
+
+        .slice-group.active-highlight,
+        .slice-group:hover:not(.active-explode) {
+            filter: brightness(1.15);
+        }
+
+        .slice-text {
+            font-family: 'Inter', sans-serif;
+            font-weight: 800;
+            pointer-events: none;
+            letter-spacing: 0.5px;
+            text-anchor: middle;
+            dominant-baseline: central;
+        }
+
+        /* --- THE RESPONSIVE CENTER HUB --- */
+        .center-hub {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 220px;
+            height: 220px;
+            background: var(--bg-card);
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            box-shadow: 0 0 0 10px rgba(126, 217, 87, 0.04), 0 10px 30px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(126, 217, 87, 0.2);
+            cursor: pointer;
+            z-index: 50;
+            transition: all 0.3s ease;
+            padding: 10px;
+        }
+
+        .center-hub:hover {
+            transform: translate(-50%, -50%) scale(1.03);
+            box-shadow: 0 0 0 10px rgba(126, 217, 87, 0.1), 0 15px 35px rgba(0, 0, 0, 0.12);
+        }
+
+        .hub-sup {
+            font-size: 0.75rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+            text-transform: uppercase;
+            transition: color 0.3s ease;
+        }
+
+        .hub-title {
+            font-size: 1.4rem;
+            font-weight: 900;
+            color: var(--b-tier1);
+            line-height: 1.1;
+            text-transform: uppercase;
+            letter-spacing: -0.5px;
+            transition: color 0.3s ease;
+            width: 100%;
+        }
+
+        .hub-title span {
+            color: var(--g-tier1);
+            display: block;
+            font-size: clamp(1rem, 1.25vw, 1.25rem);
+            line-height: 1.2;
+            margin-top: 4px;
+            padding: 0 5px;
+            word-wrap: break-word;
+        }
+
+        .hub-return {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 12px;
+            gap: 4px;
+            transition: color 0.3s ease;
+            color: var(--b-tier1);
+        }
+
+        .hub-return svg {
+            width: 22px;
+            height: 22px;
+            stroke-width: 3;
+        }
+
+        .hub-return span {
+            font-size: 0.7rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .is-deep .hub-return {
+            display: flex;
+        }
+
+        /* --- MOBILE RESPONSIVENESS RE-ENGINEERED --- */
+        @media (max-width: 1024px) {
+            .hero-section {
+                grid-template-columns: 1fr;
+                grid-template-areas:
+                    "text"
+                    "chart"
+                    "card"
+                    "cta";
+                gap: 40px 0px;
+                padding: 40px 20px;
+                align-items: center;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+                gap: 15px;
+                margin-bottom: 15px;
+            }
+
+            .hero-text {
+                margin-bottom: 0;
+            }
+
+            .info-card {
+                text-align: left;
+                width: 100%;
+                max-width: 600px;
+                height: auto;
+                margin: 0 auto;
+            }
+
+            .card-main-desc {
+                height: auto;
+                display: block;
+            }
+
+            .right-column {
+                max-width: 500px;
+                position: relative;
+                top: 0;
+                margin: 0 auto;
+                padding: 10px;
+            }
+
+            .center-hub {
+                width: 150px;
+                height: 150px;
+            }
+
+            .hub-sup {
+                font-size: 0.65rem;
+                margin-bottom: 2px;
+            }
+
+            .hub-title {
+                font-size: 1.1rem;
+            }
+
+            .hub-title span {
+                font-size: 0.95rem;
+                margin-top: 2px;
+            }
+
+            .hub-return {
+                margin-top: 6px;
+                gap: 2px;
+            }
+
+            .hub-return svg {
+                width: 18px;
+                height: 18px;
+            }
+
+            .hub-return span {
+                font-size: 0.6rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="hero-section">
+
+        <div class="hero-text">
+
+            <h1 class="hero-h1">
+                <span class="text-black">Intelligent</span> <span class="text-green">ecosystems</span> <br>
+                <span class="text-gray">engineered for</span> <br>
+                <span class="text-green">enterprise</span> <span class="text-black">scale.</span>
+            </h1>
+
+            <p class="lead-desc">
+                <strong>iLeaf Solutions</strong> architects advanced enterprise platforms, embedding predictive AI into
+                your core workflows to transition operations from reactive to autonomous.<br><br>
+                Unlocking growth, precision, and transformation — powered by <a href="https://www.ileaf.ai"
+                    target="_blank" class="ileaf-link">ileaf.ai</a>.
+            </p>
+        </div>
+
+        <div class="info-card" id="info-card">
+            <div class="card-eyebrow" id="c-eyebrow">ENTERPRISE ARCHITECTURE</div>
+            <div class="card-title" id="c-title">The iLeaf Ecosystem</div>
+            <div class="card-main-desc" id="c-main-desc">
+                We engineer comprehensive, 360-degree digital ecosystems designed to process massive streams of
+                industry-specific telemetry. By seamlessly integrating advanced AI models directly into your core
+                operational workflows, we empower organizations to transition from reactive management to proactive,
+                data-driven dominance. Our bespoke architectures guarantee enterprise-grade security, uncompromising
+                data privacy, and infinite scalability across all global domains.
+            </div>
+
+            <div class="card-features" id="c-features">
+                <div class="feat-row">
+                    <div class="feat-icon">
+                        <div></div>
+                    </div>
+                    <div class="feat-text">
+                        <h4>Fluid Data Visualization</h4>
+                        <p>Interact with the geometric matrix to explore deep algorithmic capabilities spanning 6
+                            distinct global industries.</p>
+                    </div>
+                </div>
+                <div class="feat-row">
+                    <div class="feat-icon">
+                        <div></div>
+                    </div>
+                    <div class="feat-text">
+                        <h4>Massive Algorithmic Depth</h4>
+                        <p>Every domain maps down 3 deep tiers: from broad macro sectors to highly precise machine
+                            learning endpoints.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="cta-wrapper">
+            <button class="open-modal-btn" onclick="toggleModal(true)">Meet With Us</button>
+        </div>
+
+        <div class="right-column" id="right-col-area">
+            <div class="chart-layer active" id="layer-0"><svg id="svg-0" viewBox="-400 -400 800 800"></svg></div>
+            <div class="chart-layer zoom-out-hidden" id="layer-1"><svg id="svg-1" viewBox="-400 -400 800 800"></svg>
+            </div>
+            <div class="chart-layer zoom-out-hidden" id="layer-2"><svg id="svg-2" viewBox="-400 -400 800 800"></svg>
+            </div>
+
+            <div class="center-hub" id="center-hub" onclick="drillUp()">
+                <div class="hub-sup" id="hub-sup">ILEAF INTELLIGENCE</div>
+                <div class="hub-title" id="hub-title">POWERING<br><span>INDUSTRIES</span></div>
+
+                <div class="hub-return" id="hub-return">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <line x1="19" y1="12" x2="5" y2="12"></line>
+                        <polyline points="12 19 5 12 12 5"></polyline>
+                    </svg>
+                    <span>CLICK TO<br>RETURN</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="modal-overlay" id="modal-overlay" onclick="handleOverlayClick(event)">
+        <div class="modal-content">
+            <button class="close-modal" onclick="toggleModal(false)">&times;</button>
+
+            <div id="form-state">
+                <div class="modal-header">
+                    <h2>Strategic Consultation</h2>
+                    <p>Generate a bespoke AI deployment roadmap for your organization.</p>
+                </div>
+                <form id="contact-form" onsubmit="handleSubmit(event)">
+                    <div class="form-row">
+                        <div class="form-group"><input type="text" id="fname" placeholder="First Name" required></div>
+                        <div class="form-group"><input type="text" id="lname" placeholder="Last Name" required></div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group" style="grid-column: span 2;">
+                            <input type="email" id="email" placeholder="Corporate Email" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group" style="grid-column: span 2;">
+                            <div class="phone-input-group">
+                                <input type="text" id="country-code" placeholder="Ext (e.g. +1)" required
+                                    pattern="^\+[1-9]\d{0,3}$" style="padding-right: 5px;">
+                                <input type="tel" id="phone" placeholder="Phone Number" required
+                                    pattern="[0-9\s\-()]{7,15}">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group" style="grid-column: span 2;">
+                            <input type="text" id="company" placeholder="Company Name" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group" style="grid-column: span 2;">
+                            <input type="url" id="website" placeholder="Website (https://...)" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group" style="grid-column: span 2;">
+                            <textarea id="address" placeholder="Company Address (Optional)" rows="3"
+                                style="resize: vertical;"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group" style="grid-column: span 2;">
+                            <input type="text" id="country" placeholder="Company Country" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group" style="grid-column: span 2;">
+                            <select id="industry" required onchange="handleIndustryChange()">
+                                <option value="" disabled selected>Target Industry Sector</option>
+                                <option value="Education Tech">Education Tech</option>
+                                <option value="Finance & Legal">Finance & Legal</option>
+                                <option value="Health & Wellness">Health & Wellness</option>
+                                <option value="Commerce & Sales">Commerce & Sales</option>
+                                <option value="Industrial & Energy">Industrial & Energy</option>
+                                <option value="Logistics & IT Ops">Logistics & IT Ops</option>
+                                <option value="Other">Other (Please specify below)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row" id="other-industry-row" style="display: none;">
+                        <div class="form-group" style="grid-column: span 2;">
+                            <input type="text" id="other-industry" placeholder="Please specify your industry">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="submit-btn" id="submit-btn">Initialize Consultation</button>
+                </form>
+            </div>
+
+            <div id="success-state">
+                <div class="success-icon">✓</div>
+                <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 12px; color: #0F172A;">Roadmap Initiated
+                </h2>
+                <p style="color: #6B7280; line-height: 1.6; margin-bottom: 30px;">Thank you. Your inquiry has been
+                    successfully transmitted. One of our AI Solutions Architects will reach out within 24 hours to
+                    present your initial architecture roadmap.</p>
+                <button class="submit-btn" onclick="toggleModal(false)">Return to Ecosystem</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- 1. THE MASSIVELY OPTIMIZED DATA MATRIX ---
+        const aiData = [
+            {
+                name: "Education Tech", color: "var(--g-tier1)", font: "var(--b-tier1)", shadow: "var(--g-shadow)",
+                desc: "We empower global institutions to transform academic delivery through intelligent automation. By deploying deep learning, we automate resource allocation, generate dynamic curriculums, and identify at-risk students before they disengage. These secure integrations drive massive cost savings and maximize student retention across distributed learning bases.",
+                subsystems: [
+                    {
+                        name: "Predictive Analytics", color: "var(--g-tier2)", font: "var(--b-tier1)", shadow: "var(--g-shadow)", desc: "Predictive analytics form the critical backbone of proactive student intervention. This subsystem utilizes machine learning pipelines to process real-time engagement telemetry and historical grading trends. By replacing manual oversight with algorithmic scrutiny, educators can instantly identify invisible competency gaps and predict academic trajectories.", features: [
+                            {
+                                name: "Dropout Prediction", color: "var(--g-tier3)", font: "var(--b-tier1)", shadow: "var(--g-shadow)", desc: "Calculates real-time churn probability by analyzing millions of micro-interactions, login frequencies, and subtle behavioral shifts. The AI accurately predicts student attrition before the student actively disengages from the coursework.",
+                                terminal: [{ title: "Behavioral Telemetry Ingestion", desc: "Continuously processes unstructured Learning Management System (LMS) data streams to identify high-risk behavioral patterns." }, { title: "Automated Advisory Triggers", desc: "Seamlessly integrates with campus CRM platforms to autonomously dispatch personalized re-engagement communications to at-risk students." }]
+                            },
+                            {
+                                name: "Risk Scoring AI", color: "var(--g-tier3)", font: "var(--b-tier1)", shadow: "var(--g-shadow)", desc: "Evaluating authentic student progress requires a multidimensional understanding of their cognitive habits and socioeconomic indicators. Our models continuously ingest massive datasets to generate a dynamic, real-time risk profile for every individual learner.",
+                                terminal: [{ title: "Dynamic Student Profiling", desc: "Aggregates historical academic performance and live platform engagement to assign a fluid, real-time success probability score." }, { title: "Resource Allocation Engine", desc: "Directs human intervention and mental health resources specifically to cohorts exhibiting the highest statistical probability of failure." }]
+                            },
+                            {
+                                name: "Engagement Mapping", color: "var(--g-tier3)", font: "var(--b-tier1)", shadow: "var(--g-shadow)", desc: "Understanding exactly how students interact with digital course material is crucial for long-term curriculum optimization. The algorithms utilize advanced data telemetry to track cursor movements, video playback behaviors, and reading speeds.",
+                                terminal: [{ title: "Cognitive Friction Detection", desc: "Identifies specific timestamps in video lectures or paragraphs in text where the highest volume of students lose attention." }, { title: "Instructional Design Support", desc: "Provides empirical, data-driven feedback to professors, allowing them to optimize syllabi for maximum knowledge transfer." }]
+                            }
+                        ]
+                    },
+                    {
+                        name: "Adaptive GenAI", color: "var(--g-tier2)", font: "var(--b-tier1)", shadow: "var(--g-shadow)", desc: "Personalized pedagogy demands dynamic content engines capable of reacting to student proficiency in real-time. Our Adaptive GenAI subsystem leverages NLP and generative models to autonomously restructure learning pathways, instantly grade complex assignments, and provide conversational tutoring, drastically reducing the administrative burden on teaching staff.", features: [
+                            {
+                                name: "Dynamic Pathways", color: "var(--g-tier3)", font: "var(--b-tier1)", shadow: "var(--g-shadow)", desc: "A standardized curriculum inevitably leaves advanced students unchallenged while overwhelming those requiring foundational reinforcement. This AI utilizes continuous assessment to restructure a student's syllabus on the fly, reacting instantly to live quiz outcomes.",
+                                terminal: [{ title: "Algorithmic Curriculum Generation", desc: "Generates custom learning modules and practice sets tailored exactly to an individual user's unique cognitive gaps." }, { title: "Real-Time Proficiency Sync", desc: "Continuously updates the student's mastery dashboard, allowing professors to view competency progression across entire lecture halls." }]
+                            },
+                            {
+                                name: "Automated Grading", color: "var(--g-tier3)", font: "var(--b-tier1)", shadow: "var(--g-shadow)", desc: "Grading complex, open-ended assignments such as essays and research papers is a massive bottleneck for modern academic staff. We deploy specialized NLP algorithms capable of analyzing unstructured text for critical thinking and thematic relevance.",
+                                terminal: [{ title: "Semantic Essay Evaluation", desc: "Parses complex syntax, grammatical structures, and logical flow to grade long-form written assignments instantaneously." }, { title: "Bias-Free Rubric Alignment", desc: "Strictly adheres to pre-programmed institutional grading rubrics, ensuring absolute fairness and consistency across thousands of submissions." }]
+                            },
+                            {
+                                name: "Voice Tutors", color: "var(--g-tier3)", font: "var(--b-tier1)", shadow: "var(--g-shadow)", desc: "Digital learning often lacks the conversational fluidity and immediate feedback loop of face-to-face human instruction. We integrate autonomous Voice AI agents equipped with ultra-realistic voice synthesis to serve as personalized conversational tutors.",
+                                terminal: [{ title: "Acoustic Intent Parsing", desc: "Understands natural human speech, allowing students to verbally ask complex academic questions without typing." }, { title: "Conversational Mentorship", desc: "Provides step-by-step, Socratic guidance rather than simply providing the answers, fostering genuine critical thinking skills." }]
+                            }
+                        ]
+                    },
+                    {
+                        name: "Academic Ops", color: "var(--g-tier2)", font: "var(--b-tier1)", shadow: "var(--g-shadow)", desc: "Scaling an educational institution requires seamless administrative workflows to eliminate logistical bottlenecks. This subsystem integrates predictive models to automate server capacity forecasting during peak enrollment and intelligently allocate physical classroom resources. This ensures optimal student-to-teacher ratios and prevents IT infrastructure failures.", features: [
+                            {
+                                name: "Enrollment Logic", color: "var(--g-tier3)", font: "var(--b-tier1)", shadow: "var(--g-shadow)", desc: "Institutional revenue and infrastructure planning rely entirely on accurate enrollment forecasting, a process historically plagued by human error. Our models ingest historical admission trends and regional demographic shifts to forecast exact registration numbers.",
+                                terminal: [{ title: "Server Load Optimization", desc: "Dynamically spins up cloud server instances in anticipation of massive traffic spikes during peak university enrollment windows." }, { title: "Financial Forecasting Sync", desc: "Pushes highly accurate predicted admission volumes directly into the university's central financial planning software." }]
+                            },
+                            {
+                                name: "Resource Allocation", color: "var(--g-tier3)", font: "var(--b-tier1)", shadow: "var(--g-shadow)", desc: "Managing the physical footprint of a sprawling university campus involves balancing tens of thousands of students and faculty schedules. This engine utilizes spatial mapping and constraint-based optimization to automatically generate conflict-free academic schedules.",
+                                terminal: [{ title: "Spatial Optimization Algorithms", desc: "Maps physical campus real-estate against predicted student volumes to prevent overcrowded or underutilized lecture halls." }, { title: "Conflict-Free Scheduling", desc: "Autonomously generates perfect timetables for thousands of professors and students, eliminating overlapping course requirements." }]
+                            },
+                            {
+                                name: "Smart Proctoring", color: "var(--g-tier3)", font: "var(--b-tier1)", shadow: "var(--g-shadow)", desc: "As global education scales into remote environments, maintaining stringent academic integrity during high-stakes examinations is paramount. We deploy advanced computer vision pipelines and acoustic anomaly detection to provide secure, autonomous remote proctoring.",
+                                terminal: [{ title: "Biometric Integrity Vision", desc: "Utilizes webcam feeds to continuously verify the test-taker's identity and detect suspicious off-screen eye movements." }, { title: "Acoustic Fraud Detection", desc: "Analyzes microphone inputs to instantly flag whispering, background voices, or the use of unauthorized smart devices." }]
+                            }
+                        ]
+                    },
+                    {
+                        name: "Institutional Data", color: "var(--g-tier2)", font: "var(--b-tier1)", shadow: "var(--g-shadow)", desc: "Institutional intelligence is frequently locked behind archaic legacy databases. We engineer enterprise data platforms utilizing sophisticated MLOps pipelines to harmonize data across the university tech stack. By overlaying conversational AI, non-technical leaders can instantly extract visual dashboards and operational clarity without relying on IT teams.", features: [
+                            {
+                                name: "Plain-Language SQL", color: "var(--g-tier3)", font: "var(--b-tier1)", shadow: "var(--g-shadow)", desc: "Deans frequently face unacceptable delays when requesting critical operational or financial reports from constrained IT departments. This subsystem deploys Large Language Models tuned specifically for database querying, allowing non-technical leaders to interrogate systems.",
+                                terminal: [{ title: "Natural Language Processing", desc: "Allows administrators to type questions like 'Show me Q3 engineering enrollment' and instantly receive accurate data graphs." }, { title: "Executive Dashboard Generation", desc: "Bypasses complex data-engineering queues to provide the C-suite with immediate, visually intuitive operational insights." }]
+                            },
+                            {
+                                name: "Legacy Integration", color: "var(--g-tier3)", font: "var(--b-tier1)", shadow: "var(--g-shadow)", desc: "Ripping and replacing legacy university databases is often financially prohibitive and operationally dangerous. We deploy advanced AI middleware that bridges the gap between archaic on-premise servers and modern cloud intelligence.",
+                                terminal: [{ title: "Zero-Downtime Modernization", desc: "Seamlessly extracts data from outdated legacy systems and mirrors it into highly secure, modern cloud-based data lakes." }, { title: "Cross-Department Harmonization", desc: "Breaks down data silos by standardizing formatting between disparate software systems used by different campus faculties." }]
+                            },
+                            {
+                                name: "Grant Optimization", color: "var(--g-tier3)", font: "var(--b-tier1)", shadow: "var(--g-shadow)", desc: "The distribution of financial aid and institutional grants is a complex logistical challenge that directly impacts student access and endowment health. Our optimization algorithms analyze thousands of student financial profiles and internal constraints to recommend optimal distribution.",
+                                terminal: [{ title: "Endowment Yield Calculations", desc: "Cross-references available university funding against applicant financial need to autonomously suggest optimized aid packages." }, { title: "Retention-Based Disbursement", desc: "Strategically deploys financial resources specifically to cohorts where aid statistically guarantees continued enrollment." }]
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                name: "Finance & Legal", color: "var(--b-tier1)", font: "#FFFFFF", shadow: "var(--b-shadow)",
+                desc: "This domain represents the pinnacle of secure, compliant, and high-velocity data processing. We leverage cognitive engines to eliminate systemic inefficiencies, detect microscopic anomalies in milliseconds, and automate highly regulated workflows. From fraud detection matrices to autonomous case-law synchronization, our platforms guarantee absolute operational trust.",
+                subsystems: [
+                    {
+                        name: "Risk & Underwriting", color: "var(--b-tier2)", font: "#FFFFFF", shadow: "var(--b-shadow)", desc: "High-speed portfolio evaluation and automated credit architectures form the bedrock of financial security. This subsystem replaces manual oversight with algorithmic scrutiny, empowering institutions to instantly calculate risk, forecast portfolio yields, and adapt to shifting laws. Deep learning accelerates approval logic while eliminating human bias.", features: [
+                            {
+                                name: "Auto Underwrite", color: "var(--b-tier3)", font: "#FFFFFF", shadow: "var(--b-shadow)", desc: "Manual credit assessments are slow and prone to subjective human error. This parsing engine delivers instant, bias-free approval logic by analyzing alternative data markers alongside traditional financial histories.",
+                                terminal: [{ title: "Alternative Data Parsing", desc: "Ingests non-traditional financial markers to accurately assess creditworthiness for underbanked or modern gig-economy consumers." }, { title: "Bias-Free Execution Logic", desc: "Removes subjective human prejudice from the lending process, ensuring perfectly equitable and compliant financial disbursement." }]
+                            },
+                            {
+                                name: "Yield Prediction", color: "var(--b-tier3)", font: "#FFFFFF", shadow: "var(--b-shadow)", desc: "Navigating volatile capital markets requires the ability to foresee long-term economic shifts before they materialize. Granular ROI forecasting models ingest decades of historical market data and live geopolitical sentiment feeds to predict portfolio performance.",
+                                terminal: [{ title: "Geopolitical Sentiment Analysis", desc: "Scrapes global news feeds and financial reports to factor real-world volatility into predictive asset management models." }, { title: "Long-Term Portfolio Simulation", desc: "Runs millions of Monte Carlo simulations to accurately forecast asset yield and minimize exposure to impending market downturns." }]
+                            },
+                            {
+                                name: "Fraud Detection", color: "var(--b-tier3)", font: "#FFFFFF", shadow: "var(--b-shadow)", desc: "In an era of sophisticated digital crime, traditional rule-based security protocols are entirely insufficient. Deep neural networks monitor millions of concurrent transactions to instantly identify microscopic behavioral anomalies and synthetic identity markers.",
+                                terminal: [{ title: "Real-Time Ledger Monitoring", desc: "Processes massive volumes of live transaction data, flagging microscopic deviations from established user purchasing behaviors." }, { title: "Automated Node Isolation", desc: "Instantly freezes compromised accounts and halts fraudulent transfers before capital can successfully exit the institutional ecosystem." }]
+                            }
+                        ]
+                    },
+                    {
+                        name: "Payment & Compliance", color: "var(--b-tier2)", font: "#FFFFFF", shadow: "var(--b-shadow)", desc: "Cross-border routing automation and real-time regulatory synchronization are vital to protect against severe compliance penalties. This intelligence layer continuously ingests global market data and legal precedents to autonomously format mandatory audits, securing the payment lifecycle against money laundering and ensuring absolute ledger transparency.", features: [
+                            {
+                                name: "AML Monitoring", color: "var(--b-tier3)", font: "#FFFFFF", shadow: "var(--b-shadow)", desc: "Money laundering techniques evolve rapidly, requiring adaptive intelligence to protect institutional integrity. This live transaction flagging system parses millions of concurrent events to identify complex, multi-layered financial crime topologies.",
+                                terminal: [{ title: "Complex Topology Mapping", desc: "Identifies sophisticated laundering attempts by tracking the rapid movement of funds across multiple decentralized accounts." }, { title: "Regulatory Alert Integration", desc: "Automatically formats and dispatches Suspicious Activity Reports (SARs) directly to relevant federal financial authorities." }]
+                            },
+                            {
+                                name: "Regulatory Sync", color: "var(--b-tier3)", font: "#FFFFFF", shadow: "var(--b-shadow)", desc: "Global banks must navigate an endlessly shifting labyrinth of international finance laws and regional taxation policies. This semantic NLP engine continuously monitors global regulatory databases, instantly parsing new policy updates and legislative changes.",
+                                terminal: [{ title: "Legislative Web Scraping", desc: "Continuously monitors global government databases to ingest and interpret new financial regulations the moment they are passed." }, { title: "Dynamic Policy Adaptation", desc: "Automatically updates internal corporate auditing software to ensure all outbound reports adhere to the newest legal standards." }]
+                            },
+                            {
+                                name: "Smart Contracts", color: "var(--b-tier3)", font: "#FFFFFF", shadow: "var(--b-shadow)", desc: "Relying on human intermediaries for complex financial transfers introduces unacceptable delays and counterparty risks. Blockchain ledgers powered by AI ensure completely immutable, transparent transfer records across global networks.",
+                                terminal: [{ title: "Immutable Ledger Execution", desc: "Records all transaction histories on an unalterable decentralized ledger, guaranteeing absolute transparency for corporate auditors." }, { title: "Condition-Based Disbursement", desc: "Automatically releases escrow funds the exact millisecond all pre-agreed digital compliance and delivery parameters are met." }]
+                            }
+                        ]
+                    },
+                    {
+                        name: "Semantic Contracts", color: "var(--b-tier2)", font: "#FFFFFF", shadow: "var(--b-shadow)", desc: "The corporate legal sector is burdened by unstructured documentation and hidden liabilities. This semantic NLP engine is built specifically for obligation tracking and entity extraction, instantly ingesting massive agreements to output highly accurate executive summaries. It highlights risky indemnification language before contracts are even signed.", features: [
+                            {
+                                name: "Obligation Track", color: "var(--b-tier3)", font: "#FFFFFF", shadow: "var(--b-shadow)", desc: "Managing thousands of active corporate agreements requires flawless memory and rigorous enforcement of deadlines. This AI autonomously extracts, maps, and monitors critical corporate obligations from massive master service agreements.",
+                                terminal: [{ title: "Unstructured Data Parsing", desc: "Ingests hundreds of pages of complex legal jargon to extract specific dates, financial deliverables, and renewal clauses." }, { title: "Proactive Compliance Alerts", desc: "Integrates with corporate calendars to automatically notify stakeholders weeks before a critical contract deadline approaches." }]
+                            },
+                            {
+                                name: "Clause Extract", color: "var(--b-tier3)", font: "#FFFFFF", shadow: "var(--b-shadow)", desc: "Reviewing third-party vendor contracts to identify non-standard language is a massive drain on expensive legal resources. This entity identification engine isolates complex liabilities and unusual indemnification requests instantly upon document upload.",
+                                terminal: [{ title: "Risk Parameter Matching", desc: "Cross-references incoming third-party agreements against a proprietary database of acceptable corporate legal standards." }, { title: "Instant Liability Isolation", desc: "Surgically extracts and presents only the highly contested or dangerous clauses, bypassing the need to read boilerplate text." }]
+                            },
+                            {
+                                name: "Auto Redlining", color: "var(--b-tier3)", font: "#FFFFFF", shadow: "var(--b-shadow)", desc: "The negotiation phase of contract development is often stalled by endless rounds of manual redlining and semantic arguments. This anomaly detection framework flags non-standard legal language and autonomously suggests safer, pre-approved corporate phrasing.",
+                                terminal: [{ title: "Automated Syntax Correction", desc: "Instantly replaces hostile or vague third-party legal jargon with the corporation's pre-approved, ironclad legal terminology." }, { title: "Negotiation Acceleration", desc: "Drastically reduces the turnaround time between legal drafts, enabling sales and procurement teams to close enterprise deals faster." }]
+                            }
+                        ]
+                    },
+                    {
+                        name: "Legal AI Copilots", color: "var(--b-tier2)", font: "#FFFFFF", shadow: "var(--b-shadow)", desc: "Enterprise legal teams waste thousands of billable hours annually on routine document drafting and manual precedent research. Our generative AI assistants leverage historical corporate contracts to instantly draft customized NDAs based on plain-language prompts. Integrated web scrapers continuously monitor databases to alert attorneys to litigation shifts.", features: [
+                            {
+                                name: "Intelligent Drafting", color: "var(--b-tier3)", font: "#FFFFFF", shadow: "var(--b-shadow)", desc: "Drafting complex legal agreements from scratch is a highly repetitive process prone to human error and formatting inconsistencies. Generative AI leverages vast repositories of historical corporate contracts to instantly draft customized NDAs and vendor agreements.",
+                                terminal: [{ title: "Generative Document Assembly", desc: "Instantly compiles legally binding contracts from scratch by pulling the most relevant clauses from a secure corporate repository." }, { title: "Brand & Format Adherence", desc: "Ensures that all generated legal documents perfectly match the specific formatting, tone, and stylistic guidelines of the enterprise." }]
+                            },
+                            {
+                                name: "Contract Summary", color: "var(--b-tier3)", font: "#FFFFFF", shadow: "var(--b-shadow)", desc: "Corporate executives rarely have the time to read through massive legal packets prior to finalizing mergers or acquisitions. This semantic engine distills 100-page documents into highly accurate, one-page executive legal briefs in milliseconds.",
+                                terminal: [{ title: "Executive Brief Generation", desc: "Condenses massive volumes of dense legal phrasing into highly digestible bullet points for non-technical corporate leadership." }, { title: "Core Metric Extraction", desc: "Instantly isolates the most critical data points—such as exact financial penalties, renewal dates, and exclusivity terms." }]
+                            },
+                            {
+                                name: "Case Law Sync", color: "var(--b-tier3)", font: "#FFFFFF", shadow: "var(--b-shadow)", desc: "Building a successful litigation strategy requires immediate access to the most relevant historical precedents and live docket updates. Automated scrapers continuously fetch, contextualize, and summarize active case laws from state and federal databases.",
+                                terminal: [{ title: "Live Docket Web Scraping", desc: "Continuously monitors federal and state court databases to instantly retrieve new filings related to active corporate litigation." }, { title: "Precedent Mapping Algorithms", desc: "Analyzes historical court rulings to autonomously suggest the most statistically successful legal precedents for a specific case." }]
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                name: "Health & Wellness", color: "var(--g-tier1)", font: "var(--b-tier1)", shadow: "var(--g-shadow)",
+                desc: "A flawless synthesis of clinical precision and hyper-personalized consumer health tracking. We engineer highly secure architectures that process vast amounts of sensitive biometric and clinical telemetry. Built with uncompromising compliance to HIPAA, our intelligence models streamline hospital triage, automate health records, and deliver adaptive fitness ecosystems.",
+                subsystems: [
+                    {
+                        name: "Clinical Diagnostics", color: "var(--g-tier2)", font: "var(--b-tier1)", shadow: "var(--g-shadow)", desc: "Clinical operations demand zero-latency data processing and absolute algorithmic accuracy. Our AI-driven clinical subsystems seamlessly ingest unstructured patient histories and complex diagnostic imagery. By automating visual segmentation, the AI highlights early-stage markers invisible to the human eye, drastically improving long-term patient outcomes.", features: [
+                            {
+                                name: "Anomaly Scans", color: "var(--g-tier3)", font: "var(--b-tier1)", shadow: "var(--g-shadow)", desc: "Traditional medical imaging analysis is time-consuming and heavily reliant on the visual acuity of overworked radiologists. This computer vision model analyzes high-resolution X-rays, CT scans, and MRIs to highlight early-stage markers and microscopic flaws.",
+                                terminal: [{ title: "High-Fidelity Image Parsing", desc: "Processes massive, multi-gigabyte medical imaging files in milliseconds using advanced convolutional neural networks." }, { title: "Microscopic Flaw Detection", desc: "Surgically highlights pixel-level anomalies, drastically increasing the early-detection rate of degenerative diseases." }]
+                            },
+                            {
+                                name: "Tumor Isolation", color: "var(--g-tier3)", font: "var(--b-tier1)", shadow: "var(--g-shadow)", desc: "Isolating the exact boundaries of malignant growths requires intense precision to ensure successful surgical intervention and targeted radiation. Precision diagnostic algorithms automate the visual segmentation process, accurately mapping the 3D geometry of tumors.",
+                                terminal: [{ title: "3D Spatial Segmentation", desc: "Autonomously maps the exact geometric boundaries of malignant growths to aid in highly targeted surgical removal." }, { title: "Radiology Workflow Acceleration", desc: "Bypasses hours of manual image review, presenting oncologists with immediately actionable, highly precise visual diagnostics." }]
+                            },
+                            {
+                                name: "Symptom Sync", color: "var(--g-tier3)", font: "var(--b-tier1)", shadow: "var(--g-shadow)", desc: "Reacting to severe physical symptoms after they manifest often results in extended ICU stays and poor patient prognoses. This machine learning pipeline forecasts disease trajectories based on longitudinal patient data and continuous biometric monitoring.",
+                                terminal: [{ title: "Longitudinal Data Analysis", desc: "Cross-references a patient's current vitals against decades of historical medical data to predict future physiological deterioration." }, { title: "Predictive ICU Alerts", desc: "Autonomously triggers emergency nursing alerts hours before a patient enters critical conditions like sepsis or cardiac arrest." }]
+                            }
+                        ]
+                    },
+                    {
+                        name: "Patient Operations", color: "var(--g-tier2)", font: "var(--b-tier1)", shadow: "var(--g-shadow)", desc: "Managing a massive hospital network requires the flawless orchestration of medical staff and spatial resources. This subsystem integrates predictive models to eliminate logistical bottlenecks like emergency room overcrowding. Deep EHR integration ensures seamless medical coding and universally accessible, highly secure patient data across facility wings.", features: [
+                            {
+                                name: "Bed Optimization", color: "var(--g-tier3)", font: "var(--b-tier1)", shadow: "var(--g-shadow)", desc: "Hospital capacity limits are frequently pushed to the breaking point during seasonal illness spikes or localized emergencies. The predictive model anticipates admission surges by analyzing external data feeds, preemptively balancing intensive care utilization.",
+                                terminal: [{ title: "Predictive Capacity Forecasting", desc: "Analyzes regional health data and historical admission trends to predict exact hospital bed requirements weeks in advance." }, { title: "Dynamic Ward Allocation", desc: "Autonomously shifts nursing staff and medical equipment to specific facility wings experiencing unexpected patient surges." }]
+                            },
+                            {
+                                name: "Triage Automation", color: "var(--g-tier3)", font: "var(--b-tier1)", shadow: "var(--g-shadow)", desc: "Emergency rooms are consistently paralyzed by the manual triaging of non-critical patients, delaying care for severe trauma cases. This algorithmic intake system assesses incoming patient vitals and reported symptoms to instantly determine medical severity.",
+                                terminal: [{ title: "Algorithmic Severity Scoring", desc: "Instantly processes intake symptoms to assign a strict, objective severity score, removing human bias from ER waiting rooms." }, { title: "Ambulatory Rerouting Logic", desc: "Automatically directs low-risk patients to urgent care clinics or telehealth portals to preserve critical hospital resources." }]
+                            },
+                            {
+                                name: "EHR Interoperability", color: "var(--g-tier3)", font: "var(--b-tier1)", shadow: "var(--g-shadow)", desc: "Physicians waste millions of hours navigating disjointed, legacy Electronic Health Record (EHR) software and manually entering billing codes. Legacy system integration utilizes HL7/FHIR protocols to seamlessly bridge siloed medical data ecosystems into a unified dashboard.",
+                                terminal: [{ title: "HL7/FHIR Protocol Sync", desc: "Seamlessly bridges fragmented legacy medical databases, providing doctors with a single, universally accessible patient history." }, { title: "Automated ICD Medical Coding", desc: "Utilizes NLP to listen to physician dictations and autonomously generate flawless insurance billing codes without manual data entry." }]
+                            }
+                        ]
+                    },
+                    {
+                        name: "Personalized Nutrition", color: "var(--g-tier2)", font: "var(--b-tier1)", shadow: "var(--g-shadow)", desc: "Standardized dietary guidelines fail to account for unique metabolic responses and biometric data. This subsystem utilizes machine learning algorithms to ingest real-time markers and daily caloric expenditure. It autonomously builds highly customized nutritional frameworks that dynamically recalculate, removing the guesswork from dietary planning entirely.", features: [
+                            {
+                                name: "Biometric Meals", color: "var(--g-tier3)", font: "var(--b-tier1)", shadow: "var(--g-shadow)", desc: "Generic meal planning cannot accommodate the infinite physiological variations and specific medical restrictions of a diverse user base. Our AI algorithms ingest user-submitted health data, blood biomarker inputs, and wearable activity metrics to construct a highly precise profile.",
+                                terminal: [{ title: "Biomarker Integration Engine", desc: "Synthesizes complex physiological data, including blood sugar levels and hormonal baselines, to dictate precise nutritional needs." }, { title: "Goal-Oriented Meal Curating", desc: "Autonomously generates bespoke recipes and grocery lists designed specifically to achieve hyper-localized fitness objectives." }]
+                            },
+                            {
+                                name: "Dynamic Macros", color: "var(--g-tier3)", font: "var(--b-tier1)", shadow: "var(--g-shadow)", desc: "A static diet plan becomes obsolete the moment a user's physical activity levels or metabolic rates fluctuate due to lifestyle changes. This intelligence feature maintains a continuous sync with integrated fitness wearables to track real-time energy expenditure.",
+                                terminal: [{ title: "Live Caloric Recalculation", desc: "Instantly adjusts macronutrient prescriptions based on the exact amount of energy burned during a tracked physical workout." }, { title: "Metabolic Equilibrium Modeling", desc: "Prevents nutritional stagnation by continuously adapting food volume to match the user's shifting lifestyle and physical output." }]
+                            },
+                            {
+                                name: "Dietician Copilots", color: "var(--g-tier3)", font: "var(--b-tier1)", shadow: "var(--g-shadow)", desc: "Providing professional dietary oversight at massive scale is logistically impossible without intelligent automation augmenting human clinical experts. The Dietician Copilot serves as an AI-powered assistant, autonomously reviewing the millions of personalized meal plans generated.",
+                                terminal: [{ title: "Automated Contraindication Alerts", desc: "Instantly flags any AI-generated meal plan that conflicts with a user's logged medical allergies or pharmaceutical prescriptions." }, { title: "Clinical Scale Amplification", desc: "Empowers a single human dietician to safely and effectively review and approve the nutritional frameworks of thousands of concurrent users." }]
+                            }
+                        ]
+                    },
+                    {
+                        name: "Adaptive Fitness", color: "var(--g-tier2)", font: "var(--b-tier1)", shadow: "var(--g-shadow)", desc: "A static physical fitness plan becomes obsolete the moment a user's activity levels or metabolic rates fluctuate. This intelligence feature maintains a continuous API synchronization with consumer wearables to track real-time energy expenditure. The AI dynamically dictates workout volume and intensity to prevent overtraining and optimize corporate wellness.", features: [
+                            {
+                                name: "Wearable Sync", color: "var(--g-tier3)", font: "var(--b-tier1)", shadow: "var(--g-shadow)", desc: "Manual workout logging is wildly inaccurate and fails to capture the true physiological strain placed on the human body. Deep API integration seamlessly extracts heart rate variability, sleep cycles, and daily steps from consumer devices like Apple Health.",
+                                terminal: [{ title: "Continuous Telemetry Ingestion", desc: "Maintains a permanent, highly secure data tether to third-party IoT wearables to capture every heartbeat and step in real-time." }, { title: "Objective Health Baselining", desc: "Replaces flawed manual user input with highly accurate, sensor-driven data to form the foundation of the fitness ecosystem." }]
+                            },
+                            {
+                                name: "Routine Adapt", color: "var(--g-tier3)", font: "var(--b-tier1)", shadow: "var(--g-shadow)", desc: "Following a rigid workout schedule ignores the reality of human fatigue, leading directly to musculoskeletal injury and central nervous system burnout. The AI dynamically dictates workout volume, modifying physical regimens based on incoming sleep and strain data.",
+                                terminal: [{ title: "Dynamic Intensity Modulation", desc: "Autonomously increases or decreases the physical difficulty of a scheduled workout based on the user's immediate recovery status." }, { title: "Injury Prevention Algorithms", desc: "Analyzes prolonged biometric strain to mandate critical rest periods, successfully preventing severe central nervous system burnout." }]
+                            },
+                            {
+                                name: "Corporate Intel", color: "var(--g-tier3)", font: "var(--b-tier1)", shadow: "var(--g-shadow)", desc: "Enterprise HR departments struggle to justify the massive expense of corporate wellness programs without empirical data proving their efficacy. We provide massive corporate entities with anonymized, macro-level population health dashboards for precise enterprise ROI tracking.",
+                                terminal: [{ title: "Anonymized Population Dashboards", desc: "Aggregates massive volumes of employee health data into secure, macro-level visual reports for HR and executive leadership." }, { title: "Wellness ROI Correlation", desc: "Directly maps the utilization of corporate fitness initiatives to measured decreases in overall enterprise healthcare expenditures." }]
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                name: "Commerce & Sales", color: "var(--b-tier1)", font: "#FFFFFF", shadow: "var(--b-shadow)",
+                desc: "Thriving in modern commerce requires an algorithmic understanding of the hyper-fragmented desires of consumers and B2B buyers. We engineer dynamic ecosystems that leverage machine learning to deliver unparalleled personalization, dynamic pricing optimization, and autonomous sales outreach. Our architectures maximize conversion rates and drive aggressive top-line revenue across all channels.",
+                subsystems: [
+                    {
+                        name: "Hyper-Personalization", color: "var(--b-tier2)", font: "#FFFFFF", shadow: "var(--b-shadow)", desc: "Capturing consumer attention requires a deep algorithmic understanding of individual purchasing DNA. This subsystem analyzes vast repositories of historical transaction data and live telemetry to build accurate behavioral clusters. By deploying predictive recommendation engines, we empower retail brands to deliver exact products at the peak moment of intent.", features: [
+                            {
+                                name: "Behavior Cluster", color: "var(--b-tier3)", font: "#FFFFFF", shadow: "var(--b-shadow)", desc: "Relying on archaic, static demographics to target modern consumers results in wasted advertising budgets and exceptionally poor conversion rates. This engine segments vast user bases dynamically by processing real-time browsing habits and micro-interactions.",
+                                terminal: [{ title: "Dynamic Intent Segmentation", desc: "Continuously groups and regroups consumers based on their live interactions with digital storefronts and marketing emails." }, { title: "Precision Ad Targeting", desc: "Feeds highly accurate behavioral clusters directly into programmatic ad networks to completely eliminate wasted marketing spend." }]
+                            },
+                            {
+                                name: "Recommendation AI", color: "var(--b-tier3)", font: "#FFFFFF", shadow: "var(--b-shadow)", desc: "Generic product carousels fail to capture the nuanced, highly specific desires of the individual shopper, leaving massive amounts of revenue uncaptured. The AI maps deep consumer affinities to serve highly converted product suggestions instantly during the browsing experience.",
+                                terminal: [{ title: "Affinity Mapping Algorithms", desc: "Analyzes historical purchase data across millions of users to predict the exact product a specific consumer is most likely to buy next." }, { title: "Cart Value Maximization", desc: "Autonomously injects highly relevant upsell and cross-sell items into the checkout flow to aggressively drive top-line revenue." }]
+                            },
+                            {
+                                name: "Churn Prevention", color: "var(--b-tier3)", font: "#FFFFFF", shadow: "var(--b-shadow)", desc: "Acquiring a new customer is exponentially more expensive than retaining an existing one, yet most brands fail to recognize when a user is slipping away. This framework proactively identifies at-risk customers by recognizing fading engagement metrics and decreased login frequencies.",
+                                terminal: [{ title: "Engagement Degradation Tracking", desc: "Monitors user login frequency and email open rates to instantly flag accounts that are statistically likely to churn." }, { title: "Automated Retention Triggers", desc: "Dispatches highly personalized, time-sensitive discount codes to at-risk users to successfully re-engage them with the brand." }]
+                            }
+                        ]
+                    },
+                    {
+                        name: "Dynamic Commerce", color: "var(--b-tier2)", font: "#FFFFFF", shadow: "var(--b-shadow)", desc: "Automated pricing strategies and inventory synchronization must react instantly to highly volatile global market variables. This AI continuously scrapes competitor pricing matrices and calculates localized demand elasticity to dynamically adjust retail margins. Visual search and foot-traffic heatmapping algorithms bridge the digital and physical retail divide.", features: [
+                            {
+                                name: "Algorithmic Pricing", color: "var(--b-tier3)", font: "#FFFFFF", shadow: "var(--b-shadow)", desc: "Static pricing models leave massive profit margins on the table during periods of high demand and fail to move stagnant inventory during lulls. Real-time margin adjustments execute autonomously based on continuous competitor scraping and live market elasticity calculations.",
+                                terminal: [{ title: "Live Competitor Scraping", desc: "Continuously monitors thousands of rival e-commerce platforms to ensure your pricing matrix remains aggressively competitive." }, { title: "Demand Elasticity Calculation", desc: "Autonomously raises prices during peak product velocity and lowers them during lulls to perfectly optimize corporate profit margins." }]
+                            },
+                            {
+                                name: "Visual Search", color: "var(--b-tier3)", font: "#FFFFFF", shadow: "var(--b-shadow)", desc: "Text-based search frequently fails when consumers are looking for highly specific aesthetic items like apparel or specialized industrial components. Advanced computer vision allows users to search vast digital catalogs simply by uploading imagery from their smartphone.",
+                                terminal: [{ title: "Neural Image Processing", desc: "Analyzes uploaded consumer photos to extract exact aesthetic features, colors, and structural components in milliseconds." }, { title: "Frictionless Product Discovery", desc: "Bypasses the limitations of text-based search queries, connecting the consumer directly to the physical item they desire instantly." }]
+                            },
+                            {
+                                name: "Retail Intelligence", color: "var(--b-tier3)", font: "#FFFFFF", shadow: "var(--b-shadow)", desc: "Physical retail locations often operate completely blind to the actual behavioral flow of consumers walking through their aisles. Foot-traffic heatmaps utilize existing security cameras to track consumer movement, optimizing physical store layouts for maximum engagement.",
+                                terminal: [{ title: "Spatial Consumer Tracking", desc: "Utilizes advanced sensor fusion to map the exact physical pathways consumers take while navigating a brick-and-mortar store." }, { title: "Shelf-Demand Optimization", desc: "Analyzes the dwell time in specific aisles to dictate exactly where high-margin retail products should be physically positioned." }]
+                            }
+                        ]
+                    },
+                    {
+                        name: "Autonomous Prospecting", color: "var(--b-tier2)", font: "#FFFFFF", shadow: "var(--b-shadow)", desc: "Generating a high-converting B2B pipeline requires identifying key enterprise decision-makers at the exact moment of commercial intent. Our subsystem utilizes advanced web scraping to continuously scan the internet for buying signals. Generative AI crafts hyper-personalized email drip campaigns and orchestrates multi-channel engagement without human SDRs.", features: [
+                            {
+                                name: "Contextual Scraping", color: "var(--b-tier3)", font: "#FFFFFF", shadow: "var(--b-shadow)", desc: "Traditional lead generation relies on generic industry databases that lack actionable context and precise commercial timing. Our AI scraper identifies key decision-makers experiencing active corporate pain points by analyzing public financial filings and global news data.",
+                                terminal: [{ title: "Unstructured Web Crawling", desc: "Continuously scans global press releases and financial filings to identify corporations actively experiencing relevant pain points." }, { title: "Intent-Driven Lead Generation", desc: "Bypasses static, outdated contact lists to provide sales teams with prospects who are statistically ready to purchase immediately." }]
+                            },
+                            {
+                                name: "Smart Email Drips", color: "var(--b-tier3)", font: "#FFFFFF", shadow: "var(--b-shadow)", desc: "Executing effective cold outreach at massive scale typically results in generic, robotic messaging that triggers enterprise spam filters. Generative AI crafts hyper-personalized email outreach tailored to the specific industry context of the individual recipient.",
+                                terminal: [{ title: "Generative Copywriting AI", desc: "Autonomously drafts highly persuasive, personalized cold outreach emails that perfectly mimic the tone of a senior executive." }, { title: "Deliverability Optimization", desc: "Continuously A/B tests subject lines and sending times to ensure emails bypass strict enterprise spam filters flawlessly." }]
+                            },
+                            {
+                                name: "Multi-Channel Sync", color: "var(--b-tier3)", font: "#FFFFFF", shadow: "var(--b-shadow)", desc: "Modern B2B buyers rarely respond to a single touchpoint, requiring a highly coordinated engagement strategy across multiple communication platforms. This AI orchestrates automated prospect engagement across email, WhatsApp, and professional networking channels.",
+                                terminal: [{ title: "Cross-Platform Orchestration", desc: "Seamlessly manages outbound communication sequences across email, direct messaging, and professional corporate networks." }, { title: "Behavioral Follow-Up Logic", desc: "Autonomously triggers highly relevant secondary messages exactly when a prospect engages with a previous communication touchpoint." }]
+                            }
+                        ]
+                    },
+                    {
+                        name: "Conversational Voice", color: "var(--b-tier2)", font: "#FFFFFF", shadow: "var(--b-shadow)", desc: "The ultimate bottleneck of outbound sales is the physical limitation of human representatives making calls. This subsystem eliminates that limitation by deploying conversational AI frameworks with ultra-realistic acoustic adaptation. The intelligent agents conduct natural telephone dialogue, navigate skepticism, and autonomously book meetings into calendars.", features: [
+                            {
+                                name: "Human-Like Voice", color: "var(--b-tier3)", font: "#FFFFFF", shadow: "var(--b-shadow)", desc: "Robotic, automated phone menus actively repel modern consumers and instantly kill high-value B2B sales opportunities before they begin. Acoustic adaptation and generative voice synthesis match natural human speech cadences, complete with subtle pauses and intonations.",
+                                terminal: [{ title: "Ultra-Realistic Acoustic Synthesis", desc: "Generates spoken dialogue with flawless human intonation, completely removing the robotic friction of legacy automated callers." }, { title: "Fluid Multi-Turn Dialogue", desc: "Retains complex conversational context, allowing the AI agent to engage in deep, natural discussions without losing its train of thought." }]
+                            },
+                            {
+                                name: "Live Objection Auto", color: "var(--b-tier3)", font: "#FFFFFF", shadow: "var(--b-shadow)", desc: "Navigating a live sales call requires the ability to instantly counter prospect skepticism with relevant data and sharp value propositions. The AI navigates skepticism by utilizing your historical corporate sales playbooks and vast repositories of successful call transcripts.",
+                                terminal: [{ title: "Real-Time Semantic Countering", desc: "Instantly analyzes verbal pushback regarding budget or competitors and deploys the optimal counter-argument from the sales playbook." }, { title: "Conversational Steering Logic", desc: "Gracefully acknowledges prospect hesitation before seamlessly guiding the telephone dialogue back toward the core qualification metrics." }]
+                            },
+                            {
+                                name: "Meeting Booking", color: "var(--b-tier3)", font: "#FFFFFF", shadow: "var(--b-shadow)", desc: "The ultimate goal of top-of-funnel outreach is securing dedicated calendar time between a qualified prospect and an account executive. The AI executes autonomous BANT qualification, ensuring the prospect has the Budget, Authority, Need, and Timeline to purchase.",
+                                terminal: [{ title: "Strict BANT Qualification", desc: "Verifies the prospect possesses the necessary budget and corporate authority before allowing them to consume a human sales rep's time." }, { title: "Autonomous Calendar Synchronization", desc: "Verbally negotiates a meeting slot and instantly dispatches digital calendar invites to all required corporate stakeholders." }]
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                name: "Industrial & Energy", color: "var(--g-tier1)", font: "var(--b-tier1)", shadow: "var(--g-shadow)",
+                desc: "Demanding absolute algorithmic precision, this domain requires architectures capable of orchestrating massive physical machinery and complex global power grids. We deliver enterprise IoT platforms powered by edge-computing that proactively prevent catastrophic hardware failures. From smart factories to automated utilities, we engineer flawless efficiency.",
+                subsystems: [
+                    {
+                        name: "Smart Manufacturing", color: "var(--g-tier2)", font: "var(--b-tier1)", shadow: "var(--g-shadow)", desc: "Modern manufacturers are adopting AI at every stage of the value chain to maintain a competitive global edge. This subsystem processes continuous IoT telemetry to achieve zero-defect manufacturing. By integrating high-speed computer vision and digital twin engineering, we transform legacy production lines into highly agile, error-free automated environments.", features: [
+                            {
+                                name: "Defect Vision", color: "var(--g-tier3)", font: "var(--b-tier1)", shadow: "var(--g-shadow)", desc: "Manual visual inspection of rapidly moving assembly lines is inherently flawed, leading to massive material waste and compromised product integrity. High-speed industrial cameras powered by neural networks detect sub-millimeter factory line flaws in milliseconds.",
+                                terminal: [{ title: "High-Speed Optical Parsing", desc: "Processes thousands of frames per second to identify microscopic structural flaws on rapidly moving industrial assembly lines." }, { title: "Automated Defect Mitigation", desc: "Instantly triggers robotic diverters to remove compromised physical goods from the supply chain before they are packaged." }]
+                            },
+                            {
+                                name: "Swarm Robotics", color: "var(--g-tier3)", font: "var(--b-tier1)", shadow: "var(--g-shadow)", desc: "Managing a fleet of autonomous transport units within a crowded factory floor requires immense computational oversight to maintain efficiency. Swarm intelligence algorithms provide path optimization, completely preventing factory floor equipment collisions and logistical bottlenecks.",
+                                terminal: [{ title: "Spatial Collision Avoidance", desc: "Calculates the real-time vectors of dozens of autonomous machines to ensure flawless, accident-free navigation on the factory floor." }, { title: "Synchronized Swarm Logistics", desc: "Orchestrates the movement of multiple independent robotic units to execute complex, multi-stage physical transport tasks perfectly." }]
+                            },
+                            {
+                                name: "Digital Twins", color: "var(--g-tier3)", font: "var(--b-tier1)", shadow: "var(--g-shadow)", desc: "Testing new engineering configurations on live physical machinery is incredibly dangerous and routinely results in catastrophic operational downtime. Real-time virtual replicas allow for the safe physical asset stress-testing of multimillion-dollar hardware.",
+                                terminal: [{ title: "Real-Time Virtual Replication", desc: "Constructs a flawless, live-updating digital mirror of a massive physical asset using continuous IoT sensor telemetry." }, { title: "Destructive Scenario Simulation", desc: "Allows engineers to push the digital replica past its absolute breaking point to discover hidden structural vulnerabilities safely." }]
+                            }
+                        ]
+                    },
+                    {
+                        name: "Grid Operations", color: "var(--g-tier2)", font: "var(--b-tier1)", shadow: "var(--g-shadow)", desc: "Modern utility grids require split-second decision-making to balance highly volatile energy consumption with sustainable power generation. Our smart-grid subsystems utilize meteorological data, historical models, and live regional telemetry to autonomously route power exactly where it is needed most, preventing cascading grid failures seamlessly.", features: [
+                            {
+                                name: "Smart Routing", color: "var(--g-tier3)", font: "var(--b-tier1)", shadow: "var(--g-shadow)", desc: "Integrating highly volatile renewable energy sources into legacy municipal baseloads frequently causes severe power fluctuations and system instability. The AI dynamically reroutes power currents across vast geographic sectors to completely prevent localized grid overloads.",
+                                terminal: [{ title: "Dynamic Current Reallocation", desc: "Instantly shifts power loads away from overwhelmed sectors to stabilize the overarching municipal energy grid autonomously." }, { title: "Renewable Energy Integration", desc: "Smooths the volatile output of solar and wind generation to ensure a consistent, reliable flow of power to the consumer base." }]
+                            },
+                            {
+                                name: "Load Forecasting", color: "var(--g-tier3)", font: "var(--b-tier1)", shadow: "var(--g-shadow)", desc: "Failing to anticipate a sudden spike in regional energy consumption directly results in catastrophic brownouts and severe public backlash. Advanced weather models and historical usage data predict peak municipal utility consumption with staggering accuracy.",
+                                terminal: [{ title: "Meteorological Demand Modeling", desc: "Cross-references incoming severe weather fronts against historical HVAC usage data to accurately predict massive power spikes." }, { title: "Preemptive Generation Triggers", desc: "Autonomously spins up auxiliary power plants hours before the predicted demand surge actually hits the municipal grid." }]
+                            },
+                            {
+                                name: "Outage Dispatch", color: "var(--g-tier3)", font: "var(--b-tier1)", shadow: "var(--g-shadow)", desc: "When physical grid components fail, identifying the exact point of rupture and deploying human repair teams is often a chaotic, deeply inefficient process. Automated alert frameworks analyze the cascading loss of power to isolate regional grid failures instantly.",
+                                terminal: [{ title: "Instant Rupture Isolation", desc: "Triangulates the exact geographic location of a downed power line or blown transformer the millisecond the circuit breaks." }, { title: "Algorithmic Repair Dispatch", desc: "Calculates the fastest possible route for maintenance fleets to reach the rupture, minimizing total municipal downtime." }]
+                            }
+                        ]
+                    },
+                    {
+                        name: "Predictive Maint.", color: "var(--g-tier2)", font: "var(--b-tier1)", shadow: "var(--g-shadow)", desc: "Protecting massive energy infrastructure requires predictive foresight to prevent catastrophic explosions or assembly shutdowns. Edge computing nodes process thousands of equipment sensors in real-time, monitoring high-frequency vibration and thermal output. Repair teams are dispatched to perform scheduled maintenance proactively instead of reacting to crises.", features: [
+                            {
+                                name: "Thermal Telemetry", color: "var(--g-tier3)", font: "var(--b-tier1)", shadow: "var(--g-shadow)", desc: "Running heavy industrial machinery until it physically breaks results in massive repair costs and totally unacceptable periods of operational paralysis. Deep predictive maintenance monitors thermal output for generators, pipelines, and complex turbine engines.",
+                                terminal: [{ title: "Continuous Heat Mapping", desc: "Monitors the thermal exhaust of massive industrial turbines to identify dangerous internal friction before components melt." }, { title: "Pre-Failure Anomaly Alerts", desc: "Dispatches emergency maintenance warnings the moment a machine deviates from its established, safe operational baseline." }]
+                            },
+                            {
+                                name: "Lifespan Forecast", color: "var(--g-tier3)", font: "var(--b-tier1)", shadow: "var(--g-shadow)", desc: "Corporate accounting departments struggle to accurately predict the physical depreciation curve of multimillion-dollar hardware, leading to budget shortfalls. Machine learning models analyze years of operational strain to maximize the lifecycle of these massive assets.",
+                                terminal: [{ title: "Algorithmic Depreciation Modeling", desc: "Provides the C-suite with highly accurate timelines detailing exactly when specific multimillion-dollar hardware will require replacement." }, { title: "Capital Expenditure Protection", desc: "Eliminates surprise operational costs by allowing procurement teams to budget for replacement parts years in advance." }]
+                            },
+                            {
+                                name: "Failure Prediction", color: "var(--g-tier3)", font: "var(--b-tier1)", shadow: "var(--g-shadow)", desc: "Reacting to an emergency equipment crisis is exponentially more expensive than performing a localized, highly scheduled component replacement. Edge computing instantly flags vibration anomalies before total physical breakdowns occur on the factory floor.",
+                                terminal: [{ title: "Micro-Vibration Analysis", desc: "Detects the faintest physical tremors within a machine's housing, indicating internal bearing failure weeks before it snaps." }, { title: "Zero-Downtime Maintenance Scheduling", desc: "Autonomously schedules necessary repairs during off-peak operational hours to completely preserve the company's manufacturing velocity." }]
+                            }
+                        ]
+                    },
+                    {
+                        name: "Consumer Energy", color: "var(--g-tier2)", font: "var(--b-tier1)", shadow: "var(--g-shadow)", desc: "Empowering consumers with personalized energy insights is critical for reducing municipal power grid strain. We process data from millions of smart meters to provide granular usage breakdowns and automated billing. The AI autonomously suggests specific habits to lower energy consumption.", features: [
+                            {
+                                name: "Meter Analytics", color: "var(--g-tier3)", font: "var(--b-tier1)", shadow: "var(--g-shadow)", desc: "Consumers are entirely blind to how their daily habits impact their utility bills, leading to widespread frustration and unpaid corporate invoices. Real-time data processing provides granular usage breakdowns directly to the user's smartphone.",
+                                terminal: [{ title: "Appliance-Level Disaggregation", desc: "Algorithmically separates a home's total energy signal to show the consumer exactly how much power their HVAC or oven consumes." }, { title: "Real-Time Usage Dashboards", desc: "Empowers the end-user with immediate, actionable visual data regarding their daily utility expenditure." }]
+                            },
+                            {
+                                name: "Usage Recs", color: "var(--g-tier3)", font: "var(--b-tier1)", shadow: "var(--g-shadow)", desc: "Generic public service announcements demanding that citizens use less power are widely ignored and highly ineffective at reducing municipal grid strain. The AI suggests highly specific, personalized habits to lower daily energy consumption based on the user's exact data.",
+                                terminal: [{ title: "Bespoke Sustainability Coaching", desc: "Generates highly personalized advice, such as altering the thermostat by two degrees, to drastically lower a specific home's carbon footprint." }, { title: "Off-Peak Load Shifting", desc: "Incentivizes consumers to utilize heavy electrical appliances during periods of low municipal demand, stabilizing the overarching grid." }]
+                            },
+                            {
+                                name: "Automated Billing", color: "var(--g-tier3)", font: "var(--b-tier1)", shadow: "var(--g-shadow)", desc: "Manual utility meter reading is an archaic, incredibly inefficient process that frequently results in disputed charges and severely delayed revenue collection. Error-free corporate invoice generation executes instantly based on live, unalterable smart meter telemetry.",
+                                terminal: [{ title: "Zero-Touch Invoice Generation", desc: "Automatically calculates and dispatches perfectly accurate utility bills based on the exact telemetry pulled from the IoT smart meter." }, { title: "Dispute Elimination Logic", desc: "Provides the consumer with an indisputable, minute-by-minute breakdown of their power usage, completely eliminating costly billing disputes." }]
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                name: "Logistics & IT Ops", color: "var(--b-tier1)", font: "#FFFFFF", shadow: "var(--b-shadow)",
+                desc: "The central nervous system for corporate data management and physical global transit. We develop core AI infrastructure empowering B2B enterprises to autonomously manage complex supply chains, modernize legacy data silos, and generate instant business intelligence. We transition organizations into highly automated, robust, and self-healing ecosystems.",
+                subsystems: [
+                    {
+                        name: "Supply Chain Intel", color: "var(--b-tier2)", font: "#FFFFFF", shadow: "var(--b-shadow)", desc: "Global logistics providers require absolute visibility across multi-continental transit routes to prevent catastrophic operational blockages. Our platforms process global trend analysis to anticipate micro-trend demand spikes. By calculating optimal safety limits and triggering purchase orders, the AI prevents stock-outs and positions commercial inventory.", features: [
+                            {
+                                name: "Demand Forecasting", color: "var(--b-tier3)", font: "#FFFFFF", shadow: "var(--b-shadow)", desc: "Relying strictly on historical sales data fails to account for sudden viral trends, leaving corporations completely unable to meet explosive consumer demand. Micro-trend synchronization predicts raw product spikes early by analyzing global social media sentiment.",
+                                terminal: [{ title: "Viral Micro-Trend Synchronization", desc: "Scrapes global social media and search data to predict explosive consumer demand for specific products weeks before it peaks." }, { title: "Proactive Inventory Positioning", desc: "Autonomously routes raw materials and finished goods to regional fulfillment centers before the localized demand spike actually hits." }]
+                            },
+                            {
+                                name: "Shortage Prediction", color: "var(--b-tier3)", font: "#FFFFFF", shadow: "var(--b-shadow)", desc: "A sudden break in the supply chain halts factory production entirely, costing enterprise organizations millions of dollars in lost operational velocity daily. Calculating optimal safety limits prevents sudden stock-outs by monitoring the exact burn rate of essential raw materials.",
+                                terminal: [{ title: "Dynamic Threshold Monitoring", desc: "Continuously calculates the exact burn rate of raw materials to adjust emergency safety stock limits in real-time." }, { title: "Automated Procurement Execution", desc: "Instantly generates and dispatches purchase orders to trusted vendors the millisecond an essential component runs dangerously low." }]
+                            },
+                            {
+                                name: "Supplier Risk AI", color: "var(--b-tier3)", font: "#FFFFFF", shadow: "var(--b-shadow)", desc: "Global supply chains are incredibly fragile, frequently shattered by unexpected geopolitical conflicts, severe weather events, or sudden economic sanctions. Reliability models weigh complex geopolitical and weather factors to assign a fluid risk score to every international vendor.",
+                                terminal: [{ title: "Geopolitical Vulnerability Scoring", desc: "Analyzes global news feeds to assign a real-time risk score to international vendors located in politically or environmentally unstable regions." }, { title: "Autonomous Vendor Rerouting", desc: "Instantly shifts massive purchase orders to secondary, secure suppliers if the primary vendor is suddenly compromised by global events." }]
+                            }
+                        ]
+                    },
+                    {
+                        name: "Fleet Telematics", color: "var(--b-tier2)", font: "#FFFFFF", shadow: "var(--b-shadow)", desc: "Managing an enterprise-scale fleet of vehicles requires constant calculation of infinite moving variables, from engine health to incoming storm fronts. This subsystem ingests live GPS telemetry and global weather feeds to autonomously command physical transit. By avoiding localized congestion and predicting engine failures, it ensures strict delivery SLAs.", features: [
+                            {
+                                name: "Dynamic Rerouting", color: "var(--b-tier3)", font: "#FFFFFF", shadow: "var(--b-shadow)", desc: "Following static transit routes guarantees that massive logistics fleets will inevitably become paralyzed by unexpected traffic accidents or severe weather cells. Dynamic traffic logic saves thousands of cumulative transit hours by processing live meteorological and GPS telemetry.",
+                                terminal: [{ title: "Meteorological Transit Optimization", desc: "Cross-references live GPS coordinates with severe weather feeds to autonomously reroute logistics fleets around dangerous storm cells." }, { title: "SLA Guarantee Fulfillment", desc: "Ensures high-priority enterprise cargo reaches its destination strictly within the required timeframe by avoiding localized urban congestion." }]
+                            },
+                            {
+                                name: "Engine Maintenance", color: "var(--b-tier3)", font: "#FFFFFF", shadow: "var(--b-shadow)", desc: "A sudden mechanical breakdown on a major highway destroys delivery timelines, endangers the driver, and severely compromises the viability of perishable cargo. Deep IoT tracking predicts vehicle engine failures before they occur on the road by monitoring heat and vibration.",
+                                terminal: [{ title: "Live Engine Telemetry Parsing", desc: "Monitors the exact internal temperature and vibration of heavy transit vehicles to identify impending mechanical failures instantly." }, { title: "Preemptive Fleet Grounding", desc: "Autonomously pulls compromised vehicles from the active transit roster to enforce necessary mechanical repairs before a critical breakdown occurs." }]
+                            },
+                            {
+                                name: "Fuel Algorithms", color: "var(--b-tier3)", font: "#FFFFFF", shadow: "var(--b-shadow)", desc: "Fuel expenditure is the single largest operational cost for any global logistics provider, and minor inefficiencies scale into massive financial losses. Machine learning significantly reduces operational fuel expenditures by calculating the absolute optimal speed and routing for every vehicle.",
+                                terminal: [{ title: "Algorithmic Acceleration Curves", desc: "Dictates the absolute most efficient speed and braking patterns for heavy logistics vehicles to drastically minimize fuel consumption." }, { title: "Carbon Footprint Reduction", desc: "Significantly lowers the overarching emissions of the global fleet, directly supporting the enterprise's stringent corporate sustainability mandates." }]
+                            }
+                        ]
+                    },
+                    {
+                        name: "Enterprise AIOps", color: "var(--b-tier2)", font: "#FFFFFF", shadow: "var(--b-shadow)", desc: "Maintaining complex enterprise software architectures demands an intelligence layer capable of instantly diagnosing and resolving systemic errors without human latency. The AIOps subsystem continuously parses millions of unstructured server logs to isolate root-cause issues. By deploying self-executing remediation scripts, it automatically secures corporate data.", features: [
+                            {
+                                name: "Log Analysis", color: "var(--b-tier3)", font: "#FFFFFF", shadow: "var(--b-shadow)", desc: "When a massive enterprise server crashes, human engineers waste critical hours manually digging through millions of lines of unstructured code to find the error. AI instantly parses millions of server logs to isolate network latency and identify the exact root-cause of the systemic failure.",
+                                terminal: [{ title: "Unstructured Log Decryption", desc: "Instantly processes massive, chaotic streams of server data to isolate the exact line of code responsible for the systemic latency." }, { title: "Accelerated Incident Resolution", desc: "Bypasses the manual human diagnostic phase entirely, presenting IT engineering teams with immediate, flawlessly accurate technical solutions." }]
+                            },
+                            {
+                                name: "Auto-Remediation", color: "var(--b-tier3)", font: "#FFFFFF", shadow: "var(--b-shadow)", desc: "Relying on human IT teams to manually fix common, repetitive server errors at 3 AM leads to unacceptable periods of operational downtime for global platforms. Self-executing scripts automatically resolve known IT bottlenecks the exact millisecond they are detected.",
+                                terminal: [{ title: "Self-Executing Repair Scripts", desc: "Autonomously deploys pre-programmed engineering fixes to instantly resolve common server bottlenecks without requiring human intervention." }, { title: "Zero-Latency System Recovery", desc: "Reboots crashed cloud containers and restores digital services in milliseconds, ensuring the end-user experiences absolutely zero downtime." }]
+                            },
+                            {
+                                name: "Security Prediction", color: "var(--b-tier3)", font: "#FFFFFF", shadow: "var(--b-shadow)", desc: "Static firewalls are entirely incapable of defending against highly sophisticated, rapidly evolving cyber threats and zero-day network penetrations. Advanced threat detection models identify zero-day vulnerabilities by recognizing microscopic irregularities in user access patterns.",
+                                terminal: [{ title: "Zero-Day Threat Recognition", desc: "Identifies entirely new, undocumented cyber-attack methodologies by analyzing deeply irregular and hostile network access patterns." }, { title: "Autonomous Network Air-Gapping", desc: "Instantly isolates and locks down compromised server segments to prevent hackers from moving laterally through the corporate database." }]
+                            }
+                        ]
+                    },
+                    {
+                        name: "Data Platforms", color: "var(--b-tier2)", font: "#FFFFFF", shadow: "var(--b-shadow)", desc: "Actionable business intelligence is frequently locked behind archaic databases, completely inaccessible to non-technical executive leadership. We shatter this bottleneck by deploying MLOps pipelines that bridge legacy silos. By overlaying Large Language Models tuned for SQL generation, executives can interrogate databases using plain language seamlessly.", features: [
+                            {
+                                name: "Predictive Ops", color: "var(--b-tier3)", font: "#FFFFFF", shadow: "var(--b-shadow)", desc: "Corporate leadership frequently makes massive financial decisions based on static, 30-day-old hindsight reporting, leaving them highly vulnerable to sudden market shifts. Forecasting operational needs keeps the enterprise actively ahead of severe inventory challenges and cash-flow slumps.",
+                                terminal: [{ title: "Actionable Executive Foresight", desc: "Transforms raw historical data into highly accurate future projections, allowing leadership to preemptively adjust corporate strategy." }, { title: "Capital Bleed Identification", desc: "Autonomously highlights underutilized corporate resources, bloated budgets, and failing initiatives before they severely damage the bottom line." }]
+                            },
+                            {
+                                name: "MLOps Pipelines", color: "var(--b-tier3)", font: "#FFFFFF", shadow: "var(--b-shadow)", desc: "Attempting to rip and replace a massive, decades-old enterprise database is incredibly expensive and risks catastrophic losses of proprietary corporate data. Designing reliable cloud pipelines keeps intelligence models running smoothly without requiring destructive system rebuilds.",
+                                terminal: [{ title: "Non-Destructive Modernization", desc: "Safely extracts data from archaic on-premise servers and funnels it directly into advanced, cloud-based machine learning pipelines." }, { title: "Continuous Model Deployment", desc: "Ensures that newly trained AI algorithms are pushed securely into the live enterprise environment without causing any systemic latency." }]
+                            },
+                            {
+                                name: "Enterprise Agents", color: "var(--b-tier3)", font: "#FFFFFF", shadow: "var(--b-shadow)", desc: "When a CEO needs a specific operational metric, waiting three days for the data engineering team to manually write a SQL query is entirely unacceptable. Translating natural text executive queries into complex SQL commands empowers leaders instantly without relying on technical staff.",
+                                terminal: [{ title: "Plain-Language Querying", desc: "Allows a CEO to simply type 'Show me quarterly logistics costs' and instantly receive a flawlessly accurate, real-time data visualization." }, { title: "Data Engineering Bypass", desc: "Completely removes the human IT bottleneck, granting leadership immediate, direct access to the deepest layers of corporate intelligence." }]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ];
+
+        // --- 2. VANILLA SVG MATH ENGINE ---
+        function polarToCartesian(r, angle) {
+            return { x: r * Math.cos(angle), y: r * Math.sin(angle) };
+        }
+
+        function createArc(rIn, rOut, startAngle, endAngle, padAngle = 0.02) {
+            const start = startAngle + padAngle;
+            const end = endAngle - padAngle;
+            const startOuter = polarToCartesian(rOut, end);
+            const endOuter = polarToCartesian(rOut, start);
+            const startInner = polarToCartesian(rIn, end);
+            const endInner = polarToCartesian(rIn, start);
+            const largeArcFlag = end - start <= Math.PI ? "0" : "1";
+
+            return [
+                "M", startOuter.x, startOuter.y,
+                "A", rOut, rOut, 0, largeArcFlag, 0, endOuter.x, endOuter.y,
+                "L", endInner.x, endInner.y,
+                "A", rIn, rIn, 0, largeArcFlag, 1, startInner.x, startInner.y,
+                "Z"
+            ].join(" ");
+        }
+
+        function getCurvedTextPath(r, startAngle, endAngle) {
+            const pad = 0.04;
+            const s = startAngle + pad;
+            const e = endAngle - pad;
+            const p1 = polarToCartesian(r, s);
+            const p2 = polarToCartesian(r, e);
+            let mid = (s + e) / 2;
+            mid = mid % (2 * Math.PI);
+            if (mid < 0) mid += 2 * Math.PI;
+
+            const isBottom = mid > Math.PI / 2 && mid < 3 * Math.PI / 2;
+            if (isBottom) return `M ${p2.x} ${p2.y} A ${r} ${r} 0 0 0 ${p1.x} ${p1.y}`;
+            else return `M ${p1.x} ${p1.y} A ${r} ${r} 0 0 1 ${p2.x} ${p2.y}`;
+        }
+
+        function addCurvedText(group, textContent, r, startAngle, endAngle, fontSize, color, idStr) {
+            const d = getCurvedTextPath(r, startAngle, endAngle);
+            const defs = document.createElementNS("http://www.w3.org/2000/svg", "defs");
+            const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+            path.setAttribute("id", idStr);
+            path.setAttribute("d", d);
+            defs.appendChild(path);
+            group.appendChild(defs);
+
+            const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+            text.setAttribute("class", "slice-text");
+            text.style.fontSize = fontSize + "px";
+            text.style.fill = color;
+
+            if (color === '#FFFFFF') text.style.textShadow = "0px 1px 4px rgba(0,0,0,0.6)";
+            else text.style.textShadow = "0px 1px 2px rgba(255,255,255,0.6)";
+
+            const textPath = document.createElementNS("http://www.w3.org/2000/svg", "textPath");
+            textPath.setAttribute("href", "#" + idStr);
+            textPath.setAttribute("startOffset", "50%");
+            textPath.textContent = textContent;
+
+            text.appendChild(textPath);
+            group.appendChild(text);
+        }
+
+        // --- 3. THE 3-LAYER RENDER ENGINE ---
+        const layers = [
+            document.getElementById('layer-0'),
+            document.getElementById('layer-1'),
+            document.getElementById('layer-2')
+        ];
+        const svgs = [
+            document.getElementById('svg-0'),
+            document.getElementById('svg-1'),
+            document.getElementById('svg-2')
+        ];
+
+        let currentDepth = 0;
+        let pathIndices = [];
+        let cycleInterval;
+        let cycleIndex = 0;
+        let isHovering = false;
+
+        function drawLevel0() {
+            const svg = svgs[0];
+            svg.innerHTML = '';
+            const sliceAngle = (Math.PI * 2) / aiData.length;
+
+            aiData.forEach((ind, i) => {
+                const start = i * sliceAngle;
+                const end = start + sliceAngle;
+                const mid = (start + end) / 2;
+
+                const group = document.createElementNS("http://www.w3.org/2000/svg", "g");
+                group.setAttribute("class", "slice-group");
+                group.id = `group-0-${i}`;
+                group.style.setProperty('--ex-x', `${Math.cos(mid) * 25}px`);
+                group.style.setProperty('--ex-y', `${Math.sin(mid) * 25}px`);
+                group.style.setProperty('--glow-color', ind.shadow);
+
+                const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+                path.setAttribute("d", createArc(140, 310, start, end, 0.015));
+                path.setAttribute("class", "slice-path");
+                path.style.fill = ind.color;
+                group.appendChild(path);
+
+                addCurvedText(group, ind.name, 225, start, end, 18, ind.font, `path-0-${i}`);
+
+                group.onmouseenter = () => { cycleIndex = i; highlightGroup(0, i); };
+                group.onclick = () => drillDown(1, i);
+                svg.appendChild(group);
+            });
+        }
+
+        function drawLevel1(industryIndex) {
+            const svg = svgs[1];
+            svg.innerHTML = '';
+            const ind = aiData[industryIndex];
+            const sliceAngle = (Math.PI * 2) / ind.subsystems.length;
+
+            ind.subsystems.forEach((sub, i) => {
+                const start = i * sliceAngle;
+                const end = start + sliceAngle;
+                const mid = (start + end) / 2;
+
+                const group = document.createElementNS("http://www.w3.org/2000/svg", "g");
+                group.setAttribute("class", "slice-group");
+                group.id = `group-1-${i}`;
+                group.style.setProperty('--ex-x', `${Math.cos(mid) * 25}px`);
+                group.style.setProperty('--ex-y', `${Math.sin(mid) * 25}px`);
+                group.style.setProperty('--glow-color', sub.shadow);
+
+                const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+                path.setAttribute("d", createArc(140, 310, start, end, 0.015));
+                path.setAttribute("class", "slice-path");
+                path.style.fill = sub.color;
+                group.appendChild(path);
+
+                addCurvedText(group, sub.name, 225, start, end, 17, sub.font, `path-1-${i}`);
+
+                group.onmouseenter = () => { cycleIndex = i; highlightGroup(1, i); };
+                group.onclick = () => drillDown(2, i);
+                svg.appendChild(group);
+            });
+        }
+
+        function drawLevel2(industryIndex, subIndex) {
+            const svg = svgs[2];
+            svg.innerHTML = '';
+            const sub = aiData[industryIndex].subsystems[subIndex];
+            const sliceAngle = (Math.PI * 2) / sub.features.length;
+
+            sub.features.forEach((feat, i) => {
+                const start = i * sliceAngle;
+                const end = start + sliceAngle;
+                const mid = (start + end) / 2;
+
+                const group = document.createElementNS("http://www.w3.org/2000/svg", "g");
+                group.setAttribute("class", "slice-group");
+                group.id = `group-2-${i}`;
+                group.style.setProperty('--ex-x', `${Math.cos(mid) * 25}px`);
+                group.style.setProperty('--ex-y', `${Math.sin(mid) * 25}px`);
+                group.style.setProperty('--glow-color', feat.shadow);
+
+                const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+                path.setAttribute("d", createArc(140, 310, start, end, 0.015));
+                path.setAttribute("class", "slice-path");
+                path.style.fill = feat.color;
+                group.appendChild(path);
+
+                addCurvedText(group, feat.name, 225, start, end, 16, feat.font, `path-2-${i}`);
+
+                group.onmouseenter = () => { cycleIndex = i; highlightGroup(2, i); };
+                svg.appendChild(group);
+            });
+        }
+
+        // --- 4. WHIRLING TRANSITION LOGIC ---
+        const centerHub = document.getElementById('center-hub');
+        const hubSup = document.getElementById('hub-sup');
+        const hubTitle = document.getElementById('hub-title');
+        const hubReturn = document.getElementById('hub-return');
+
+        function drillDown(targetDepth, index) {
+            isHovering = false;
+            clearInterval(cycleInterval);
+
+            const currentLayer = layers[currentDepth];
+            const nextLayer = layers[targetDepth];
+
+            pathIndices[targetDepth - 1] = index;
+
+            if (targetDepth === 1) drawLevel1(pathIndices[0]);
+            if (targetDepth === 2) drawLevel2(pathIndices[0], pathIndices[1]);
+
+            currentLayer.className = 'chart-layer zoom-in-hidden';
+            nextLayer.className = 'chart-layer active';
+
+            currentDepth = targetDepth;
+            updateHub();
+
+            setTimeout(() => { cycleIndex = 0; startCycle(); }, 50);
+        }
+
+        function drillUp() {
+            if (currentDepth === 0) return;
+            isHovering = false;
+            clearInterval(cycleInterval);
+
+            const currentLayer = layers[currentDepth];
+            const prevLayer = layers[currentDepth - 1];
+
+            currentLayer.className = 'chart-layer zoom-out-hidden';
+            prevLayer.className = 'chart-layer active';
+
+            currentDepth--;
+            pathIndices.pop();
+
+            updateHub();
+
+            setTimeout(() => { cycleIndex = 0; startCycle(); }, 50);
+        }
+
+        function updateHub() {
+            if (currentDepth === 0) {
+                centerHub.classList.remove('is-deep');
+                centerHub.style.borderColor = "rgba(126,217,87,0.2)";
+                hubSup.innerText = "ILEAF INTELLIGENCE";
+                hubTitle.innerHTML = "POWERING<br><span>INDUSTRIES</span>";
+            } else if (currentDepth === 1) {
+                const ind = aiData[pathIndices[0]];
+                centerHub.classList.add('is-deep');
+                centerHub.style.borderColor = ind.color;
+                hubSup.innerText = "INDUSTRY SECTOR";
+                hubTitle.innerHTML = `<span style="color: ${ind.color}">${ind.name}</span>`;
+                hubReturn.style.color = ind.color;
+            } else if (currentDepth === 2) {
+                const sub = aiData[pathIndices[0]].subsystems[pathIndices[1]];
+                centerHub.classList.add('is-deep');
+                centerHub.style.borderColor = sub.color;
+                hubSup.innerText = "ACTIVE MODULE";
+                hubTitle.innerHTML = `<span style="color: ${sub.color}">${sub.name}</span>`;
+                hubReturn.style.color = sub.color;
+            }
+        }
+
+        // --- 5. DYNAMIC CARD LOGIC ---
+        const infoCard = document.getElementById('info-card');
+        const cEyebrow = document.getElementById('c-eyebrow');
+        const cTitle = document.getElementById('c-title');
+        const cMainDesc = document.getElementById('c-main-desc');
+        const cFeatures = document.getElementById('c-features');
+
+        function updateCardByPath(activeIndex) {
+            let node, parentName = null, baseColor = null;
+
+            if (currentDepth === 0) {
+                node = aiData[activeIndex];
+            } else if (currentDepth === 1) {
+                const ind = aiData[pathIndices[0]];
+                node = ind.subsystems[activeIndex];
+                parentName = ind.name;
+                baseColor = ind.color;
+            } else if (currentDepth === 2) {
+                const sub = aiData[pathIndices[0]].subsystems[pathIndices[1]];
+                node = sub.features[activeIndex];
+                parentName = sub.name;
+                baseColor = sub.color;
+            }
+
+            if (!node) return;
+
+            cEyebrow.style.opacity = 0; cTitle.style.opacity = 0; cMainDesc.style.opacity = 0; cFeatures.style.opacity = 0;
+
+            setTimeout(() => {
+                const color = node.color || baseColor;
+                infoCard.style.borderLeftColor = color;
+
+                if (currentDepth === 0) cEyebrow.innerText = "INDUSTRY ARCHITECTURE";
+                else if (currentDepth === 1) cEyebrow.innerText = "OPERATIONAL MODULE";
+                else cEyebrow.innerText = "INTELLIGENCE ALGORITHM";
+
+                cEyebrow.style.color = color;
+                cTitle.innerText = node.name;
+                cMainDesc.innerText = node.desc;
+
+                cFeatures.innerHTML = '';
+
+                if (node.subsystems) {
+                    node.subsystems.forEach(sub => {
+                        cFeatures.innerHTML += `
+                            <div class="feat-row">
+                                <div class="feat-icon"><div style="background: ${sub.color}"></div></div>
+                                <div class="feat-text"><h4>${sub.name}</h4></div>
+                            </div>
+                        `;
+                    });
+                } else if (node.features) {
+                    node.features.forEach(feat => {
+                        cFeatures.innerHTML += `
+                            <div class="feat-row">
+                                <div class="feat-icon"><div style="background: ${feat.color}"></div></div>
+                                <div class="feat-text"><h4>${feat.name}</h4><p>${feat.desc}</p></div>
+                            </div>
+                        `;
+                    });
+                } else if (node.terminal) {
+                    node.terminal.forEach(term => {
+                        cFeatures.innerHTML += `
+                            <div class="feat-row">
+                                <div class="feat-icon"><div style="background: ${color}"></div></div>
+                                <div class="feat-text"><h4>${term.title}</h4><p>${term.desc}</p></div>
+                            </div>
+                        `;
+                    });
+                }
+
+                cEyebrow.style.opacity = 1; cTitle.style.opacity = 1; cMainDesc.style.opacity = 1; cFeatures.style.opacity = 1;
+            }, 150);
+        }
+
+        // --- 6. UNIVERSAL AUTO CYCLE & HOVER LOGIC ---
+        document.getElementById('right-col-area').addEventListener('mouseenter', () => isHovering = true);
+        document.getElementById('right-col-area').addEventListener('mouseleave', () => {
+            isHovering = false;
+            highlightGroup(currentDepth, cycleIndex);
+        });
+
+        function highlightGroup(depth, index) {
+            document.querySelectorAll('.slice-group').forEach(g => {
+                g.classList.remove('active-explode');
+            });
+
+            const target = document.getElementById(`group-${depth}-${index}`);
+            if (target) {
+                target.classList.add('active-explode');
+                updateCardByPath(index);
+            }
+        }
+
+        function startCycle() {
+            clearInterval(cycleInterval);
+            highlightGroup(currentDepth, cycleIndex);
+
+            cycleInterval = setInterval(() => {
+                if (isHovering) return;
+
+                let limit = aiData.length;
+                if (currentDepth === 1) limit = aiData[pathIndices[0]].subsystems.length;
+                if (currentDepth === 2) limit = aiData[pathIndices[0]].subsystems[pathIndices[1]].features.length;
+
+                cycleIndex = (cycleIndex + 1) % limit;
+                highlightGroup(currentDepth, cycleIndex);
+            }, 7000);
+        }
+
+        // INIT
+        drawLevel0();
+        startCycle();
+
+        // --- UI & MODAL FUNCTIONS ---
+
+        function handleIndustryChange() {
+            const indSelect = document.getElementById('industry');
+            const otherRow = document.getElementById('other-industry-row');
+            const otherInput = document.getElementById('other-industry');
+            if (indSelect.value === 'Other') {
+                otherRow.style.display = 'grid';
+                otherInput.required = true;
+            } else {
+                otherRow.style.display = 'none';
+                otherInput.required = false;
+                otherInput.value = '';
+            }
+        }
+
+        function toggleModal(show) {
+            const m = document.getElementById('modal-overlay');
+            const f = document.getElementById('form-state');
+            const s = document.getElementById('success-state');
+            if (show) {
+                f.style.display = 'block';
+                s.style.display = 'none';
+                m.style.display = 'flex';
+                setTimeout(() => m.classList.add('active'), 10);
+            } else {
+                m.classList.remove('active');
+                setTimeout(() => m.style.display = 'none', 300);
+            }
+        }
+        function handleOverlayClick(e) { if (e.target.id === 'modal-overlay') toggleModal(false); }
+
+        async function handleSubmit(e) {
+            e.preventDefault();
+            const btn = document.getElementById('submit-btn');
+
+            let industryVal = document.getElementById('industry').value;
+            if (industryVal === 'Other') {
+                industryVal = document.getElementById('other-industry').value;
+            }
+
+            const addressVal = document.getElementById('address').value.trim() || 'Not Provided';
+            const countryVal = document.getElementById('country').value.trim();
+
+            const messagePayload = `Company: ${document.getElementById('company').value.trim()} | Website: ${document.getElementById('website').value.trim()} | Address: ${addressVal} | Country: ${countryVal} | Industry: ${industryVal}`;
+
+            const payload = {
+                name: document.getElementById('fname').value.trim() + " " + document.getElementById('lname').value.trim(),
+                email: document.getElementById('email').value.trim(),
+                phonenumber: document.getElementById('country-code').value.trim() + " " + document.getElementById('phone').value.trim(),
+                message: messagePayload
+            };
+
+            btn.disabled = true; btn.textContent = "INITIALIZING ROADMAP...";
+
+            try {
+                const r = await fetch('https://hook.us1.make.com/7kentveiu5myawi2go2u2l50rgcfl5mh', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (r.ok) {
+                    document.getElementById('form-state').style.display = 'none';
+                    document.getElementById('success-state').style.display = 'block';
+                    document.getElementById('contact-form').reset();
+                    document.getElementById('other-industry-row').style.display = 'none';
+                } else { throw new Error(); }
+            } catch (e) {
+                alert("Network error. Please try again.");
+            } finally {
+                btn.disabled = false; btn.textContent = "Begin consultation";
+            }
+        }
+
+    </script>
+</body>
+
+</html>
