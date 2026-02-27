@@ -144,7 +144,7 @@
             transform-origin: bottom left;
         }
 
-        /* --- LOCKED HEIGHT CARD (ZERO BOUNCING) --- */
+        /* --- ADAPTIVE HEIGHT CARD (PREVENTS CUTOFFS BUT MINIMIZES BOUNCING) --- */
         .info-card {
             grid-area: card;
             background: var(--bg-card);
@@ -153,7 +153,8 @@
             border-radius: 12px;
             padding: 32px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
-            height: 560px;
+            min-height: 560px;
+            height: auto;
             display: flex;
             flex-direction: column;
             margin-bottom: 30px;
@@ -187,11 +188,9 @@
             margin-bottom: 20px;
             padding-bottom: 20px;
             border-bottom: 1px solid #E2E8F0;
-            height: 125px;
-            overflow: hidden;
-            display: -webkit-box;
-            -webkit-line-clamp: 5;
-            -webkit-box-orient: vertical;
+            min-height: 125px;
+            height: auto;
+            display: block;
             transition: opacity 0.3s ease;
         }
 
@@ -348,6 +347,10 @@
             grid-template-columns: 1fr 1fr;
             gap: 15px;
             margin-bottom: 15px;
+        }
+
+        .full-width {
+            grid-column: span 2;
         }
 
         .form-group {
@@ -629,6 +632,14 @@
                 margin-bottom: 15px;
             }
 
+            .full-width {
+                grid-column: span 1;
+            }
+
+            .phone-input-group {
+                grid-template-columns: 80px 1fr;
+            }
+
             .hero-text {
                 margin-bottom: 0;
             }
@@ -789,13 +800,13 @@
                     </div>
 
                     <div class="form-row">
-                        <div class="form-group" style="grid-column: span 2;">
+                        <div class="form-group full-width">
                             <input type="email" id="email" placeholder="Corporate Email" required>
                         </div>
                     </div>
 
                     <div class="form-row">
-                        <div class="form-group" style="grid-column: span 2;">
+                        <div class="form-group full-width">
                             <div class="phone-input-group">
                                 <input type="text" id="country-code" placeholder="Ext (e.g. +1)" required
                                     pattern="^\+[1-9]\d{0,3}$" style="padding-right: 5px;">
@@ -806,32 +817,32 @@
                     </div>
 
                     <div class="form-row">
-                        <div class="form-group" style="grid-column: span 2;">
+                        <div class="form-group full-width">
                             <input type="text" id="company" placeholder="Company Name" required>
                         </div>
                     </div>
 
                     <div class="form-row">
-                        <div class="form-group" style="grid-column: span 2;">
+                        <div class="form-group full-width">
                             <input type="url" id="website" placeholder="Website (https://...)" required>
                         </div>
                     </div>
 
                     <div class="form-row">
-                        <div class="form-group" style="grid-column: span 2;">
+                        <div class="form-group full-width">
                             <textarea id="address" placeholder="Company Address (Optional)" rows="3"
                                 style="resize: vertical;"></textarea>
                         </div>
                     </div>
 
                     <div class="form-row">
-                        <div class="form-group" style="grid-column: span 2;">
+                        <div class="form-group full-width">
                             <input type="text" id="country" placeholder="Company Country" required>
                         </div>
                     </div>
 
                     <div class="form-row">
-                        <div class="form-group" style="grid-column: span 2;">
+                        <div class="form-group full-width">
                             <select id="industry" required onchange="handleIndustryChange()">
                                 <option value="" disabled selected>Target Industry Sector</option>
                                 <option value="Education Tech">Education Tech</option>
@@ -846,7 +857,7 @@
                     </div>
 
                     <div class="form-row" id="other-industry-row" style="display: none;">
-                        <div class="form-group" style="grid-column: span 2;">
+                        <div class="form-group full-width">
                             <input type="text" id="other-industry" placeholder="Please specify your industry">
                         </div>
                     </div>
