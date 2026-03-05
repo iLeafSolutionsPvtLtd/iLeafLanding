@@ -167,6 +167,17 @@
       transform: translateY(-1px);
     }
 
+    /* MOBILE NAV BTN */
+    .mobile-menu-btn {
+      display: none;
+      background: none;
+      border: none;
+      color: var(--b1);
+      font-size: 1.5rem;
+      cursor: pointer;
+      padding: 5px;
+    }
+
     .dd-panel {
       position: absolute;
       top: calc(100% + 12px);
@@ -251,6 +262,10 @@
       visibility: hidden;
       transition: all .28s cubic-bezier(.4, 0, .2, 1);
       z-index: 200;
+    }
+
+    .mobile-mega-panel {
+      display: none;
     }
 
     .mega-wrap:hover .mega-panel {
@@ -2321,45 +2336,47 @@
     .marquee {
       display: flex;
       overflow: hidden;
-      gap: 1rem;
+      width: 100%;
       user-select: none;
+      mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+      -webkit-mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
     }
 
     .marquee__content {
       flex-shrink: 0;
       display: flex;
+      align-items: center;
       justify-content: space-around;
-      gap: 1rem;
       min-width: 100%;
-      animation: scroll 55s linear infinite;
+      animation: scroll 40s linear infinite;
     }
 
     @keyframes scroll {
       from {
-        transform: translateX(0)
+        transform: translateX(0);
       }
 
       to {
-        transform: translateX(calc(-100% - 1rem))
+        transform: translateX(-100%);
       }
     }
 
     .marquee__content li {
       list-style: none;
-      padding: 0 28px;
+      padding: 0 45px;
       display: flex;
       align-items: center;
     }
 
     .marquee__content img {
-      height: 36px;
+      height: 44px;
       opacity: .5;
       transition: opacity .3s, transform .3s;
     }
 
     .marquee__content img:hover {
       opacity: 1;
-      transform: scale(1.08);
+      transform: scale(1.1);
     }
 
     /* =========================================================
@@ -2455,6 +2472,8 @@
     .fg input,
     .fg select,
     .fg textarea {
+      width: 100%;
+      box-sizing: border-box;
       background: rgba(255, 255, 255, .05);
       border: 1px solid rgba(255, 255, 255, .1);
       border-radius: 12px;
@@ -2613,7 +2632,7 @@
     #footer {
       background: var(--b1);
       border-top: 1px solid rgba(255, 255, 255, .06);
-      padding: 80px 0 0;
+      padding: 80px 0 90px;
     }
 
     .footer-top {
@@ -2865,13 +2884,18 @@
 
       .why-grid,
       .blog-grid {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: 1fr;
       }
 
       .svc-intro,
       .why-intro {
         grid-template-columns: 1fr;
         gap: 16px;
+      }
+
+      .testi-btns {
+        display: none;
+        /* Hide next/prev arrows on tablet/mobile to save space, rely on swipe/dots */
       }
 
       .footer-top {
@@ -2898,11 +2922,195 @@
 
     @media(max-width:768px) {
       section {
-        padding: 72px 0;
+        padding: 56px 0;
       }
 
       .container {
-        padding: 0 22px;
+        padding: 0 20px;
+      }
+
+      .mobile-menu-btn {
+        display: block;
+      }
+
+      .nav-list {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        position: fixed;
+        top: 80px;
+        /* Adjust according to header height */
+        left: 0;
+        right: 0;
+        height: calc(100vh - 80px);
+        background: #fff;
+        padding: 10px 20px;
+        box-shadow: none;
+        border-top: 1px solid rgba(0, 0, 0, 0.05);
+        opacity: 0;
+        visibility: hidden;
+        transform: none;
+        transition: opacity 0.3s ease, visibility 0.3s ease;
+      }
+
+      .nav-list.active {
+        opacity: 1;
+        visibility: visible;
+        overflow-y: auto;
+      }
+
+      .nav-item {
+        width: 100%;
+      }
+
+      .nav-link {
+        width: 100%;
+        padding: 16px 0;
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: var(--b1);
+        justify-content: space-between;
+      }
+
+      .nav-link::after {
+        display: none;
+      }
+
+      /* Clean Mobile Sub-Menu Dropdowns */
+      .dd-panel {
+        display: none;
+        position: relative !important;
+        top: auto !important;
+        left: auto !important;
+        transform: none !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        margin-top: 8px;
+        opacity: 1 !important;
+        visibility: visible !important;
+        border: none !important;
+        padding: 5px 0;
+        background: transparent !important;
+        box-shadow: none !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+      }
+
+      .dd-panel .mega-header-bar,
+      .dd-panel .mega-head {
+        display: none !important;
+      }
+
+      .mega-panel {
+        display: none !important;
+      }
+
+      .mobile-mega-panel {
+        display: none;
+        flex-direction: column;
+        background: rgba(0, 0, 0, 0.02);
+        border-radius: 8px;
+        margin-top: 8px;
+        width: 100%;
+      }
+
+      .mob-cap-toggle {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 14px 20px;
+        color: var(--b1);
+        font-weight: 700;
+        font-size: 0.95rem;
+        transition: 0.2s;
+      }
+
+      .mob-cap-toggle.active {
+        color: var(--g1);
+        background: rgba(126, 217, 87, 0.05);
+      }
+
+      .mob-cap-toggle.active i {
+        transform: rotate(180deg);
+      }
+
+      .mob-cap-services {
+        padding-left: 20px;
+        background: rgba(126, 217, 87, 0.03);
+      }
+
+      .mob-cap-services a {
+        display: block;
+        padding: 12px 20px 12px 0;
+        color: var(--b2);
+        font-size: 0.85rem;
+      }
+
+      .mob-cap-services a:hover {
+        color: var(--g1);
+        padding-left: 5px;
+      }
+
+      .nav-item.active .dd-panel,
+      .nav-item.active .mobile-mega-panel,
+      .nav-item:hover .dd-panel {
+        display: flex !important;
+      }
+
+      /* Hide complex desktop UI elements in mobile */
+      .mega-header-bar,
+      .mega-head,
+      .dditemhead2,
+      .about-text,
+      .learn-more-btn-section,
+      #menurecentartticles,
+      .blog-details,
+      .dditemhead1 {
+        display: none !important;
+      }
+
+      .mega-4col {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+      }
+
+      .mega-col {
+        border: none !important;
+        padding: 0 !important;
+      }
+
+      /* Simple Indented Links for Mobile */
+      .term-list,
+      .term-sublist,
+      .dd-panel {
+        padding-left: 10px !important;
+      }
+
+      .dd-panel a,
+      .term-list li a,
+      .term-sublist li a {
+        display: block;
+        padding: 10px 0;
+        font-size: 0.95rem;
+        font-weight: 500;
+        color: #555;
+      }
+
+      .dd-panel a:last-child,
+      .term-list li:last-child a,
+      .term-sublist li:last-child a {}
+
+      .dd-dot {
+        display: none;
+        /* Hide custom dot, optionally use something simpler */
+      }
+
+      .nav-item.active .dd-panel,
+      .nav-item.active .mega-panel,
+      .nav-item:hover .dd-panel,
+      .mega-wrap:hover .mega-panel {
+        display: block !important;
       }
 
       .svc-bento,
@@ -2928,8 +3136,29 @@
 
       .sticky-bar {
         flex-direction: column;
-        gap: 10px;
+        gap: 12px;
         text-align: center;
+        padding: 16px 20px;
+        border-radius: 16px 16px 0 0;
+      }
+
+      .sticky-text {
+        font-size: 0.85rem;
+      }
+
+      .sticky-btns {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        gap: 10px;
+        justify-content: center;
+      }
+
+      .sbtn {
+        flex: 1;
+        text-align: center;
+        padding: 12px 10px;
+        font-size: 0.8rem;
       }
 
       .footer-top {
@@ -2942,11 +3171,82 @@
       }
 
       .testi-card {
-        min-width: 300px;
+        flex-direction: column;
+        padding: 36px 24px;
+        gap: 24px;
+        text-align: center;
+        min-width: unset;
+      }
+
+      .testi-text {
+        font-size: 1.05rem;
+        margin: 0 auto;
+      }
+
+      .testi-quote {
+        margin: 0 auto 12px;
+      }
+
+      .testi-header {
+        justify-content: center;
+        text-align: center;
+        margin-bottom: 40px;
+      }
+
+      .about-stats {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+
+      .contact-form-wrap {
+        padding: 32px 24px;
+      }
+
+      .num-1,
+      .num-5 {
+        font-size: clamp(8rem, 28vw, 16rem);
+      }
+
+      .num-1 {
+        letter-spacing: -2px;
+      }
+
+      .num-5 {
+        margin-left: -10px;
+        letter-spacing: -1px;
+      }
+
+      .fifteen-label {
+        padding: 16px 24px;
+      }
+
+      .fifteen-label span:last-child {
+        font-size: clamp(1.4rem, 4vw, 2rem);
+      }
+
+      .footer-bottom-row {
+        flex-direction: column;
+        justify-content: center;
+        text-align: center;
+        gap: 24px;
+      }
+
+      .footer-badges {
+        flex-wrap: wrap;
+        gap: 16px;
+      }
+
+      .fcopy {
+        justify-content: center;
       }
 
       #navbar {
         padding: 0 20px;
+      }
+
+      /* Extra padding to clear mobile tall sticky bar */
+      #footer {
+        padding-bottom: 140px;
       }
     }
   </style>
@@ -3015,7 +3315,7 @@
                       class="arrow">&gt;</span></a></li>
                 <li><a href="javascript:void(0)" id="3" class="getsubmenus">Cloud Computing <span
                       class="arrow">&gt;</span></a></li>
-                <li><a href="javascript:void(0)" id="4" class="getsubmenus">Consultation <span
+                <li><a href="javascript:void(0)" id="4" class="getsubmenus">Smart Consultation <span
                       class="arrow">&gt;</span></a></li>
                 <li><a href="javascript:void(0)" id="16" class="getsubmenus">Pricing Models <span
                       class="arrow">&gt;</span></a></li>
@@ -3077,6 +3377,66 @@
             </div>
           </div>
         </div>
+
+        <!-- NEW: Dedicated Mobile Accordion Panel -->
+        <div class="mobile-mega-panel">
+
+          <div class="mob-cap-item">
+            <a href="javascript:void(0)" class="mob-cap-toggle">Digital Transformation <i
+                class="fa fa-angle-down"></i></a>
+            <div class="mob-cap-services" style="display: none;">
+              <a href="https://www.ileafsolutions.com/services/custom-software-development">Custom App Development</a>
+              <a href="https://www.ileafsolutions.com/services/sap-implementation">ERP Development</a>
+              <a href="https://www.ileafsolutions.com/services/application-modernization">IoT Solutions</a>
+              <a href="https://www.ileafsolutions.com/services/web-application-development">Workflow Management</a>
+              <a href="https://www.ileafsolutions.com/services/digital-marketing">Directus Solutions</a>
+            </div>
+          </div>
+
+          <div class="mob-cap-item">
+            <a href="javascript:void(0)" class="mob-cap-toggle">AI &amp; Data Analytics <i
+                class="fa fa-angle-down"></i></a>
+            <div class="mob-cap-services" style="display: none;">
+              <a href="https://www.ileafsolutions.com/services">Machine Learning Ops</a>
+              <a href="https://www.ileafsolutions.com/services">Predictive Analytics</a>
+              <a href="https://www.ileafsolutions.com/services">Natural Language Processing</a>
+              <a href="https://www.ileafsolutions.com/services">Generative AI Integration</a>
+            </div>
+          </div>
+
+          <div class="mob-cap-item">
+            <a href="javascript:void(0)" class="mob-cap-toggle">Cloud Computing <i class="fa fa-angle-down"></i></a>
+            <div class="mob-cap-services" style="display: none;">
+              <a href="https://www.ileafsolutions.com/services">Cloud Migration Strategy</a>
+              <a href="https://www.ileafsolutions.com/services">Managed Cloud Services</a>
+              <a href="https://www.ileafsolutions.com/services">Serverless Computing</a>
+              <a href="https://www.ileafsolutions.com/services">DevOps Automation</a>
+            </div>
+          </div>
+
+          <div class="mob-cap-item">
+            <a href="javascript:void(0)" class="mob-cap-toggle">Smart Consultation <i class="fa fa-angle-down"></i></a>
+            <div class="mob-cap-services" style="display: none;">
+              <a href="https://www.ileafsolutions.com/services">Product Strategy &amp; Research</a>
+              <a href="https://www.ileafsolutions.com/services">Technical Infrastructure Audit</a>
+              <a href="https://www.ileafsolutions.com/services">Compliance &amp; Security</a>
+              <a href="https://www.ileafsolutions.com/services">Process Digitalization</a>
+            </div>
+          </div>
+
+          <div class="mob-cap-item">
+            <a href="javascript:void(0)" class="mob-cap-toggle">Pricing Models <i class="fa fa-angle-down"></i></a>
+            <div class="mob-cap-services" style="display: none;">
+              <a href="https://www.ileafsolutions.com/services">Fixed Price Model</a>
+              <a href="https://www.ileafsolutions.com/services">Time &amp; Material Basis</a>
+              <a href="https://www.ileafsolutions.com/services">Dedicated Delivery Team</a>
+              <a href="https://www.ileafsolutions.com/services">Hybrid Partnership Model</a>
+            </div>
+          </div>
+
+        </div>
+
+
       </li>
       <li class="nav-item"><a href="https://www.ileafsolutions.com/portfolio" class="nav-link">Portfolio</a></li>
       <li class="nav-item" style="position:relative;">
@@ -3110,6 +3470,9 @@
       <li class="nav-item"><a href="https://www.ileafsolutions.com/contact-us" class="nav-link nav-cta">Contact Us</a>
       </li>
     </ul>
+    <button id="mobile-menu-btn" class="mobile-menu-btn" aria-label="Toggle menu">
+      <i class="fa fa-bars"></i>
+    </button>
   </nav>
 
   <!-- ===== HERO SECTION (Original — fully integrated) ===== -->
@@ -3608,12 +3971,17 @@
         <li><img src="https://www.ileafsolutions.com/assets/images/slider/picterus.png" alt=""></li>
         <li><img src="https://www.ileafsolutions.com/assets/images/slider/prelude.png" alt=""></li>
         <li><img src="https://www.ileafsolutions.com/assets/images/slider/sevenlakes.png" alt=""></li>
+        <li><img src="https://www.ileafsolutions.com/assets/images/slider/shulph.png" alt=""></li>
         <li><img src="https://www.ileafsolutions.com/assets/images/slider/sworkit.png" alt=""></li>
         <li><img src="https://www.ileafsolutions.com/assets/images/slider/ubsports.png" alt=""></li>
+        <li><img src="https://www.ileafsolutions.com/assets/images/slider/unap.png" alt=""></li>
         <li><img src="https://www.ileafsolutions.com/assets/images/slider/uop.png" alt=""></li>
         <li><img src="https://www.ileafsolutions.com/assets/images/slider/wab.png" alt=""></li>
         <li><img src="https://www.ileafsolutions.com/assets/images/slider/xceptional.png" alt=""></li>
         <li><img src="https://www.ileafsolutions.com/assets/images/slider/roost-logo-1.png" alt=""></li>
+        <li><img src="https://www.ileafsolutions.com/assets/images/slider/your-logo-1.png" alt=""></li>
+        <li><img src="https://www.ileafsolutions.com/assets/images/slider/potomac-logo-1.png" alt=""></li>
+        <li><img src="https://www.ileafsolutions.com/assets/images/slider/ixlayer-logo-1.png" alt=""></li>
         <li><img src="https://www.ileafsolutions.com/assets/images/slider/fairy-logo-1.png" alt=""></li>
       </ul>
     </div>
@@ -3793,6 +4161,61 @@
 
   <!-- ===== SCRIPTS ===== -->
   <script>
+    /* MOBILE MEGA MENU TOGGLE */
+    const mobileBtn = document.getElementById('mobile-menu-btn');
+    const navList = document.querySelector('.nav-list');
+    if (mobileBtn && navList) {
+      mobileBtn.addEventListener('click', () => {
+        navList.classList.toggle('active');
+        const icon = mobileBtn.querySelector('i');
+        if (navList.classList.contains('active')) {
+          icon.classList.remove('fa-bars');
+          icon.classList.add('fa-times');
+        } else {
+          icon.classList.remove('fa-times');
+          icon.classList.add('fa-bars');
+        }
+      });
+    }
+
+    /* MOBILE SUB-MENU ACCORDION TOGGLE */
+    const navItems = document.querySelectorAll('.nav-item');
+    navItems.forEach(item => {
+      const link = item.querySelector('.nav-link');
+      if (link && (item.querySelector('.dd-panel') || item.querySelector('.mobile-mega-panel'))) {
+        link.addEventListener('click', (e) => {
+          if (window.innerWidth <= 768) {
+            e.preventDefault();
+            item.classList.toggle('active');
+          }
+        });
+      }
+    });
+
+    /* MOBILE INNER CAPABILITY ACCORDION TOGGLES */
+    const mobCapToggles = document.querySelectorAll('.mob-cap-toggle');
+    mobCapToggles.forEach(toggle => {
+      toggle.addEventListener('click', (e) => {
+        e.preventDefault();
+        const services = toggle.nextElementSibling;
+
+        // Close others conditionally (uncomment if you want auto-close behavior)
+        /* mobCapToggles.forEach(t => {
+          if (t !== toggle) {
+            t.classList.remove('active');
+            t.nextElementSibling.style.display = 'none';
+          }
+        }); */
+
+        toggle.classList.toggle('active');
+        if (toggle.classList.contains('active')) {
+          services.style.display = 'block';
+        } else {
+          services.style.display = 'none';
+        }
+      });
+    });
+
     /* NAV SHRINK */
     const nav = document.getElementById('navbar');
     window.addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 40), { passive: true });
