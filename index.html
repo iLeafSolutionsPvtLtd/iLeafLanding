@@ -3278,6 +3278,14 @@
       }
     }
   </style>
+  <!-- PostHog -->
+  <script>
+    !function (t, e) { var o, n, p, r; e.__SV || (window.posthog = e, e._i = [], e.init = function (i, s, a) { function g(t, e) { var o = e.split("."); 2 == o.length && (t = t[o[0]], e = o[1]), t[e] = function () { t.push([e].concat(Array.prototype.slice.call(arguments, 0))) } } (p = t.createElement("script")).type = "text/javascript", p.async = !0, p.src = s.api_host.replace(".i.posthog.com", "-assets.i.posthog.com") + "/static/array.js", (r = t.getElementsByTagName("script")[0]).parentNode.insertBefore(p, r); var u = e; for (void 0 !== a ? u = e[a] = [] : a = "posthog", u.people = u.people || [], u.toString = function (t) { var e = "posthog"; return "posthog" !== a && (e += "." + a), t || (e += " (stub)"), e }, u.people.toString = function () { return u.toString(1) + ".people (stub)" }, o = "init capture register register_once register_for_session unregister opt_out_capturing has_opted_out_capturing opt_in_capturing reset isFeatureEnabled getFeatureFlag getFeatureFlagPayload reloadFeatureFlags group identify setPersonProperties setPersonPropertiesForFlags resetPersonPropertiesForFlags setGroupPropertiesForFlags resetGroupPropertiesForFlags resetGroups onFeatureFlags addFeatureFlagsHandler onSessionId getSurveys getActiveMatchingSurveys renderSurvey canRenderSurvey getNextSurveyStep".split(" "), n = 0; n < o.length; n++)g(u, o[n]); e._i.push([i, s, a]) }, e.__SV = 1) }(document, window.posthog || []);
+    posthog.init('phc_JCOCSgNZIqCjZFDXZPBHs9oek2V0NKqUqwZca7xgmhQ', {
+      api_host: 'https://us.i.posthog.com',
+      defaults: '2026-01-30'
+    })
+  </script>
 </head>
 
 <body>
@@ -4330,6 +4338,12 @@
         this.classList.add('active');
         this.style.background = 'rgba(126, 217, 87, 0.06)';
 
+        // PostHog Tracking: Mega Menu Category
+        posthog.capture('mega_menu_category_selected', {
+          category_id: id,
+          category_title: data.title.replace('<br>', ' ')
+        });
+
         // Update Col 1 (Details)
         const detailCol = document.getElementById('menudetails');
         detailCol.style.opacity = '0';
@@ -4353,6 +4367,28 @@
           `).join('');
           listContainer.style.opacity = '1';
         }, 150);
+      });
+    });
+
+    /* TRACK SERVICE CLICKS IN MEGA MENU */
+    document.getElementById('listsubmenus').addEventListener('click', function (e) {
+      const link = e.target.closest('a');
+      if (link) {
+        posthog.capture('mega_menu_service_clicked', {
+          service_name: link.textContent.replace(' >', '').trim(),
+          url: link.href
+        });
+      }
+    });
+
+    /* TRACK HEADER & FOOTER LINKS */
+    document.querySelectorAll('.nav-link, .footer-links a, .social-links a, .sbtn, .learn-more-btn').forEach(el => {
+      el.addEventListener('click', function () {
+        posthog.capture('link_clicked', {
+          link_text: this.textContent.trim(),
+          link_url: this.href,
+          location: this.closest('nav') ? 'header' : (this.closest('footer') ? 'footer' : 'body')
+        });
       });
     });
 
@@ -4456,7 +4492,11 @@
     /* MODAL */
     function toggleModal(show) {
       const m = document.getElementById('modal-overlay');
-      if (show) { m.style.display = 'flex'; setTimeout(() => m.classList.add('active'), 10); }
+      if (show) {
+        m.style.display = 'flex';
+        setTimeout(() => m.classList.add('active'), 10);
+        posthog.capture('modal_opened', { source: 'button_click' });
+      }
       else { m.classList.remove('active'); setTimeout(() => m.style.display = 'none', 300); }
     }
     function handleOverlayClick(e) { if (e.target.id === 'modal-overlay') toggleModal(false); }
@@ -4482,11 +4522,36 @@
       btn.disabled = true; btn.textContent = 'INITIALIZING...';
       try {
         const r = await fetch('https://hook.us1.make.com/7kentveiu5myawi2go2u2l50rgcfl5mh', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
-        if (r.ok) { document.getElementById('form-state').style.display = 'none'; document.getElementById('success-state').style.display = 'block'; document.getElementById('contact-form').reset(); }
+        if (r.ok) {
+          // PostHog Event Capture
+          posthog.identify(payload.email, { name: payload.name });
+          posthog.capture('contact_form_success', {
+            form_name: 'Consultation Modal',
+            ...payload
+          });
+          document.getElementById('form-state').style.display = 'none'; document.getElementById('success-state').style.display = 'block'; document.getElementById('contact-form').reset();
+        }
         else throw new Error();
       } catch { alert('Network error. Please try again.'); }
       finally { btn.disabled = false; btn.textContent = 'Initialize Consultation'; }
     }
+
+    /* TRACK MAIN CONTACT FORM */
+    document.addEventListener('DOMContentLoaded', () => {
+      const form2 = document.getElementById('formcontact');
+      if (form2) {
+        form2.addEventListener('submit', function () {
+          const email = form2.querySelector('[name="contactemail"]').value;
+          const name = form2.querySelector('[name="firstname"]').value + ' ' + form2.querySelector('[name="lastname"]').value;
+          posthog.identify(email, { name: name });
+          posthog.capture('contact_form_submitted', {
+            form_name: 'Main Contact Form',
+            email: email,
+            name: name
+          });
+        });
+      }
+    });
 
     /* ===== HERO WHEEL ENGINE (original) ===== */
     const aiData = [
@@ -4540,7 +4605,11 @@
         const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
         path.setAttribute("d", createArc(140, 310, start, end, 0.015)); path.setAttribute("class", "slice-path"); path.style.fill = ind.color; group.appendChild(path);
         addCurvedText(group, ind.name, 225, start, end, 18, ind.font, `path-0-${i}`);
-        group.onmouseenter = () => { cycleIndex = i; highlightGroup(0, i); }; group.onclick = () => drillDown(1, i); svg.appendChild(group);
+        group.onmouseenter = () => {
+          cycleIndex = i; highlightGroup(0, i);
+          posthog.capture('chart_sector_hover', { sector_name: ind.name, depth: 0 });
+        };
+        group.onclick = () => drillDown(1, i); svg.appendChild(group);
       });
     }
     function drawLevel1(industryIndex) {
@@ -4553,7 +4622,11 @@
         const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
         path.setAttribute("d", createArc(140, 310, start, end, 0.015)); path.setAttribute("class", "slice-path"); path.style.fill = sub.color; group.appendChild(path);
         addCurvedText(group, sub.name, 225, start, end, 17, sub.font, `path-1-${i}`);
-        group.onmouseenter = () => { cycleIndex = i; highlightGroup(1, i); }; group.onclick = () => drillDown(2, i); svg.appendChild(group);
+        group.onmouseenter = () => {
+          cycleIndex = i; highlightGroup(1, i);
+          posthog.capture('chart_sector_hover', { sector_name: sub.name, depth: 1 });
+        };
+        group.onclick = () => drillDown(2, i); svg.appendChild(group);
       });
     }
     function drawLevel2(industryIndex, subIndex) {
@@ -4566,7 +4639,11 @@
         const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
         path.setAttribute("d", createArc(140, 310, start, end, 0.015)); path.setAttribute("class", "slice-path"); path.style.fill = feat.color; group.appendChild(path);
         addCurvedText(group, feat.name, 225, start, end, 16, feat.font, `path-2-${i}`);
-        group.onmouseenter = () => { cycleIndex = i; highlightGroup(2, i); }; svg.appendChild(group);
+        group.onmouseenter = () => {
+          cycleIndex = i; highlightGroup(2, i);
+          posthog.capture('chart_sector_hover', { sector_name: feat.name, depth: 2 });
+        };
+        svg.appendChild(group);
       });
     }
     const centerHub = document.getElementById('center-hub'), hubSup = document.getElementById('hub-sup'), hubTitle = document.getElementById('hub-title'), hubReturn = document.getElementById('hub-return');
@@ -4576,13 +4653,33 @@
       if (targetDepth === 1) drawLevel1(pathIndices[0]);
       if (targetDepth === 2) drawLevel2(pathIndices[0], pathIndices[1]);
       currentLayer.className = 'chart-layer zoom-in-hidden'; nextLayer.className = 'chart-layer active';
-      currentDepth = targetDepth; updateHub(); setTimeout(() => { cycleIndex = 0; startCycle(); }, 50);
+      currentDepth = targetDepth;
+
+      // PostHog Tracking: Chart Drill Down
+      let sectorName = '';
+      if (targetDepth === 1) sectorName = aiData[index].name;
+      else if (targetDepth === 2) sectorName = aiData[pathIndices[0]].subsystems[index].name;
+
+      posthog.capture('chart_drill_down', {
+        depth: targetDepth,
+        sector_name: sectorName,
+        index: index
+      });
+
+      updateHub(); setTimeout(() => { cycleIndex = 0; startCycle(); }, 50);
     }
     function drillUp() {
       if (currentDepth === 0) return; isHovering = false; clearInterval(cycleInterval);
       const currentLayer = layers[currentDepth], prevLayer = layers[currentDepth - 1];
       currentLayer.className = 'chart-layer zoom-out-hidden'; prevLayer.className = 'chart-layer active';
-      currentDepth--; pathIndices.pop(); updateHub(); setTimeout(() => { cycleIndex = 0; startCycle(); }, 50);
+      currentDepth--;
+
+      // PostHog Tracking: Chart Drill Up
+      posthog.capture('chart_drill_up', {
+        new_depth: currentDepth
+      });
+
+      pathIndices.pop(); updateHub(); setTimeout(() => { cycleIndex = 0; startCycle(); }, 50);
     }
     function updateHub() {
       if (currentDepth === 0) { centerHub.classList.remove('is-deep'); centerHub.style.borderColor = "rgba(126,217,87,0.2)"; hubSup.innerText = "ILEAF INTELLIGENCE"; hubTitle.innerHTML = "POWERING<br><span>INDUSTRIES</span>"; }
