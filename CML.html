@@ -1,0 +1,2500 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
+  <title>Enterprise Contract Lifecycle Management (CLM) Software | iLeaf Solutions</title>
+  <meta name="description" content="Transform your legal operations with LEXI, our AI-powered Contract Lifecycle Management (CLM) platform. Accelerate M&A due diligence, automate redlining, and ensure ABA compliance with human-in-the-loop (HITL) verification.">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    /* =========================================================
+       CORE VARIABLES & RESETS (From iLeaf Solutions Branding)
+       ========================================================= */
+    :root {
+      --g1: #7ED957;
+      --g2: #90E06D;
+      --g3: #A2E884;
+      --g-shadow: rgba(126, 217, 87, 0.35);
+      --b1: #0F172A;
+      --b2: #1E293B;
+      --b3: #334155;
+      --b-shadow: rgba(15, 23, 42, 0.4);
+      --bg: #F8FAFC;
+      --card: #fff;
+      --muted: #6B7280;
+      --border: #E2E8F0;
+      --font: 'Inter', sans-serif;
+      --mono: 'JetBrains Mono', monospace;
+      --nav-h: 64px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--font); background: var(--b1); color: #fff; overflow-x: hidden; } /* Dark theme default for CLM */
+
+    /* =========================================================
+   NAV
+   ========================================================= */
+    #navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 9999;
+      height: var(--nav-h);
+      background: rgba(255, 255, 255, 0.65);
+      backdrop-filter: blur(24px) saturate(180%);
+      -webkit-backdrop-filter: blur(24px) saturate(180%);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+      padding: 0 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: all .4s cubic-bezier(.4, 0, .2, 1);
+    }
+
+    #navbar.scrolled {
+      height: 54px;
+      background: rgba(255, 255, 255, 0.95);
+      border-bottom-color: rgba(0, 0, 0, 0.1);
+      box-shadow: 0 4px 40px rgba(0, 0, 0, 0.05);
+    }
+
+    .nav-logo img {
+      height: 36px;
+      transition: transform .3s;
+    }
+
+    .nav-logo:hover img {
+      transform: scale(1.04);
+    }
+
+    .nav-list {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      list-style: none;
+    }
+
+    .nav-item {
+      position: relative;
+    }
+
+    .nav-link {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      color: rgba(15, 23, 42, 0.75);
+      font-size: .85rem;
+      font-weight: 600;
+      padding: 8px 14px;
+      border-radius: 8px;
+      text-decoration: none;
+      cursor: pointer;
+      background: none;
+      border: none;
+      font-family: var(--font);
+      transition: color .25s;
+      position: relative;
+    }
+
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: 4px;
+      left: 14px;
+      right: 14px;
+      height: 2.5px;
+      background: var(--g1);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform .3s cubic-bezier(.4, 0, .2, 1);
+      border-radius: 2px;
+    }
+
+    .nav-link:hover {
+      color: var(--b1);
+    }
+
+    .nav-link:hover::after,
+    .nav-link.active::after {
+      transform: scaleX(1);
+    }
+
+    .nav-link.active {
+      color: var(--b1);
+    }
+
+    .nav-link.active::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 8px;
+      background: rgba(126, 217, 87, 0.08);
+      box-shadow: 0 0 16px rgba(126, 217, 87, 0.15);
+    }
+
+    .nav-cta {
+      background: var(--g1);
+      color: var(--b1) !important;
+      font-weight: 700;
+      border-radius: 8px;
+      padding: 9px 20px !important;
+      transition: all .3s !important;
+      box-shadow: 0 0 0 0 rgba(126, 217, 87, 0);
+    }
+
+    .nav-cta::after {
+      display: none !important;
+    }
+
+    .nav-cta:hover {
+      background: var(--g2);
+      box-shadow: 0 0 20px rgba(126, 217, 87, 0.4);
+      transform: translateY(-1px);
+    }
+
+    /* MOBILE NAV BTN */
+    .mobile-menu-btn {
+      display: none;
+      background: none;
+      border: none;
+      color: var(--b1);
+      font-size: 1.5rem;
+      cursor: pointer;
+      padding: 5px;
+    }
+
+    .dd-panel {
+      position: absolute;
+      top: calc(100% + 12px);
+      left: 50%;
+      transform: translateX(-50%) translateY(-6px);
+      background: rgba(10, 15, 25, 0.85);
+      /* Dark terminal glass */
+      backdrop-filter: blur(36px) saturate(200%);
+      -webkit-backdrop-filter: blur(36px) saturate(200%);
+      border: 1px solid rgba(126, 217, 87, 0.25);
+      /* Green accent border */
+      border-radius: 16px;
+      padding: 18px;
+      min-width: 260px;
+      box-shadow: 0 32px 80px rgba(0, 0, 0, 0.5), inset 0 0 40px rgba(126, 217, 87, 0.03);
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition: all .25s cubic-bezier(.4, 0, .2, 1);
+      z-index: 200;
+    }
+
+    /* Dynamic hover bridge */
+    @media(min-width: 1025px) {
+      .nav-item:hover::after {
+        content: '';
+        position: absolute;
+        left: -10px;
+        right: -10px;
+        top: 100%;
+        height: 40px;
+        background: transparent;
+        z-index: 100;
+      }
+    }
+
+    @media(min-width: 1025px) {
+      .nav-item:hover .dd-panel {
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+        transform: translateX(-50%) translateY(0);
+      }
+    }
+
+    .dd-panel a {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: rgba(255, 255, 255, 0.65);
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: .85rem;
+      font-family: var(--mono);
+      font-weight: 500;
+      text-decoration: none;
+      transition: all .2s;
+    }
+
+    .dd-panel a:hover {
+      color: var(--g1);
+      background: rgba(126, 217, 87, 0.08);
+    }
+
+    .dd-dot {
+      width: 6px;
+      height: 6px;
+      background: var(--g1);
+      border-radius: 50%;
+      flex-shrink: 0;
+      opacity: .4;
+      transition: all .2s;
+    }
+
+    .dd-panel a:hover .dd-dot {
+      opacity: 1;
+      box-shadow: 0 0 8px var(--g1);
+    }
+
+    .mega-wrap {
+      position: relative;
+    }
+
+    .mega-panel {
+      position: absolute;
+      top: calc(100% + 12px);
+      left: 50%;
+      transform: translateX(-50%) translateY(-6px);
+      background: rgba(10, 15, 25, 0.85);
+      /* Dark terminal glass */
+      backdrop-filter: blur(36px) saturate(200%);
+      -webkit-backdrop-filter: blur(36px) saturate(200%);
+      border: 1px solid rgba(126, 217, 87, 0.25);
+      /* Green accent border */
+      border-radius: 20px;
+      padding: 8px 18px;
+      width: 920px;
+      box-shadow: 0 32px 80px rgba(0, 0, 0, 0.6), inset 0 0 40px rgba(126, 217, 87, 0.03);
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition: all .28s cubic-bezier(.4, 0, .2, 1);
+      z-index: 200;
+    }
+
+    .mobile-mega-panel {
+      display: none;
+    }
+
+    @media(min-width: 1025px) {
+      .mega-wrap:hover .mega-panel {
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+        transform: translateX(-50%) translateY(0);
+      }
+    }
+
+    .mega-header-bar {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 6px 4px;
+      border-bottom: 1px dashed rgba(126, 217, 87, 0.1);
+      margin-bottom: 12px;
+    }
+
+    .mega-mac-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      opacity: 0.8;
+    }
+
+    .mega-mac-dot.red {
+      background: #FF5F56;
+    }
+
+    .mega-mac-dot.yellow {
+      background: #FFBD2E;
+    }
+
+    .mega-mac-dot.green {
+      background: #27C93F;
+    }
+
+    .mega-4col {
+      display: grid;
+      grid-template-columns: 1.15fr 0.9fr 0.95fr 1.6fr;
+      gap: 15px;
+    }
+
+    .mega-col {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .mega-col-title {
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      color: var(--g1);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-bottom: 16px;
+      display: inline-block;
+      position: relative;
+    }
+
+    .mega-col-title::after {
+      content: '_';
+      animation: blink 1s step-end infinite;
+    }
+
+    @keyframes blink {
+
+      0%,
+      100% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: 0;
+      }
+    }
+
+    .mega-term-desc {
+      font-family: var(--font);
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 0.85rem;
+      line-height: 1.6;
+      margin-bottom: 16px;
+    }
+
+    .mega-term-btn {
+      display: inline-block;
+      font-family: var(--mono);
+      color: var(--b1);
+      background: var(--g1);
+      font-size: 0.75rem;
+      padding: 8px 16px;
+      text-decoration: none;
+      border-radius: 6px;
+      font-weight: 700;
+      transition: all 0.2s;
+      align-self: flex-start;
+    }
+
+    .mega-term-btn:hover {
+      background: var(--g2);
+      box-shadow: 0 0 15px rgba(126, 217, 87, 0.4);
+    }
+
+    .term-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .term-list a {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: rgba(255, 255, 255, 0.5);
+      text-decoration: none;
+      font-size: 0.85rem;
+      padding: 8px 12px;
+      border-radius: 8px;
+      transition: all 0.2s;
+      font-family: var(--mono);
+    }
+
+    .term-list a:hover,
+    .term-list a.active {
+      color: var(--g1);
+      background: rgba(126, 217, 87, 0.08);
+    }
+
+    .term-list a span.arrow {
+      font-size: 0.8rem;
+      opacity: 0;
+      transition: all 0.2s;
+      transform: translateX(-5px);
+      color: rgba(255, 255, 255, 0.4);
+      font-weight: 500;
+    }
+
+    .term-list a:hover span.arrow,
+    .term-list a.active span.arrow {
+      opacity: 1;
+      transform: translateX(0);
+      color: var(--g1);
+    }
+
+    .term-sublist {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      max-height: 250px;
+      overflow-y: auto;
+      padding-right: 6px;
+    }
+
+    .term-sublist::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    .term-sublist::-webkit-scrollbar-thumb {
+      background: rgba(126, 217, 87, 0.3);
+      border-radius: 4px;
+    }
+
+    .term-sublist a {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: rgba(255, 255, 255, 0.5);
+      text-decoration: none;
+      font-size: 0.85rem;
+      padding: 8px 12px;
+      transition: all 0.2s;
+      border-radius: 8px;
+      font-family: var(--mono);
+    }
+
+    .term-sublist a:hover,
+    .term-sublist a.active {
+      color: var(--g1);
+      background: rgba(126, 217, 87, 0.08);
+    }
+
+    .term-sublist a span.arrow {
+      font-size: 0.8rem;
+      opacity: 0;
+      transition: all 0.2s;
+      transform: translateX(-5px);
+      color: rgba(255, 255, 255, 0.4);
+      font-weight: 500;
+    }
+
+    .term-sublist a:hover span.arrow,
+    .term-sublist a.active span.arrow {
+      opacity: 1;
+      transform: translateX(0);
+      color: var(--g1);
+    }
+
+    /* Mapping Original External JS Classes to Terminal Styles */
+    .dditemhead2 {
+      font-family: var(--mono);
+      font-size: 0.8rem;
+      color: var(--g1) !important;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 24px;
+      display: inline-block;
+      line-height: 1.4;
+    }
+
+    .dditemhead1 {
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      color: var(--g1) !important;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-bottom: 16px;
+      display: inline-block;
+      position: relative;
+    }
+
+    .dditemhead1::after {
+      content: '_';
+      animation: blink 1s step-end infinite;
+    }
+
+    .dditemhead2hr,
+    .dditemhead1hr {
+      display: none !important;
+    }
+
+    .about-text {
+      font-family: var(--font);
+      color: rgba(255, 255, 255, 0.6) !important;
+      font-size: 0.85rem;
+      line-height: 1.6;
+      margin-bottom: 16px;
+    }
+
+    .learn-more-btn {
+      display: inline-block;
+      font-family: var(--mono) !important;
+      color: var(--b1) !important;
+      background: var(--g1) !important;
+      font-size: 0.75rem !important;
+      padding: 8px 16px !important;
+      text-decoration: none !important;
+      border-radius: 6px !important;
+      font-weight: 700 !important;
+      transition: all 0.2s !important;
+      box-shadow: none !important;
+    }
+
+    .learn-more-btn::after {
+      display: none !important;
+    }
+
+    .learn-more-btn:hover {
+      background: var(--g2) !important;
+      box-shadow: 0 0 15px rgba(126, 217, 87, 0.4) !important;
+      color: var(--b1) !important;
+    }
+
+    .blog-details {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 10px;
+      padding: 8px;
+      background: transparent;
+      border: 1px solid rgba(126, 217, 87, 0.15);
+      border-radius: 8px;
+      overflow: hidden;
+      transition: all 0.3s;
+      text-decoration: none;
+    }
+
+    .blog-details:hover {
+      background: rgba(126, 217, 87, 0.05);
+      border-color: rgba(126, 217, 87, 0.3);
+    }
+
+    /* Megamenu article thumbnail — scoped so it doesn't bleed into #blog */
+    .blog-details .blog-img {
+      width: 60px;
+      height: 60px;
+      min-width: 60px;
+      flex-shrink: 0;
+      border-radius: 6px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .blog-details .blog-img img {
+      width: 100% !important;
+      height: 100% !important;
+      object-fit: cover;
+      object-position: center;
+      transition: transform 0.3s;
+      display: block;
+    }
+
+    .blog-details:hover .blog-img img {
+      transform: scale(1.06);
+    }
+
+    .blog-text {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      padding: 0;
+      justify-content: center;
+      width: 100%;
+      overflow: hidden;
+    }
+
+    .megablgcat {
+      color: var(--g1) !important;
+      font-size: 0.6rem !important;
+      font-family: var(--mono);
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      display: block;
+      background: rgba(126, 217, 87, 0.08);
+      padding: 2px 6px;
+      border-radius: 4px;
+      border: 1px solid rgba(126, 217, 87, 0.2);
+      width: fit-content;
+      margin-bottom: 3px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100%;
+    }
+
+    .megablgcat::before {
+      content: "";
+    }
+
+    .megablgcat::after {
+      content: "";
+    }
+
+    .blog-text h5 {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+
+    .blog-text h5 span {
+      color: rgba(255, 255, 255, 0.9);
+      font-size: 0.78rem;
+      font-family: var(--font);
+      font-weight: 600;
+      text-decoration: none;
+      line-height: 1.3;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .blog-details:hover h5 span {
+      color: var(--g1);
+    }
+
+    .carousel-indicators,
+    .carconpre,
+    .carconnex {
+      display: none !important;
+    }
+
+    .term-blog-cards {
+      width: 60px;
+      height: 60px;
+      object-fit: cover;
+      border-radius: 6px;
+      border: 1px solid rgba(126, 217, 87, 0.2);
+      filter: grayscale(0%);
+      transition: all 0.3s;
+    }
+
+    .term-blog-item:hover img {
+      filter: grayscale(0%);
+      border-color: var(--g1);
+    }
+
+    .tbi-info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .tbi-title {
+      font-size: 0.8rem;
+      color: #fff;
+      line-height: 1.4;
+      font-weight: 500;
+      font-family: var(--font);
+      margin-bottom: 4px;
+    }
+
+    .tbi-cat {
+      font-family: var(--mono);
+      font-size: 0.6rem;
+      color: var(--g1);
+      text-transform: uppercase;
+    }
+
+    /* =========================================================
+       GLOBAL UTILITIES
+       ========================================================= */
+    section { padding: 110px 0; position: relative; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 44px; position: relative; z-index: 2; }
+    .eyebrow { font-family: var(--mono); font-size: .68rem; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--g1); margin-bottom: 14px; display: block; }
+    .h2 { font-size: clamp(2.2rem, 3.2vw, 3.2rem); font-weight: 900; line-height: 1.06; letter-spacing: -1.2px; margin-bottom: 20px; color: #fff; }
+    .h2 span { color: var(--g1); }
+    .lead { font-size: 1.05rem; color: rgba(255, 255, 255, 0.65); line-height: 1.8; max-width: 700px; }
+    
+    .reveal { opacity: 0; transform: translateY(40px); transition: opacity .7s cubic-bezier(.4, 0, .2, 1), transform .7s cubic-bezier(.4, 0, .2, 1); }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    
+    .primary-btn { display: inline-flex; align-items: center; justify-content: center; background: var(--g1); color: var(--b1); padding: 16px 36px; border-radius: 8px; font-size: 1.05rem; font-weight: 800; border: none; cursor: pointer; transition: all .4s cubic-bezier(.4, 0, .2, 1); text-decoration: none; margin-top: 30px; box-shadow: 0 10px 20px rgba(126, 217, 87, 0.15); font-family: var(--font); }
+    .primary-btn:hover { background: var(--g2); transform: translateY(-2px); box-shadow: 0 15px 30px rgba(126, 217, 87, 0.3); }
+
+    /* =========================================================
+       CLM SPECIFIC SECTIONS
+       ========================================================= */
+       
+    /* SECTION 1: HERO */
+    #clm-hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      background: var(--b1);
+      position: relative;
+      overflow: hidden;
+      padding-top: 80px;
+    }
+    #clm-hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: linear-gradient(rgba(126, 217, 87, 0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(126, 217, 87, 0.04) 1px, transparent 1px);
+      background-size: 50px 50px;
+      animation: gridShift 20s linear infinite;
+      pointer-events: none;
+    }
+    @keyframes gridShift {
+      from { background-position: 0 0; }
+      to { background-position: 50px 50px; }
+    }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 60px;
+      align-items: center;
+    }
+    .hero-h1 { font-size: clamp(2.8rem, 4vw, 4.2rem); line-height: 1.1; letter-spacing: -1.5px; margin-bottom: 24px; color: #fff; font-weight: 900; }
+    .hero-h1 span.hl { color: var(--g1); }
+    
+    /* Hero Contract Page-Turn Carousel */
+    .hero-visual { position: relative; width: 100%; display: flex; align-items: center; justify-content: center; padding: 10px 0; }
+
+    .contract-carousel {
+      position: relative;
+      width: 100%;
+      max-width: 380px;
+      height: 420px;
+      perspective: 800px;
+    }
+
+    .contract-page {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: linear-gradient(165deg, #0d1220 0%, #111827 100%);
+      border: 1px solid rgba(126, 217, 87, 0.15);
+      border-radius: 14px;
+      padding: 32px 28px;
+      opacity: 0;
+      transform: rotateY(30deg) scale(0.9);
+      transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+      pointer-events: none;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .contract-page.active {
+      opacity: 1;
+      transform: rotateY(0deg) scale(1);
+      pointer-events: auto;
+      z-index: 5;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 40px rgba(126, 217, 87, 0.08);
+    }
+    .contract-page.prev {
+      opacity: 0.3;
+      transform: rotateY(-20deg) scale(0.88) translateX(-30px);
+      z-index: 3;
+    }
+    .contract-page.next {
+      opacity: 0.3;
+      transform: rotateY(20deg) scale(0.88) translateX(30px);
+      z-index: 3;
+    }
+
+    /* Scanner line effect */
+    .contract-page.active::after {
+      content: '';
+      position: absolute;
+      left: 0; width: 100%; height: 3px;
+      background: linear-gradient(90deg, transparent, var(--g1), transparent);
+      box-shadow: 0 0 15px var(--g1);
+      animation: scanDoc 3.5s ease-in-out infinite;
+    }
+    @keyframes scanDoc {
+      0% { top: 10%; opacity: 0; }
+      5% { opacity: 1; }
+      90% { opacity: 1; }
+      100% { top: 90%; opacity: 0; }
+    }
+
+    .cp-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .cp-icon {
+      width: 42px; height: 42px;
+      border-radius: 10px;
+      background: rgba(126, 217, 87, 0.12);
+      color: var(--g1);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+    .cp-header-text h4 {
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: #fff;
+      margin: 0 0 3px;
+    }
+    .cp-header-text small {
+      font-size: 0.65rem;
+      color: var(--g1);
+      font-family: var(--mono);
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .cp-body { flex: 1; }
+    .cp-line {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+    }
+    .cp-line i { color: var(--g1); font-size: 12px; min-width: 16px; }
+    .cp-line span { font-size: 0.8rem; color: rgba(255,255,255,0.65); line-height: 1.4; }
+    .cp-line.highlight span { color: var(--g1); font-weight: 700; }
+
+    .cp-footer {
+      margin-top: auto;
+      padding-top: 14px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .cp-badge {
+      font-family: var(--mono);
+      font-size: 0.6rem;
+      font-weight: 700;
+      padding: 5px 12px;
+      border-radius: 20px;
+      background: rgba(126, 217, 87, 0.1);
+      color: var(--g1);
+      letter-spacing: 1px;
+    }
+    .cp-step-dots { display: flex; gap: 6px; }
+    .cp-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.15);
+      transition: all 0.3s;
+    }
+    .cp-dot.active { background: var(--g1); box-shadow: 0 0 8px var(--g1); }
+
+    @media(max-width: 768px) {
+      .contract-carousel { max-width: 100%; height: 380px; }
+      .contract-page { padding: 24px 20px; }
+    }
+
+    /* SECTION 2: METRICS */
+    #clm-metrics { background: var(--b2); padding: 60px 0; border-top: 1px solid rgba(255,255,255,0.05); border-bottom: 1px solid rgba(255,255,255,0.05); }
+    .metrics-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
+    .metric-card { text-align: center; padding: 20px; }
+    .metric-num { font-size: 3.5rem; font-weight: 900; color: var(--g1); font-family: var(--mono); margin-bottom: 10px; display: flex; align-items: center; justify-content: center; gap: 5px; }
+    .metric-text { font-size: 1rem; color: rgba(255,255,255,0.7); font-weight: 600; }
+
+    /* SECTION 3: CORE CAPABILITIES (Dark Bento) */
+    .bento-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 20px; }
+    .bento-card { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.07); border-radius: 20px; padding: 36px 32px; position: relative; overflow: hidden; transition: all .4s ease; }
+    .bento-card:hover { background: rgba(255, 255, 255, 0.06); border-color: rgba(126, 217, 87, 0.3); transform: translateY(-5px); box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3); }
+    .bento-wide { grid-column: span 3; }
+    .bento-narrow { grid-column: span 2; }
+    .bento-icon { width: 50px; height: 50px; background: rgba(126, 217, 87, 0.1); border: 1px solid rgba(126, 217, 87, 0.2); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; color: var(--g1); font-size: 20px; transition: all .3s; }
+    .bento-card:hover .bento-icon { background: var(--g1); color: var(--b1); }
+    .bento-card h3 { font-size: 1.3rem; margin-bottom: 12px; color: #fff; font-weight: 800; }
+    .bento-card p { font-size: 0.95rem; color: rgba(255,255,255,0.6); line-height: 1.6; }
+
+    /* LIFECYCLE TIMELINE CSS */
+    .lifecycle-track { display: flex; justify-content: space-between; position: relative; max-width: 1000px; margin: 0 auto; padding: 40px 0; }
+    .lc-line { position: absolute; top: 80px; left: 10%; width: 80%; height: 2px; background: rgba(255,255,255,0.1); z-index: 1; overflow: hidden; }
+    .lc-progress { width: 30%; height: 100%; background: linear-gradient(90deg, transparent, var(--g1), var(--g1), transparent); border-radius: 2px; box-shadow: 0 0 12px var(--g1); animation: stepScan 18s ease-in-out infinite; }
+    @keyframes stepScan {
+      0%      { transform: translateX(-100%); opacity: 0; }
+      2%      { opacity: 1; }
+      5%      { transform: translateX(0%); }       /* arrive at step 1 */
+      30%     { transform: translateX(0%); }       /* dwell on step 1 (~5s) */
+      36%     { transform: translateX(120%); }     /* travel to step 2 */
+      37%     { transform: translateX(120%); }     /* arrive at step 2 */
+      63%     { transform: translateX(120%); }     /* dwell on step 2 (~5s) */
+      69%     { transform: translateX(240%); }     /* travel to step 3 */
+      70%     { transform: translateX(240%); }     /* arrive at step 3 */
+      94%     { transform: translateX(240%); }     /* dwell on step 3 (~5s) */
+      98%     { transform: translateX(360%); opacity: 1; }
+      100%    { transform: translateX(360%); opacity: 0; }
+    }
+    .lc-step { position: relative; width: 30%; z-index: 2; text-align: center; }
+
+    /* Node — default dim state */
+    .lc-node {
+      width: 44px; height: 44px; border-radius: 50%; background: var(--b1);
+      border: 2px solid rgba(126, 217, 87, 0.2); display: flex; align-items: center;
+      justify-content: center; font-family: var(--mono); color: rgba(126, 217, 87, 0.35);
+      font-weight: 900; font-size: 1rem; margin: 0 auto 30px;
+      box-shadow: 0 0 6px rgba(126, 217, 87, 0.03);
+      transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+    }
+    /* Circling glow ring on the active node */
+    .lc-node::after {
+      content: ''; position: absolute; inset: -8px; border-radius: 50%;
+      border: 2.5px solid transparent;
+      border-top-color: var(--g1); border-right-color: rgba(126, 217, 87, 0.5);
+      opacity: 0; transition: opacity 0.5s;
+    }
+    .lc-step.lc-active .lc-node::after {
+      opacity: 1;
+      animation: circleGlow 1.4s linear infinite;
+    }
+    @keyframes circleGlow {
+      to { transform: rotate(360deg); }
+    }
+    /* Active node — filled green, pulsing glow */
+    .lc-step.lc-active .lc-node {
+      background: linear-gradient(135deg, var(--g1), #4CAF50);
+      border-color: var(--g1);
+      color: var(--b1);
+      box-shadow: 0 0 30px rgba(126, 217, 87, 0.6), 0 0 70px rgba(126, 217, 87, 0.2), inset 0 0 10px rgba(255,255,255,0.15);
+      transform: scale(1.2);
+      animation: nodePulse 2s ease-in-out infinite;
+    }
+    @keyframes nodePulse {
+      0%, 100% { box-shadow: 0 0 30px rgba(126, 217, 87, 0.6), 0 0 70px rgba(126, 217, 87, 0.2), inset 0 0 10px rgba(255,255,255,0.15); }
+      50%      { box-shadow: 0 0 40px rgba(126, 217, 87, 0.8), 0 0 90px rgba(126, 217, 87, 0.3), inset 0 0 10px rgba(255,255,255,0.15); }
+    }
+    /* Past node — completed, solid green border */
+    .lc-step.lc-done .lc-node {
+      border-color: var(--g1); color: var(--g1);
+      background: rgba(126, 217, 87, 0.1);
+      box-shadow: 0 0 15px rgba(126, 217, 87, 0.25);
+    }
+
+    /* Content card — default dim */
+    .lc-content {
+      background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05);
+      padding: 30px 20px; border-radius: 16px;
+      transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+      backdrop-filter: blur(10px); display: flex; flex-direction: column; align-items: center;
+      opacity: 0.45; transform: scale(0.97);
+    }
+    /* Active card — magnified, highlighted */
+    .lc-step.lc-active .lc-content {
+      border-color: rgba(126, 217, 87, 0.45);
+      background: rgba(126, 217, 87, 0.06);
+      opacity: 1; transform: scale(1.04);
+      box-shadow: 0 8px 40px rgba(126, 217, 87, 0.12), 0 0 0 1px rgba(126, 217, 87, 0.1);
+    }
+    /* Past card — readable but not spotlighted */
+    .lc-step.lc-done .lc-content {
+      opacity: 0.75; transform: scale(1);
+      border-color: rgba(126, 217, 87, 0.15);
+    }
+    .lc-content:hover { border-color: rgba(126, 217, 87, 0.4); transform: scale(1.03); background: rgba(126, 217, 87, 0.05); opacity: 1; }
+    .lc-icon { width: 60px; height: 60px; background: rgba(126, 217, 87, 0.1); border-radius: 12px; color: var(--g1); display: flex; align-items: center; justify-content: center; font-size: 24px; margin-bottom: 20px; transition: all 0.5s; }
+    .lc-step.lc-active .lc-icon { background: rgba(126, 217, 87, 0.2); box-shadow: 0 0 20px rgba(126, 217, 87, 0.15); }
+    .lc-content h4 { font-size: 1.15rem; color: #fff; margin-bottom: 12px; font-weight: 800; transition: color 0.5s; }
+    .lc-step.lc-active .lc-content h4 { color: var(--g1); }
+    .lc-content p { font-size: 0.9rem; color: rgba(255,255,255,0.6); line-height: 1.6; transition: color 0.5s; }
+    .lc-step.lc-active .lc-content p { color: rgba(255,255,255,0.85); }
+
+    @media(max-width: 768px) {
+      .lifecycle-track { flex-direction: column; gap: 40px; padding: 20px 0; }
+      .lc-line { width: 2px; height: 100%; left: 50%; top: 0; transform: translateX(-50%); overflow: hidden; }
+      .lc-progress { width: 100%; height: 30%; background: linear-gradient(180deg, transparent, var(--g1), var(--g1), transparent); animation: stepScanVert 18s ease-in-out infinite; }
+      @keyframes stepScanVert {
+        0%   { transform: translateY(-100%); opacity: 0; }
+        2%   { opacity: 1; }
+        5%   { transform: translateY(0%); }
+        30%  { transform: translateY(0%); }
+        36%  { transform: translateY(120%); }
+        37%  { transform: translateY(120%); }
+        63%  { transform: translateY(120%); }
+        69%  { transform: translateY(240%); }
+        70%  { transform: translateY(240%); }
+        94%  { transform: translateY(240%); }
+        98%  { transform: translateY(360%); opacity: 1; }
+        100% { transform: translateY(360%); opacity: 0; }
+      }
+      .lc-step { width: 100%; }
+      .lc-node { margin-bottom: 20px; }
+      .lc-content { padding: 30px; }
+    }
+
+    /* SECTION 4: M&A SPLIT SCREEN */
+    #clm-ma { background: linear-gradient(180deg, var(--b1) 0%, #0a0f1c 100%); }
+    .ma-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+    .ma-graphic { position: relative; width: 100%; height: 400px; background: rgba(255,255,255,0.02); border-radius: 20px; border: 1px solid rgba(255,255,255,0.05); overflow: hidden; display: flex; }
+    .ma-side { flex: 1; position: relative; padding: 20px; display: flex; flex-direction: column; gap: 10px; justify-content: center; }
+    .ma-left { border-right: 2px dashed rgba(126, 217, 87, 0.3); }
+    .scanner-line { position: absolute; top: 0; left: 50%; width: 2px; height: 100%; background: var(--g1); box-shadow: 0 0 20px var(--g1); animation: scan 3s infinite linear; }
+    @keyframes scan { 0% { left: 10%; opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { left: 90%; opacity: 0; } }
+    .messy-doc { height: 30px; background: rgba(255,255,255,0.1); border-radius: 4px; width: 80%; margin: 5px 0; transform: rotate(-2deg); }
+    .messy-doc:nth-child(even) { width: 60%; transform: rotate(3deg); }
+    .clean-data { height: 30px; background: rgba(126, 217, 87, 0.15); border-left: 4px solid var(--g1); border-radius: 4px; width: 100%; margin: 5px 0; display: flex; align-items: center; padding: 0 10px; font-family: var(--mono); font-size: 10px; color: var(--g1); }
+
+    /* SECTION 5: COMPLIANCE VAULT */
+    #clm-compliance { background: var(--b2); }
+    .vault-container { background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(126, 217, 87, 0.2); border-radius: 24px; padding: 60px; position: relative; box-shadow: inset 0 0 80px rgba(0,0,0,0.5); }
+    .vault-container::before { content:''; position: absolute; top:0; left:50%; transform: translateX(-50%); width: 60%; height: 1px; background: linear-gradient(90deg, transparent, var(--g1), transparent); }
+    .vault-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-bottom: 40px; }
+    .rule-item { margin-bottom: 24px; }
+    .rule-item h4 { font-size: 1.1rem; color: #fff; margin-bottom: 8px; display: flex; align-items: center; gap: 10px; }
+    .rule-item h4 i { color: var(--g1); }
+    .rule-item p { font-size: 0.95rem; color: rgba(255,255,255,0.6); line-height: 1.6; }
+    .badges-row { display: flex; gap: 30px; align-items: center; justify-content: flex-start; flex-wrap: wrap; padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.1); }
+    .sec-badge { font-family: var(--mono); font-size: 0.85rem; padding: 10px 20px; border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; color: rgba(255,255,255,0.8); background: rgba(255,255,255,0.05); font-weight: 700; letter-spacing: 1px; }
+
+    /* SECTION 6: INDUSTRIES */
+    .ind-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+    .ind-card { background: transparent; border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 30px; transition: all 0.3s; }
+    .ind-card:hover { border-color: var(--g1); background: rgba(126, 217, 87, 0.03); }
+    .ind-card h4 { font-size: 1.25rem; color: #fff; margin-bottom: 12px; }
+    .ind-card p { font-size: 0.95rem; color: rgba(255,255,255,0.6); line-height: 1.6; }
+
+    /* SECTION 7: CLIENTS */
+    #clm-clients { background: var(--b2); }
+    .client-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+    .client-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; padding: 40px; }
+    .client-logo { font-size: 1.5rem; font-weight: 900; color: #fff; margin-bottom: 20px; font-family: var(--mono); }
+    .client-logo.switch { color: #7B2FF7; }
+    .client-logo.aruba { color: #00BFFF; }
+    .chal-sol { margin-bottom: 15px; }
+    .chal-sol span { display: block; font-size: 0.75rem; text-transform: uppercase; color: var(--g1); font-weight: 700; margin-bottom: 5px; font-family: var(--mono); }
+    .chal-sol p { font-size: 0.95rem; color: rgba(255,255,255,0.7); line-height: 1.6; }
+
+    /* SECTION 8: INTEGRATIONS */
+    .integration-center { text-align: center; max-width: 900px; margin: 0 auto; }
+    .constellation { position: relative; width: 100%; height: 420px; margin-top: 50px; display: flex; align-items: center; justify-content: center; }
+    .lexi-core { width: 120px; height: 120px; background: linear-gradient(135deg, var(--g1), #4CAF50); border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; font-weight: 900; color: var(--b1); font-size: 1.3rem; box-shadow: 0 0 50px rgba(126, 217, 87, 0.5), 0 0 100px rgba(126, 217, 87, 0.15); z-index: 5; position: relative; }
+    .lexi-core::before { content: ''; position: absolute; inset: -8px; border: 2px dashed rgba(126, 217, 87, 0.3); border-radius: 50%; animation: spinSlow 30s linear infinite; }
+    .lexi-core::after { content: ''; position: absolute; inset: -20px; border: 1px dotted rgba(126, 217, 87, 0.15); border-radius: 50%; animation: spinSlow 50s linear infinite reverse; }
+    @keyframes spinSlow { to { transform: rotate(360deg); } }
+    .lexi-core small { font-size: 0.55rem; letter-spacing: 2px; opacity: 0.8; margin-top: 2px; font-weight: 700; }
+    .sat-node { position: absolute; padding: 14px 22px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.12); border-radius: 14px; font-weight: 700; font-size: 0.8rem; backdrop-filter: blur(8px); display: flex; align-items: center; gap: 10px; transition: all 0.3s; color: rgba(255,255,255,0.85); }
+    .sat-node:hover { border-color: var(--g1); background: rgba(126, 217, 87, 0.06); transform: scale(1.05); box-shadow: 0 0 20px rgba(126, 217, 87, 0.15); }
+    .sat-node img { width: 24px; height: 24px; border-radius: 4px; object-fit: contain; }
+    .sat-1 { top: 5%; left: 12%; } .sat-2 { top: 5%; right: 12%; }
+    .sat-3 { bottom: 15%; left: 15%; } .sat-4 { bottom: 15%; right: 15%; }
+    .sat-5 { top: 50%; left: 2%; transform: translateY(-50%); } .sat-6 { top: 50%; right: 2%; transform: translateY(-50%); }
+    .constellation-line { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+    .constellation-line line { stroke: rgba(126, 217, 87, 0.12); stroke-width: 1; stroke-dasharray: 6 4; }
+
+    /* SECTION 9: FAQS */
+    #clm-faq { background: var(--b2); }
+    .faq-wrapper { max-width: 800px; margin: 0 auto; }
+    .faq-item { border-bottom: 1px solid rgba(255,255,255,0.1); }
+    .faq-q { width: 100%; text-align: left; padding: 24px 0; background: none; border: none; color: #fff; font-size: 1.1rem; font-weight: 700; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-family: var(--font); }
+    .faq-q i { color: var(--g1); transition: transform 0.3s; }
+    .faq-q.active i { transform: rotate(180deg); }
+    .faq-a { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; }
+    .faq-a-content { padding-bottom: 24px; color: rgba(255,255,255,0.65); line-height: 1.7; font-size: 0.95rem; }
+
+    /* SECTION 10: CONTACT FORM */
+    #clm-contact { position: relative; overflow: hidden; }
+    #clm-contact::before { content: ''; position: absolute; width: 600px; height: 600px; border-radius: 50%; background: radial-gradient(circle, rgba(126, 217, 87, 0.06) 0%, transparent 65%); bottom: -200px; left: -100px; pointer-events: none; }
+    .contact-grid { display: grid; grid-template-columns: 1fr 1.35fr; gap: 80px; align-items: start; position: relative; z-index: 1; }
+    .contact-left .eyebrow { color: var(--g1); }
+    .contact-left .h2 { color: #fff; }
+    .contact-left-desc { color: rgba(255,255,255,0.5); font-size: 0.95rem; line-height: 1.75; margin-top: 16px; }
+    .contact-form-wrap { background: rgba(255,255,255,0.03); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.09); border-radius: 22px; padding: 48px; box-shadow: 0 32px 80px rgba(0,0,0,0.3); }
+    .form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    .fg { display: flex; flex-direction: column; margin-bottom: 30px; }
+    .fg label { font-size: 0.72rem; font-weight: 700; color: rgba(255,255,255,0.38); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.8px; }
+    .fg input, .fg select, .fg textarea { width: 100%; box-sizing: border-box; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 18px 22px; color: #fff; font-size: 1rem; font-family: var(--font); transition: all 0.3s; outline: none; }
+    .fg input::placeholder, .fg textarea::placeholder { color: rgba(255,255,255,0.28); }
+    .fg input:focus, .fg select:focus, .fg textarea:focus { border-color: var(--g1); background: rgba(126, 217, 87, 0.05); box-shadow: 0 0 0 3px rgba(126, 217, 87, 0.12); }
+    .fg select option { background: var(--b2); color: #fff; }
+    .submit-main { width: 100%; padding: 15px; background: var(--g1); color: var(--b1); border: none; border-radius: 10px; font-weight: 800; font-size: 1rem; cursor: pointer; font-family: var(--font); transition: all 0.3s; margin-top: 6px; }
+    .submit-main:hover { background: var(--g2); transform: translateY(-2px); box-shadow: 0 0 28px rgba(126, 217, 87, 0.35); }
+    @media(max-width: 768px) { .contact-grid { grid-template-columns: 1fr; gap: 40px; } .form-row-2 { grid-template-columns: 1fr; } .contact-form-wrap { padding: 30px; } }
+
+    /* FOOTER (Imported Styles) */
+    #footer { background: var(--b1); border-top: 1px solid rgba(255, 255, 255, .06); padding: 80px 0 90px; }
+    .footer-top { display: grid; grid-template-columns: 1.4fr repeat(3, 1fr); gap: 56px; }
+    .footer-logo img { height: 48px; margin-bottom: 20px; filter: brightness(1.2) drop-shadow(0 0 12px rgba(126, 217, 87, 0.3)); }
+    .footer-tagline { font-size: .85rem; color: rgba(255, 255, 255, .45); line-height: 1.8; max-width: 260px; margin-top: 10px; }
+    .fcol h6 { font-size: .68rem; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: var(--g1); margin-bottom: 20px; font-family: var(--mono); }
+    .faddr { font-size: .84rem; color: rgba(255, 255, 255, .45); line-height: 2; }
+    .faddr a { color: rgba(255, 255, 255, .38); text-decoration: none; }
+    .fdivider { border: none; border-top: 1px solid rgba(255, 255, 255, .06); margin: 64px 0 0; }
+    .footer-bottom { padding: 36px 0 110px; display: flex; flex-direction: column; align-items: center; gap: 32px; }
+    .footer-badges { display: flex; gap: 18px; align-items: center; justify-content: center; padding: 24px 0; border-bottom: 1px solid rgba(255, 255, 255, .04); width: 100%; }
+    .footer-badges img { height: 24px; filter: brightness(0) invert(1); opacity: .4; }
+    .footer-bottom-row { display: flex; justify-content: space-between; align-items: center; width: 100%; flex-wrap: wrap; gap: 20px; }
+    .footer-socials { display: flex; gap: 10px; }
+    .fsoc { width: 40px; height: 40px; border-radius: 10px; background: rgba(255, 255, 255, .06); border: 1px solid rgba(255, 255, 255, .1); display: flex; align-items: center; justify-content: center; text-decoration: none; }
+    .fsoc img { height: 14px; filter: brightness(0) invert(1); }
+    .fcopy { font-size: .8rem; color: rgba(255, 255, 255, .25); display: flex; gap: 16px; }
+    .fcopy a { color: rgba(255, 255, 255, .2); text-decoration: none; }
+
+    /* STICKY BAR */
+    .sticky-bar { position: fixed; bottom: 0; left: 0; right: 0; z-index: 8888; background: rgba(15, 23, 42, .96); backdrop-filter: blur(20px); border-top: 1px solid rgba(126, 217, 87, .15); padding: 13px 44px; display: flex; align-items: center; justify-content: space-between; }
+    .sticky-text { font-size: .9rem; font-weight: 600; color: rgba(255, 255, 255, .6); }
+    .sticky-text strong { color: #fff; }
+    .sticky-btns { display: flex; gap: 10px; }
+    .sbtn { padding: 9px 22px; border-radius: 8px; font-weight: 700; font-size: .83rem; text-decoration: none; font-family: var(--font); }
+    .sbtn-outline { border: 1.5px solid rgba(255, 255, 255, .18); color: rgba(255, 255, 255, .75); }
+    .sbtn-green { background: var(--g1); color: var(--b1); }
+
+    @media(max-width: 1024px) {
+      /* Aggressive Reset for Mobile Nav Underlines/Borders */
+      .nav-list *,
+      .nav-list *::before,
+      .nav-list *::after {
+        text-decoration: none !important;
+        border-bottom: none !important;
+        box-shadow: none !important;
+      }
+
+
+      .nav-list {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        position: fixed;
+        top: 80px;
+        left: 0;
+        right: 0;
+        height: calc(100vh - 80px);
+        background: #fff;
+        padding: 10px 20px;
+        box-shadow: none;
+        border-top: 1px solid rgba(0, 0, 0, 0.05);
+        opacity: 0;
+        visibility: hidden;
+        transform: none;
+        transition: opacity 0.3s ease, visibility 0.3s ease;
+        overflow-y: auto !important;
+      }
+
+      .nav-list.active {
+        opacity: 1;
+        visibility: visible;
+        overflow-y: auto;
+      }
+
+      .nav-item {
+        width: 100%;
+      }
+
+      .nav-link {
+        width: 100%;
+        padding: 16px 0;
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: var(--b1);
+        justify-content: space-between;
+      }
+
+      .nav-link::after,
+      .nav-link::before {
+        display: none !important;
+      }
+
+      /* Clean Mobile Sub-Menu Dropdowns */
+      .dd-panel {
+        display: none;
+        position: relative !important;
+        top: auto !important;
+        left: auto !important;
+        transform: none !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        margin-top: 8px;
+        opacity: 1 !important;
+        visibility: visible !important;
+        border: none !important;
+        padding: 5px 0;
+        background: transparent !important;
+        box-shadow: none !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+        text-decoration: none !important;
+        flex-direction: column !important;
+      }
+
+      .dd-panel .mega-header-bar,
+      .dd-panel .mega-head {
+        display: none !important;
+      }
+
+      .mega-panel {
+        display: none !important;
+      }
+
+      .mobile-mega-panel {
+        display: none;
+        flex-direction: column;
+        background: transparent;
+        border-radius: 8px;
+        margin-top: 5px;
+        width: 100%;
+        border: none !important;
+        box-shadow: none !important;
+      }
+
+      .mob-cap-toggle {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 14px 20px;
+        color: var(--b1);
+        font-weight: 700;
+        font-size: 0.95rem;
+        transition: 0.2s;
+        text-decoration: none !important;
+        border-bottom: none !important;
+      }
+
+      .mob-cap-toggle.active {
+        color: var(--g1);
+        background: rgba(126, 217, 87, 0.05);
+        text-decoration: none !important;
+        border-bottom: none !important;
+      }
+
+      .mob-cap-toggle.active i {
+        transform: rotate(180deg);
+      }
+
+      .mob-cap-services {
+        padding-left: 20px;
+        background: rgba(126, 217, 87, 0.03);
+      }
+
+      .mob-cap-services a {
+        display: block;
+        padding: 12px 20px 12px 0;
+        color: var(--b2);
+        font-size: 0.85rem;
+        text-decoration: none !important;
+        border-bottom: none !important;
+      }
+
+      .mob-cap-services a:hover {
+        color: var(--g1);
+        padding-left: 5px;
+      }
+
+      .nav-item.active .dd-panel,
+      .nav-item.active .mobile-mega-panel {
+        display: block !important;
+      }
+
+      /* Hide complex desktop UI elements in mobile */
+      .mega-header-bar,
+      .mega-head,
+      .dditemhead2,
+      .about-text,
+      .learn-more-btn-section,
+      #menurecentartticles,
+      .blog-details,
+      .dditemhead1 {
+        display: none !important;
+      }
+
+      .mega-4col {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+      }
+
+      .mega-col {
+        border: none !important;
+        padding: 0 !important;
+      }
+
+      /* Simple Indented Links for Mobile */
+      .term-list,
+      .term-sublist,
+      .dd-panel {
+        padding-left: 10px !important;
+      }
+
+      .dd-panel a,
+      .term-list li a,
+      .term-list li,
+      .term-sublist li a,
+      .term-sublist li {
+        display: block !important;
+        width: 100% !important;
+        padding: 12px 0;
+        font-size: 0.95rem;
+        font-weight: 500;
+        color: #555;
+        text-decoration: none !important;
+        border: none !important;
+        border-bottom: none !important;
+        box-shadow: none !important;
+      }
+
+      .dd-panel a:last-child,
+      .term-list li:last-child a,
+      .term-sublist li:last-child a {
+        border-bottom: none;
+      }
+
+      .dd-dot {
+        display: none;
+        /* Hide custom dot, optionally use something simpler */
+      }
+
+
+
+    }
+
+    /* RESPONSIVE */
+    @media(max-width: 1024px) {
+      .hero-grid, .ma-grid, .vault-grid, .client-grid, .ind-grid { grid-template-columns: 1fr; }
+      .bento-wide, .bento-narrow { grid-column: span 3; }
+      .metrics-grid { grid-template-columns: 1fr; }
+      .sat-node { position: relative; inset: auto !important; transform: none !important; margin: 5px; display: inline-block; }
+      .constellation { height: auto; flex-wrap: wrap; gap: 15px; margin-top: 30px; }
+    }
+    @media(max-width: 768px) {
+      .bento-wide, .bento-narrow { grid-column: span 6; }
+      .footer-top { grid-template-columns: 1fr; text-align: center; }
+      .sticky-bar { flex-direction: column; gap: 12px; padding: 16px 20px; border-radius: 16px 16px 0 0; text-align: center; }
+      #footer { padding-bottom: 140px; }
+      .hero-h1 { font-size: 2.2rem; }
+    }
+  </style>
+  <!-- PostHog -->
+  <script>
+    !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.async=!0,p.src=s.api_host.replace(".i.posthog.com","-assets.i.posthog.com")+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="init capture register register_once register_for_session unregister opt_out_capturing has_opted_out_capturing opt_in_capturing reset isFeatureEnabled getFeatureFlag getFeatureFlagPayload reloadFeatureFlags group identify setPersonProperties setPersonPropertiesForFlags resetPersonPropertiesForFlags setGroupPropertiesForFlags resetGroupPropertiesForFlags resetGroups onFeatureFlags addFeatureFlagsHandler onSessionId getSurveys getActiveMatchingSurveys renderSurvey canRenderSurvey getNextSurveyStep".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
+    posthog.init('phc_JCOCSgNZIqCjZFDXZPBHs9oek2V0NKqUqwZca7xgmhQ', {
+      api_host: 'https://us.i.posthog.com',
+      defaults: '2026-01-30'
+    })
+  </script>
+</head>
+
+<body>
+
+  <nav id="navbar">
+    <a href="https://www.ileafsolutions.com/" class="nav-logo">
+      <img src="https://www.ileafsolutions.com/assets/images/logo.svg" alt="iLeaf Solutions">
+    </a>
+    <ul class="nav-list">
+      <li class="nav-item" style="position:relative;">
+        <span class="nav-link">Solutions <i class="fa fa-angle-down" style="font-size:.75rem;opacity:.6;"></i></span>
+        <div class="dd-panel">
+          <div class="mega-header-bar" style="margin-bottom: 14px; padding-bottom: 10px;">
+            <div class="mega-mac-dot red"></div>
+            <div class="mega-mac-dot yellow"></div>
+            <div class="mega-mac-dot green"></div>
+          </div>
+          <span class="mega-head"
+            style="font-family: var(--mono); font-size: 0.75rem; color: var(--g1); font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 12px; display: inline-block; padding: 0 10px;">Industry_Solutions_</span>
+          <a href="https://www.ileafsolutions.com/solutions/real-estate-proptech"><span class="dd-dot"></span>Real
+            Estate &amp; PropTech</a>
+          <a href="https://www.ileafsolutions.com/solutions/fitness-healthcare"><span class="dd-dot"></span>Fitness
+            &amp; Healthcare</a>
+          <a href="https://www.ileafsolutions.com/solutions/education"><span class="dd-dot"></span>Education</a>
+          <a href="CML.html"><span class="dd-dot"></span>Contract LifeCycle Management Solution (CLM)</a>
+        </div>
+      </li>
+      <li class="nav-item dropdown mega-wrap">
+        <a class="blockhide dropbtn nav-link" id="whatwedo">What We Do
+          <i class="fa fa-caret-down" id="whatwedoicon" style="font-size:.75rem;opacity:.6;"></i>
+        </a>
+
+        <div class="mega-panel" id="megamenu" style="width: 1050px; max-width: 95vw;">
+          <!-- Col 2: Parent categories moved to Col 1 structure in CSS as Col 2 -->
+          <div class="mega-header-bar">
+            <div class="mega-mac-dot red"></div>
+            <div class="mega-mac-dot yellow"></div>
+            <div class="mega-mac-dot green"></div>
+            <div
+              style="margin-left: auto; font-family: var(--mono); font-size: 10px; color: var(--g1); opacity: 0.6; letter-spacing: 1.5px;">
+              capabilities.sh</div>
+          </div>
+
+          <div class="mega-4col">
+            <!-- Col 1: Intro Details -->
+            <div id="menudetails" class="mega-col"
+              style="border-right: 1px dashed rgba(126, 217, 87, 0.1); padding-right: 20px; transition: opacity 0.2s;">
+              <span class="dditemhead2">Digital<br>Transformation</span>
+              <div class="about-text">Thrive in the Modern Era. Unlock opportunity, efficiency, & stay ahead. We
+                redefine business value through technology acceleration.</div>
+              <div class="learn-more-btn-section">
+                <a class="learn-more-btn" href="https://www.ileafsolutions.com/contact-us">Get Started</a>
+              </div>
+            </div>
+
+            <!-- Col 2: Capabilities -->
+            <div class="mega-col" style="border-right: 1px dashed rgba(126, 217, 87, 0.1); padding-right: 20px;">
+              <span class="dditemhead1">Capabilities</span>
+              <ul class="term-list" id="menulist" style="margin:0; padding:0;">
+                <li><a href="javascript:void(0)" id="1" class="getsubmenus active">Digital Transformation <span
+                      class="arrow">&gt;</span></a></li>
+                <li><a href="javascript:void(0)" id="2" class="getsubmenus">AI & Data Analytics <span
+                      class="arrow">&gt;</span></a></li>
+                <li><a href="javascript:void(0)" id="3" class="getsubmenus">Cloud Computing <span
+                      class="arrow">&gt;</span></a></li>
+                <li><a href="javascript:void(0)" id="4" class="getsubmenus">Smart Consultation <span
+                      class="arrow">&gt;</span></a></li>
+                <li><a href="javascript:void(0)" id="16" class="getsubmenus">Pricing Models <span
+                      class="arrow">&gt;</span></a></li>
+              </ul>
+            </div>
+
+            <!-- Col 3: Services -->
+            <div class="mega-col" style="border-right: 1px dashed rgba(126, 217, 87, 0.1); padding-right: 20px;">
+              <span class="dditemhead1">Services</span>
+              <ul class="term-sublist" id="listsubmenus" style="margin:0; padding:0; transition: opacity 0.2s;">
+                <li><a href="https://www.ileafsolutions.com/services/custom-software-development">Custom App Development
+                    <span class="arrow">&gt;</span></a></li>
+                <li><a href="https://www.ileafsolutions.com/services/sap-implementation">ERP Development <span
+                      class="arrow">&gt;</span></a></li>
+                <li><a href="https://www.ileafsolutions.com/services/application-modernization">IoT Solutions <span
+                      class="arrow">&gt;</span></a></li>
+                <li><a href="https://www.ileafsolutions.com/services/web-application-development">Workflow Management
+                    <span class="arrow">&gt;</span></a></li>
+                <li><a href="https://www.ileafsolutions.com/services/digital-marketing">Directus Solutions <span
+                      class="arrow">&gt;</span></a></li>
+              </ul>
+            </div>
+
+            <!-- Col 4: Articles -->
+            <div class="mega-col" id="menurecentartticles"
+              style="border-left: 1px dashed rgba(126, 217, 87, 0.1); padding-left: 15px;">
+              <span class="dditemhead1" style="margin-bottom: 8px;">Articles</span>
+              <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 0px;">
+                <a href="https://www.ileafsolutions.com/blog/ai-engineering-transforming-the-future-of-software-development"
+                  class="blog-details">
+                  <div class="blog-img"><img
+                      src="https://www.ileafsolutions.com/uploads/blogimages/2025/AI Engineering.jpg" alt="blog"></div>
+                  <div class="blog-text">
+                    <span class="megablgcat">AI</span>
+                    <h5><span>AI Is Not the Solution. Al...</span></h5>
+                  </div>
+                </a>
+                <a href="https://www.ileafsolutions.com/blog/how-digital-transformation-is-addressing-inefficiency-in-customer-services"
+                  class="blog-details">
+                  <div class="blog-img"><img
+                      src="https://www.ileafsolutions.com/uploads/blogimages/2025/Inefficiency in customer services.png"
+                      alt="blog"></div>
+                  <div class="blog-text">
+                    <span class="megablgcat">AI</span>
+                    <h5><span>Hidden Inefficiencies in...</span></h5>
+                  </div>
+                </a>
+                <a href="https://www.ileafsolutions.com/blog/digital-transformation-in-contract-management-system"
+                  class="blog-details">
+                  <div class="blog-img"><img
+                      src="https://www.ileafsolutions.com/uploads/blogimages/2025/Contract%20%20Management%20System%201.png"
+                      alt="blog"></div>
+                  <div class="blog-text">
+                    <span class="megablgcat">CONTRACT</span>
+                    <h5><span>A Better Way to Manage...</span></h5>
+                  </div>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- NEW: Dedicated Mobile Accordion Panel -->
+        <div class="mobile-mega-panel">
+
+          <div class="mob-cap-item">
+            <a href="javascript:void(0)" class="mob-cap-toggle">Digital Transformation <i
+                class="fa fa-angle-down"></i></a>
+            <div class="mob-cap-services" style="display: none;">
+              <a href="https://www.ileafsolutions.com/services/custom-software-development">Custom App Development</a>
+              <a href="https://www.ileafsolutions.com/services/sap-implementation">ERP Development</a>
+              <a href="https://www.ileafsolutions.com/services/application-modernization">IoT Solutions</a>
+              <a href="https://www.ileafsolutions.com/services/web-application-development">Workflow Management</a>
+              <a href="https://www.ileafsolutions.com/services/digital-marketing">Directus Solutions</a>
+            </div>
+          </div>
+
+          <div class="mob-cap-item">
+            <a href="javascript:void(0)" class="mob-cap-toggle">AI &amp; Data Analytics <i
+                class="fa fa-angle-down"></i></a>
+            <div class="mob-cap-services" style="display: none;">
+              <a href="https://www.ileafsolutions.com/services">Machine Learning Ops</a>
+              <a href="https://www.ileafsolutions.com/services">Predictive Analytics</a>
+              <a href="https://www.ileafsolutions.com/services">Natural Language Processing</a>
+              <a href="https://www.ileafsolutions.com/services">Generative AI Integration</a>
+            </div>
+          </div>
+
+          <div class="mob-cap-item">
+            <a href="javascript:void(0)" class="mob-cap-toggle">Cloud Computing <i class="fa fa-angle-down"></i></a>
+            <div class="mob-cap-services" style="display: none;">
+              <a href="https://www.ileafsolutions.com/services">Cloud Migration Strategy</a>
+              <a href="https://www.ileafsolutions.com/services">Managed Cloud Services</a>
+              <a href="https://www.ileafsolutions.com/services">Serverless Computing</a>
+              <a href="https://www.ileafsolutions.com/services">DevOps Automation</a>
+            </div>
+          </div>
+
+          <div class="mob-cap-item">
+            <a href="javascript:void(0)" class="mob-cap-toggle">Smart Consultation <i class="fa fa-angle-down"></i></a>
+            <div class="mob-cap-services" style="display: none;">
+              <a href="https://www.ileafsolutions.com/services">Product Strategy &amp; Research</a>
+              <a href="https://www.ileafsolutions.com/services">Technical Infrastructure Audit</a>
+              <a href="https://www.ileafsolutions.com/services">Compliance &amp; Security</a>
+              <a href="https://www.ileafsolutions.com/services">Process Digitalization</a>
+            </div>
+          </div>
+
+          <div class="mob-cap-item">
+            <a href="javascript:void(0)" class="mob-cap-toggle">Pricing Models <i class="fa fa-angle-down"></i></a>
+            <div class="mob-cap-services" style="display: none;">
+              <a href="https://www.ileafsolutions.com/services">Fixed Price Model</a>
+              <a href="https://www.ileafsolutions.com/services">Time &amp; Material Basis</a>
+              <a href="https://www.ileafsolutions.com/services">Dedicated Delivery Team</a>
+              <a href="https://www.ileafsolutions.com/services">Hybrid Partnership Model</a>
+            </div>
+          </div>
+
+        </div>
+
+
+      </li>
+      <li class="nav-item"><a href="https://www.ileafsolutions.com/portfolio" class="nav-link">Portfolio</a></li>
+      <li class="nav-item" style="position:relative;">
+        <span class="nav-link">Resources <i class="fa fa-angle-down" style="font-size:.75rem;opacity:.6;"></i></span>
+        <div class="dd-panel">
+          <div class="mega-header-bar" style="margin-bottom: 14px; padding-bottom: 10px;">
+            <div class="mega-mac-dot red"></div>
+            <div class="mega-mac-dot yellow"></div>
+            <div class="mega-mac-dot green"></div>
+          </div>
+          <span class="mega-head"
+            style="font-family: var(--mono); font-size: 0.75rem; color: var(--g1); font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 12px; display: inline-block; padding: 0 10px;">Knowledge_Base_</span>
+          <a href="https://www.ileafsolutions.com/case-study"><span class="dd-dot"></span>Case Studies</a>
+          <a href="https://www.ileafsolutions.com/blogs"><span class="dd-dot"></span>Blogs</a>
+        </div>
+      </li>
+      <li class="nav-item" style="position:relative;">
+        <span class="nav-link">Company <i class="fa fa-angle-down" style="font-size:.75rem;opacity:.6;"></i></span>
+        <div class="dd-panel">
+          <div class="mega-header-bar" style="margin-bottom: 14px; padding-bottom: 10px;">
+            <div class="mega-mac-dot red"></div>
+            <div class="mega-mac-dot yellow"></div>
+            <div class="mega-mac-dot green"></div>
+          </div>
+          <span class="mega-head"
+            style="font-family: var(--mono); font-size: 0.75rem; color: var(--g1); font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 12px; display: inline-block; padding: 0 10px;">Company_</span>
+          <a href="https://www.ileafsolutions.com/careers"><span class="dd-dot"></span>Careers</a>
+          <a href="https://www.ileafsolutions.com/about-us"><span class="dd-dot"></span>About Us</a>
+        </div>
+      </li>
+      <li class="nav-item"><a href="https://www.ileafsolutions.com/contact-us" class="nav-link nav-cta">Contact Us</a>
+      </li>
+    </ul>
+    <button id="mobile-menu-btn" class="mobile-menu-btn" aria-label="Toggle menu">
+      <i class="fa fa-bars"></i>
+    </button>
+  </nav>
+
+  <section id="clm-hero">
+    <div class="container">
+      <div class="hero-grid">
+        <div class="hero-text reveal-left">
+          <span class="eyebrow">Enterprise Legal Technology</span>
+          <h1 class="hero-h1">Intelligent Ecosystems for <span class="hl">Autonomous Contract Lifecycle Management</span></h1>
+          <p class="lead" style="margin-bottom: 30px;">Transition your enterprise legal operations from reactive document processing to proactive, autonomous risk management. Powered by LEXI intelligence, our Agentic CLM reduces contract turnaround times from months to weeks, ensuring absolute, mathematically verifiable compliance for US law firms and corporate legal departments.</p>
+          <a href="#clm-contact" class="primary-btn">Meet the Team <i class="fa fa-arrow-right" style="margin-left: 10px;"></i></a>
+        </div>
+        <div class="hero-visual reveal-right">
+          <div class="contract-carousel">
+            <!-- Page 1: Create Contract -->
+            <div class="contract-page active">
+              <div class="cp-header">
+                <div class="cp-icon"><i class="fa fa-file-text-o"></i></div>
+                <div class="cp-header-text">
+                  <h4>Create Contract</h4>
+                  <small>LEXI // Clause Engine</small>
+                </div>
+              </div>
+              <div class="cp-body">
+                <div class="cp-line"><i class="fa fa-check"></i><span>Service Agreement — SaaS Master Terms v4.2</span></div>
+                <div class="cp-line highlight"><i class="fa fa-bolt"></i><span>AI auto-selected 14 clauses from playbook</span></div>
+                <div class="cp-line"><i class="fa fa-check"></i><span>Indemnification cap set to $2.5M</span></div>
+                <div class="cp-line"><i class="fa fa-check"></i><span>Limitation of liability — mutual carve-outs applied</span></div>
+                <div class="cp-line"><i class="fa fa-check"></i><span>Governing Law: State of Delaware</span></div>
+              </div>
+              <div class="cp-footer">
+                <span class="cp-badge">DRAFTING</span>
+                <div class="cp-step-dots"><div class="cp-dot active"></div><div class="cp-dot"></div><div class="cp-dot"></div><div class="cp-dot"></div><div class="cp-dot"></div><div class="cp-dot"></div></div>
+              </div>
+            </div>
+
+            <!-- Page 2: Legal Clauses & Regulation -->
+            <div class="contract-page">
+              <div class="cp-header">
+                <div class="cp-icon"><i class="fa fa-legal"></i></div>
+                <div class="cp-header-text">
+                  <h4>Regulation Check</h4>
+                  <small>LEXI // Compliance Scanner</small>
+                </div>
+              </div>
+              <div class="cp-body">
+                <div class="cp-line highlight"><i class="fa fa-exclamation-triangle"></i><span>Clause §7.3 conflicts with CCPA §1798.100</span></div>
+                <div class="cp-line"><i class="fa fa-check"></i><span>GDPR Article 28 — Data Processing addendum valid</span></div>
+                <div class="cp-line"><i class="fa fa-check"></i><span>Force majeure clause updated to 2025 standard</span></div>
+                <div class="cp-line highlight"><i class="fa fa-bolt"></i><span>Auto-suggested compliant replacement clause</span></div>
+                <div class="cp-line"><i class="fa fa-check"></i><span>Anti-assignment restriction verified</span></div>
+              </div>
+              <div class="cp-footer">
+                <span class="cp-badge">COMPLIANCE</span>
+                <div class="cp-step-dots"><div class="cp-dot"></div><div class="cp-dot active"></div><div class="cp-dot"></div><div class="cp-dot"></div><div class="cp-dot"></div><div class="cp-dot"></div></div>
+              </div>
+            </div>
+
+            <!-- Page 3: Secure Redaction -->
+            <div class="contract-page">
+              <div class="cp-header">
+                <div class="cp-icon"><i class="fa fa-eye-slash"></i></div>
+                <div class="cp-header-text">
+                  <h4>Secure Redaction</h4>
+                  <small>LEXI // Privacy Shield</small>
+                </div>
+              </div>
+              <div class="cp-body">
+                <div class="cp-line"><i class="fa fa-lock"></i><span>SSN detected in §12 — auto-redacted ████████</span></div>
+                <div class="cp-line"><i class="fa fa-lock"></i><span>Bank account numbers masked across 3 exhibits</span></div>
+                <div class="cp-line highlight"><i class="fa fa-shield"></i><span>Zero-trust pre-computation applied</span></div>
+                <div class="cp-line"><i class="fa fa-lock"></i><span>Client PII scrubbed before AI analysis layer</span></div>
+                <div class="cp-line"><i class="fa fa-check"></i><span>Data sovereignty: US-hosted processing confirmed</span></div>
+              </div>
+              <div class="cp-footer">
+                <span class="cp-badge">REDACTION</span>
+                <div class="cp-step-dots"><div class="cp-dot"></div><div class="cp-dot"></div><div class="cp-dot active"></div><div class="cp-dot"></div><div class="cp-dot"></div><div class="cp-dot"></div></div>
+              </div>
+            </div>
+
+            <!-- Page 4: HITL Verify -->
+            <div class="contract-page">
+              <div class="cp-header">
+                <div class="cp-icon"><i class="fa fa-user-circle-o"></i></div>
+                <div class="cp-header-text">
+                  <h4>HITL Verification</h4>
+                  <small>LEXI // Human Review</small>
+                </div>
+              </div>
+              <div class="cp-body">
+                <div class="cp-line"><i class="fa fa-user"></i><span>Assigned to: Senior Associate — Sarah Chen</span></div>
+                <div class="cp-line highlight"><i class="fa fa-commenting-o"></i><span>"Clause §7.3 replacement approved with minor edit"</span></div>
+                <div class="cp-line"><i class="fa fa-check"></i><span>Indemnification terms confirmed accurate</span></div>
+                <div class="cp-line"><i class="fa fa-check"></i><span>AI hallucination check: 0 flags detected</span></div>
+                <div class="cp-line"><i class="fa fa-thumbs-up"></i><span>Final review status: APPROVED</span></div>
+              </div>
+              <div class="cp-footer">
+                <span class="cp-badge">VERIFIED</span>
+                <div class="cp-step-dots"><div class="cp-dot"></div><div class="cp-dot"></div><div class="cp-dot"></div><div class="cp-dot active"></div><div class="cp-dot"></div><div class="cp-dot"></div></div>
+              </div>
+            </div>
+
+            <!-- Page 5: Deliver & Execute -->
+            <div class="contract-page">
+              <div class="cp-header">
+                <div class="cp-icon"><i class="fa fa-paper-plane-o"></i></div>
+                <div class="cp-header-text">
+                  <h4>Deliver &amp; Execute</h4>
+                  <small>LEXI // eSign Module</small>
+                </div>
+              </div>
+              <div class="cp-body">
+                <div class="cp-line"><i class="fa fa-send"></i><span>Sent to counterparty: Acme Corp Legal Dept.</span></div>
+                <div class="cp-line"><i class="fa fa-clock-o"></i><span>Redline turnaround: 2.4 hours (avg: 72 hrs)</span></div>
+                <div class="cp-line highlight"><i class="fa fa-pencil-square-o"></i><span>e-Signature: ESIGN Act compliant execution</span></div>
+                <div class="cp-line"><i class="fa fa-check"></i><span>Version 4.2.1 — Final executed copy archived</span></div>
+                <div class="cp-line"><i class="fa fa-check"></i><span>Immutable audit trail generated</span></div>
+              </div>
+              <div class="cp-footer">
+                <span class="cp-badge">EXECUTED</span>
+                <div class="cp-step-dots"><div class="cp-dot"></div><div class="cp-dot"></div><div class="cp-dot"></div><div class="cp-dot"></div><div class="cp-dot active"></div><div class="cp-dot"></div></div>
+              </div>
+            </div>
+
+            <!-- Page 6: Monitor & Alert -->
+            <div class="contract-page">
+              <div class="cp-header">
+                <div class="cp-icon"><i class="fa fa-bell-o"></i></div>
+                <div class="cp-header-text">
+                  <h4>Monitor &amp; Alert</h4>
+                  <small>LEXI // Sentinel Watch</small>
+                </div>
+              </div>
+              <div class="cp-body">
+                <div class="cp-line highlight"><i class="fa fa-exclamation-circle"></i><span>⚡ Renewal deadline in 45 days — auto-alert sent</span></div>
+                <div class="cp-line"><i class="fa fa-calendar"></i><span>Payment milestone: Q2 installment due Jun 15</span></div>
+                <div class="cp-line"><i class="fa fa-line-chart"></i><span>SLA compliance: 99.7% — within threshold</span></div>
+                <div class="cp-line"><i class="fa fa-check"></i><span>Obligation tracking: 12/12 terms fulfilled</span></div>
+                <div class="cp-line"><i class="fa fa-refresh"></i><span>Auto-renewal clause: opt-out window open</span></div>
+              </div>
+              <div class="cp-footer">
+                <span class="cp-badge">MONITORING</span>
+                <div class="cp-step-dots"><div class="cp-dot"></div><div class="cp-dot"></div><div class="cp-dot"></div><div class="cp-dot"></div><div class="cp-dot"></div><div class="cp-dot active"></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="clm-metrics">
+    <div class="container">
+      <div class="metrics-grid">
+        <div class="metric-card reveal">
+          <div class="metric-num"><span class="counter" data-target="75">0</span>%</div>
+          <div class="metric-text">Faster Deal Velocity via AI Contract Generation</div>
+        </div>
+        <div class="metric-card reveal" style="transition-delay: 0.1s;">
+          <div class="metric-num"><span class="counter" data-target="70">0</span>%</div>
+          <div class="metric-text">Lower Administrative Costs via Spend Management</div>
+        </div>
+        <div class="metric-card reveal" style="transition-delay: 0.2s;">
+          <div class="metric-num"><span class="counter" data-target="100">0</span>%</div>
+          <div class="metric-text">Secure & Compliant with HITL Verification</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="clm-capabilities">
+    <div class="container">
+      <span class="eyebrow reveal">Lexi Intelligence</span>
+      <h2 class="h2 reveal">Core AI Capabilities for <br><span>Legal Professionals</span></h2>
+      <p class="lead reveal" style="margin-bottom: 50px;">We don't just store documents; we actively analyze, draft, and protect your legal assets across their entire lifecycle.</p>
+      
+      <div class="bento-grid">
+        <div class="bento-card bento-wide reveal">
+          <div class="bento-icon"><i class="fa fa-pencil-square-o"></i></div>
+          <h3>Agentic Contract Drafting & Optimization</h3>
+          <p>Context-aware generative drafting built securely within an in-app editor. LEXI utilizes your historical playbook data to provide instant term optimization, eliminating manual data entry, version control chaos, and disjointed email requests.</p>
+        </div>
+        
+        <div class="bento-card bento-wide reveal" style="transition-delay: 0.1s;">
+          <div class="bento-icon"><i class="fa fa-exchange"></i></div>
+          <h3>Automated Bulk Assessment & Redlining</h3>
+          <p>Seamlessly reconcile Master Service Agreements (MSAs) and hundreds of amendments using precise "Contract Coordinates." When counterparties submit redlines, LEXI instantly cross-references deviations against your approved legal playbook, suggesting compliant fallback clauses.</p>
+        </div>
+
+        <div class="bento-card bento-narrow reveal">
+          <div class="bento-icon"><i class="fa fa-eye-slash"></i></div>
+          <h3>Pre-Computation Smart Redaction</h3>
+          <p>Security before processing. Sensitive financial data, account numbers, and PII are automatically detected and permanently masked before any foundational AI processing occurs, guaranteeing strict compliance with CPRA, GDPR, and HIPAA.</p>
+        </div>
+
+        <div class="bento-card bento-narrow reveal" style="transition-delay: 0.1s;">
+          <div class="bento-icon"><i class="fa fa-video-camera"></i></div>
+          <h3>In-Platform Secure Legal Collaboration</h3>
+          <p>Maintain an unbroken audit trail. Utilize native WebRTC video conferencing to negotiate directly within the secure document environment, eliminating the security risks of third-party video apps and fragmented chat threads.</p>
+        </div>
+
+        <div class="bento-card bento-narrow reveal" style="transition-delay: 0.2s;">
+          <div class="bento-icon"><i class="fa fa-bell-o"></i></div>
+          <h3>Proactive Risk Insights & Tracking</h3>
+          <p>LEXI extracts key dates, payment milestones, and strict penalty clauses, pushing automated alerts to your legal team before a breach occurs or a critical renewal window closes.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- NEW SECTION: COMPLETE LIFECYCLE -->
+  <section id="clm-lifecycle" style="background: var(--b2); border-top: 1px solid rgba(255,255,255,0.05); border-bottom: 1px solid rgba(255,255,255,0.05);">
+    <div class="container">
+      <div style="text-align: center; margin-bottom: 60px;">
+        <span class="eyebrow reveal">Autonomous Workflow</span>
+        <h2 class="h2 reveal">Complete Lifecycle Coverage.<br><span>Worry-Free Execution.</span></h2>
+        <p class="lead reveal" style="margin: 0 auto;">From initial request to final renewal, every phase of your contract lifecycle is digitized, analyzed, and managed autonomously by the iLeaf CLM platform.</p>
+      </div>
+      
+      <div class="lifecycle-track reveal">
+        <!-- Connecting Line -->
+        <div class="lc-line">
+          <div class="lc-progress"></div>
+        </div>
+
+        <!-- Step 1 -->
+        <div class="lc-step">
+          <div class="lc-node">1</div>
+          <div class="lc-content">
+            <div class="lc-icon"><i class="fa fa-file-text-o"></i></div>
+            <h4>Create &amp; Draft Contracts</h4>
+            <p>Generate precise, compliant agreements using intelligent templates and proactive clause optimization based on your existing playbooks.</p>
+          </div>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="lc-step">
+          <div class="lc-node">2</div>
+          <div class="lc-content">
+            <div class="lc-icon"><i class="fa fa-paper-plane-o"></i></div>
+            <h4>Deliver &amp; Negotiate</h4>
+            <p>Publish directly to counterparties. Our platform handles complex redlining, tracks versions immutably, and executes via native ESIGN compliance.</p>
+          </div>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="lc-step">
+          <div class="lc-node">3</div>
+          <div class="lc-content">
+            <div class="lc-icon"><i class="fa fa-archive"></i></div>
+            <h4>Manage &amp; Monitor</h4>
+            <p>Store securely in a zero-trust vault. LEXI continuously monitors for expirations, renewals, and compliance risks, alerting you before deadlines hit.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section id="clm-ma">
+    <div class="container">
+      <div class="ma-grid">
+        <div class="ma-content reveal-left">
+          <span class="eyebrow">Enterprise Use Case</span>
+          <h2 class="h2">Uncover Hidden Liabilities with <br><span>AI-Driven M&A Auditing</span></h2>
+          <p class="lead" style="margin-bottom: 20px;">Inheriting a massive repository of legacy contracts during Mergers & Acquisitions means inheriting buried financial risks. The iLeaf CLM acts as an autonomous due diligence engine capable of scanning thousands of data room documents in hours.</p>
+          <p class="lead">LEXI systematically categorizes contracts, validates revenue streams, and instantly extracts deal-breaker clauses like un-capped indemnifications and restrictive change-of-control provisions, protecting your firm from post-acquisition disasters.</p>
+        </div>
+        <div class="ma-graphic reveal-right">
+          <div class="scanner-line"></div>
+          <div class="ma-side ma-left">
+            <div class="messy-doc"></div>
+            <div class="messy-doc"></div>
+            <div class="messy-doc"></div>
+            <div class="messy-doc"></div>
+            <div class="messy-doc"></div>
+          </div>
+          <div class="ma-side ma-right">
+            <div class="clean-data">Risk Score: 12% - Change of Control</div>
+            <div class="clean-data">Liability Cap: $1M Validated</div>
+            <div class="clean-data">Renewal: Auto-enforced Q3</div>
+            <div class="clean-data">IP Provenance: Secure</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="clm-compliance">
+    <div class="container">
+      <div class="vault-container reveal">
+        <div style="text-align: center; margin-bottom: 50px;">
+          <span class="eyebrow">Zero-Trust Infrastructure</span>
+          <h2 class="h2">Engineered for Absolute <br><span>Professional Compliance</span></h2>
+          <p class="lead" style="margin: 0 auto;">Implementing AI in legal practice requires uncompromising ethical standards. The iLeaf CLM architecture is explicitly designed to satisfy the rigorous compliance mandates of US law firms, including ABA Formal Opinion 512.</p>
+        </div>
+        
+        <div class="vault-grid">
+          <div class="rule-item">
+            <h4><i class="fa fa-check-circle"></i> Explainable AI & HITL Verification</h4>
+            <p>No black boxes. Every LEXI output cites specific contractual clauses, followed by mandatory Human-in-the-Loop verification to eliminate the risk of AI hallucinations.</p>
+          </div>
+          <div class="rule-item">
+            <h4><i class="fa fa-server"></i> Zero-Trust Architecture (Data Sovereignty)</h4>
+            <p>All tenant data is absolutely isolated, AES-256 encrypted, hosted on secure US-based servers, and strictly prohibited from training external foundational models.</p>
+          </div>
+          <div class="rule-item">
+            <h4><i class="fa fa-users"></i> Centralized AI Governance</h4>
+            <p>Granular, role-based access controls and immutable audit trails ensure supervisory attorneys maintain complete oversight of all AI utilization across the firm.</p>
+          </div>
+          <div class="rule-item">
+            <h4><i class="fa fa-file-pdf-o"></i> ESIGN Act Compliant Execution</h4>
+            <p>Native e-signature execution that strictly complies with the US Electronic Signatures in Global and National Commerce Act.</p>
+          </div>
+        </div>
+
+        <div class="badges-row">
+          <div class="sec-badge">SOC 2 TYPE II CERTIFIED</div>
+          <div class="sec-badge">HIPAA COMPLIANT</div>
+          <div class="sec-badge">GDPR ALIGNED</div>
+          <div class="sec-badge">NIST SP 800-53</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="clm-industries">
+    <div class="container">
+      <span class="eyebrow reveal">Vertical Agility</span>
+      <h2 class="h2 reveal">Architectures Built for <br><span>Complex Industry Domains</span></h2>
+      <p class="lead reveal" style="margin-bottom: 50px;">Contract management requires vertical-specific agility. We engineer custom CLM deployments tailored to the exact regulatory and operational demands of your industry.</p>
+      
+      <div class="ind-grid">
+        <div class="ind-card reveal">
+          <h4>Real Estate & Property Law</h4>
+          <p>Manage complex commercial leases, multi-jurisdictional zoning compliance, and cross-border tax matrices. LEXI actively alerts real estate legal teams to hidden property penalties and critical dates, ensuring airtight transactions.</p>
+        </div>
+        <div class="ind-card reveal" style="transition-delay: 0.1s;">
+          <h4>Music, Media & Entertainment IP</h4>
+          <p>Integrating decentralized digital identities directly into contract infrastructure, transforming static publishing agreements into dynamic, self-executing contracts for flawless royalty distribution and rights management.</p>
+        </div>
+        <div class="ind-card reveal">
+          <h4>Corporate Finance & Procurement</h4>
+          <p>Manage intricate supply chain "Contract Coordinates." Monitor vendor performance in real-time, enforce SLAs autonomously, and automate bulk NDA generation.</p>
+        </div>
+        <div class="ind-card reveal" style="transition-delay: 0.1s;">
+          <h4>Healthcare & Life Sciences</h4>
+          <p>Process highly sensitive vendor agreements and clinical trial contracts under strict HIPAA-compliant redaction protocols, ensuring patient data is never exposed to public LLMs.</p>
+        </div>
+        <div class="ind-card reveal">
+          <h4>Insurance & Risk Management</h4>
+          <p>Automate policy underwriting agreements, reinsurance treaties, and claims settlement contracts. LEXI identifies ambiguous coverage clauses, tracks regulatory changes across jurisdictions, and ensures compliance with NAIC and Solvency II standards.</p>
+        </div>
+        <div class="ind-card reveal" style="transition-delay: 0.1s;">
+          <h4>Technology & SaaS</h4>
+          <p>Streamline high-volume SaaS subscription agreements, enterprise licensing contracts, and data processing addendums. Automate renewal tracking, SLA enforcement, and privacy compliance across GDPR, CCPA, and emerging AI regulations.</p>
+        </div>
+        <div class="ind-card reveal">
+          <h4>Energy & Utilities</h4>
+          <p>Navigate complex power purchase agreements (PPAs), joint operating agreements, and environmental compliance contracts. LEXI maps regulatory obligations across FERC, EPA, and state-level mandates to prevent costly compliance gaps.</p>
+        </div>
+        <div class="ind-card reveal" style="transition-delay: 0.1s;">
+          <h4>Government & Public Sector</h4>
+          <p>Manage procurement contracts, inter-agency agreements, and grant documentation with full audit-trail transparency. Ensure compliance with FAR/DFAR regulations and automate reporting obligations for public accountability.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="clm-clients">
+    <div class="container">
+      <span class="eyebrow reveal">Proven Success</span>
+      <h2 class="h2 reveal">Trusted by Visionaries in <br><span>Legal Tech and Real Estate</span></h2>
+      
+      <div class="client-grid" style="margin-top: 50px;">
+        <div class="client-card reveal-left">
+          <div class="client-logo switch">
+            <span>Switchchord</span>
+          </div>
+          <div class="chal-sol">
+            <span>The Challenge</span>
+            <p>Managing high-volume, complex intellectual property and rights management contracts across the highly fragmented music supply chain.</p>
+          </div>
+          <div class="chal-sol">
+            <span>The Solution</span>
+            <p>Deployed the iLeaf CLM to power complex contract workflows. LEXI's processing capabilities accelerated their comprehensive legal vetting processes from months to weeks, enabling rapid, secure scaling.</p>
+          </div>
+        </div>
+
+        <div class="client-card reveal-right">
+          <div class="client-logo aruba">
+            <span>ARUBA Legal Ops</span>
+          </div>
+          <div class="chal-sol">
+            <span>The Challenge</span>
+            <p>Real estate law firms managing international luxury properties required a system to catch obscure localized penalties and zoning liabilities before closing.</p>
+          </div>
+          <div class="chal-sol">
+            <span>The Solution</span>
+            <p>Integrated LEXI's proactive AI insights. The platform actively alerts ARUBA's legal teams to hidden compliance risks and strictly tracks contract coordinates, shielding their clients from regulatory fallout.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="clm-integrations">
+    <div class="container">
+      <div class="integration-center reveal">
+        <span class="eyebrow">Ecosystem Connectivity</span>
+        <h2 class="h2">Deep API Connectivity with Your <br><span>Existing Infrastructure</span></h2>
+        <p class="lead" style="margin: 0 auto;">A modern CLM must amplify your current stack, not replace it. We provide robust, bidirectional API integrations requiring zero unbillable hours to deploy.</p>
+        
+        <div class="constellation">
+          <!-- SVG connection lines -->
+          <svg class="constellation-line" viewBox="0 0 100 100" preserveAspectRatio="none">
+            <line x1="50" y1="50" x2="18" y2="12" />
+            <line x1="50" y1="50" x2="82" y2="12" />
+            <line x1="50" y1="50" x2="18" y2="80" />
+            <line x1="50" y1="50" x2="82" y2="80" />
+            <line x1="50" y1="50" x2="8" y2="50" />
+            <line x1="50" y1="50" x2="92" y2="50" />
+          </svg>
+          <div class="lexi-core">LEXI<small>INTELLIGENCE</small></div>
+          <div class="sat-node sat-1"><svg width="24" height="24" viewBox="0 0 24 24"><rect width="24" height="24" rx="4" fill="#0078D4"/><text x="12" y="17" text-anchor="middle" font-size="12" font-weight="900" fill="#fff" font-family="Arial">iM</text></svg>iManage</div>
+          <div class="sat-node sat-2"><svg width="24" height="24" viewBox="0 0 24 24"><rect width="24" height="24" rx="4" fill="#1B365D"/><text x="12" y="17" text-anchor="middle" font-size="11" font-weight="900" fill="#fff" font-family="Arial">ND</text></svg>NetDocuments</div>
+          <div class="sat-node sat-3"><svg width="24" height="24" viewBox="0 0 24 24"><circle cx="12" cy="10" r="8" fill="#00A1E0"/><ellipse cx="12" cy="18" rx="6" ry="3" fill="#00A1E0"/><text x="12" y="14" text-anchor="middle" font-size="7" font-weight="900" fill="#fff" font-family="Arial">SF</text></svg>Salesforce</div>
+          <div class="sat-node sat-4"><svg width="24" height="24" viewBox="0 0 24 24"><rect width="24" height="24" rx="4" fill="#0070F2"/><text x="12" y="16" text-anchor="middle" font-size="10" font-weight="900" fill="#fff" font-family="Arial">SAP</text></svg>SAP</div>
+          <div class="sat-node sat-5"><svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect width="24" height="24" rx="4" fill="#1A73E8"/><path d="M6 7h5v2H8v6h8v-3h2v5H6V7zm7 0h5l-5 5V7z" fill="#fff"/></svg>Clio</div>
+          <div class="sat-node sat-6"><svg width="24" height="24" viewBox="0 0 24 24"><rect width="24" height="24" rx="4" fill="#FFC829"/><text x="12" y="16" text-anchor="middle" font-size="8" font-weight="900" fill="#1A1A2E" font-family="Arial">DS</text></svg>DocuSign</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="clm-faq">
+    <div class="container">
+      <span class="eyebrow reveal" style="text-align: center;">Knowledge Base</span>
+      <h2 class="h2 reveal" style="text-align: center; margin-bottom: 50px;">Frequently Asked <br><span>Questions</span></h2>
+      
+      <div class="faq-wrapper reveal">
+        <div class="faq-item">
+          <button class="faq-q">1. What is an AI-powered Contract Lifecycle Management (CLM) system? <i class="fa fa-angle-down"></i></button>
+          <div class="faq-a">
+            <div class="faq-a-content">An AI-powered CLM automates the entire lifespan of a contract—from initial generation and secure drafting to automated redlining, execution, and post-signature obligation tracking. Unlike traditional storage repositories, our LEXI intelligence actively reads, analyzes, and extracts critical insights from your legal documents.</div>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q">2. How does your Human-in-the-Loop (HITL) process work? <i class="fa fa-angle-down"></i></button>
+          <div class="faq-a">
+            <div class="faq-a-content">AI delivers unprecedented speed, but legal practice requires absolute accuracy. Our HITL workflow ensures that every AI-generated draft, redline suggestion, and risk alert is routed to a qualified human professional for final verification. This guarantees you receive the processing scale of AI without the risk of algorithmic hallucinations.</div>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q">3. Is the platform secure enough for US law firms handling highly sensitive data? <i class="fa fa-angle-down"></i></button>
+          <div class="faq-a">
+            <div class="faq-a-content">Absolutely. Security is our foundational architecture. We utilize a Zero-Trust model, US-based cloud hosting (Data Sovereignty), and pre-computation smart redaction to mask all PII and financial data before analysis. We build toward strict SOC 2 Type II, HIPAA, and GDPR compliance standards.</div>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q">4. Can LEXI process highly negotiated or non-standard contracts? <i class="fa fa-angle-down"></i></button>
+          <div class="faq-a">
+            <div class="faq-a-content">Yes. LEXI maps "Contract Coordinates," meaning it understands the contextual intent of a clause, not just the exact templated wording. Combined with the HITL verification step, our system perfectly interprets highly nuanced and bespoke legal language.</div>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q">5. How quickly can we deploy the iLeaf CLM? <i class="fa fa-angle-down"></i></button>
+          <div class="faq-a">
+            <div class="faq-a-content">Because we prioritize intuitive, consumer-grade usability and seamless integration with existing tools like iManage and NetDocuments, deployment is rapid. Once your firm's specific clause playbooks are loaded, your legal team can begin accelerating contract vetting within weeks.</div>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q">6. What types of contracts can the platform handle? <i class="fa fa-angle-down"></i></button>
+          <div class="faq-a">
+            <div class="faq-a-content">Our CLM handles virtually any contract type—from NDAs, MSAs, and SaaS licensing agreements to complex M&A purchase agreements, real estate leases, and multi-party IP licensing deals. LEXI's AI adapts to each document's structure and industry-specific terminology without requiring rigid templates.</div>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q">7. How does the platform integrate with our existing legal tech stack? <i class="fa fa-angle-down"></i></button>
+          <div class="faq-a">
+            <div class="faq-a-content">We provide robust, bidirectional API integrations with leading platforms including iManage, NetDocuments, Salesforce, SAP, Clio, and DocuSign. Our integration layer requires zero custom development—your IT team can have connections live within days, not months, with full data synchronization and real-time status updates.</div>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q">8. What measurable ROI can we expect from adopting the iLeaf CLM? <i class="fa fa-angle-down"></i></button>
+          <div class="faq-a">
+            <div class="faq-a-content">Firms typically see a 60–80% reduction in contract review time, significant decreases in compliance-related penalties, and measurable improvements in deal velocity. By automating repetitive drafting and redlining tasks, your legal professionals can redirect billable hours toward higher-value strategic counsel.</div>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q">9. Can multiple teams collaborate on the same contract simultaneously? <i class="fa fa-angle-down"></i></button>
+          <div class="faq-a">
+            <div class="faq-a-content">Yes. Our platform supports real-time, multi-party collaboration with granular role-based access controls. Legal, procurement, finance, and external counsel can all work within the same contract workspace with full version control, audit trails, and approval routing to eliminate bottlenecks.</div>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q">10. How does the platform handle contract renewals and obligation tracking? <i class="fa fa-angle-down"></i></button>
+          <div class="faq-a">
+            <div class="faq-a-content">LEXI proactively monitors every critical date, renewal window, and contractual obligation across your entire portfolio. Automated alerts are sent well in advance of deadlines, and our dashboard provides a centralized view of upcoming renewals, expiring terms, and outstanding obligations—ensuring nothing slips through the cracks.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="clm-contact" style="background: var(--b1); position: relative; overflow: hidden;">
+    <div class="container">
+      <div class="contact-grid">
+        <div class="contact-left reveal-left">
+          <span class="eyebrow">Get In Touch</span>
+          <h2 class="h2">Meet the Team Behind<br><span>LEXI Intelligence</span></h2>
+          <p class="contact-left-desc">Ready to transform your contract operations? Tell us about your firm and one of our CLM Solutions Architects will respond within 24 hours with a tailored roadmap.</p>
+          <div class="contact-img" style="margin-top: 36px; border-radius: 16px; overflow: hidden; border: 1px solid rgba(255,255,255,0.07);">
+            <img src="https://www.ileafsolutions.com/assets/images/contact.png" alt="Contact iLeaf Solutions" style="width: 100%; display: block; opacity: 0.6;">
+          </div>
+        </div>
+        <div class="contact-form-wrap reveal-right">
+          <form id="clm-formcontact" name="clm-formcontact" method="post">
+            <div class="form-row-2">
+              <div class="fg"><input type="text" name="firstname" placeholder="First Name *" required></div>
+              <div class="fg"><input type="text" name="lastname" placeholder="Last Name *" required></div>
+            </div>
+            <div class="form-row-2">
+              <div class="fg"><input type="email" name="contactemail" placeholder="Work Email *" required></div>
+              <div class="fg"><input type="text" name="contactphone" placeholder="Phone Number"></div>
+            </div>
+            <div class="fg"><input type="text" name="companyname" placeholder="Firm / Company Name *" required></div>
+            <div class="fg"><textarea name="contactmessage" rows="3" placeholder="Describe your contract management challenges *" required></textarea></div>
+            <div class="fg">
+              <label>Practice Area / Industry</label>
+              <select name="describe" required>
+                <option value="">Select</option>
+                <option>Corporate / M&amp;A Law</option>
+                <option>Real Estate &amp; Property Law</option>
+                <option>Music, Media &amp; Entertainment IP</option>
+                <option>Healthcare &amp; Life Sciences</option>
+                <option>Financial Services &amp; Procurement</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <div class="fg"><label>How Did You Hear About Us?</label><select name="hearabout" required>
+                  <option value="">Select</option>
+                  <option>Search Engine</option>
+                  <option>Legal Tech Publication</option>
+                  <option>LinkedIn</option>
+                  <option>Peer Referral</option>
+                  <option>Conference / Event</option>
+                  <option>Other</option>
+                </select></div>
+            <button type="submit" class="submit-main">Submit Inquiry →</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer id="footer">
+    <div class="container">
+      <div class="footer-top">
+        <div>
+          <div class="footer-logo"><img src="https://www.ileafsolutions.com/assets/images/logo.svg"
+              alt="iLeaf Solutions"></div>
+          <p class="footer-tagline">Intelligent ecosystems engineered for enterprise scale. Powered by <a
+              href="https://www.ileaf.ai" target="_blank">ileaf.ai</a></p>
+        </div>
+        <div class="fcol">
+          <h6>India (HQ)</h6>
+          <div class="faddr">Phase-II Carnival Infopark,<br>Kochi – 682 042<br><br><a href="tel:+919746226403">+91
+              9746226403</a><br><a href="mailto:info@ileafsolutions.com">info@ileafsolutions.com</a></div>
+        </div>
+        <div class="fcol">
+          <h6>USA</h6>
+          <div class="faddr">701 Tillery Street Unit 12,<br>2194 Austin, TX 78702<br><br><a href="tel:+12013101074">+1
+              (201) 310-1074</a><br><a href="mailto:usa@ileafsolutions.com">usa@ileafsolutions.com</a></div>
+        </div>
+        <div class="fcol">
+          <h6>United Kingdom</h6>
+          <div class="faddr">2 Westcott Street, TS183EQ,<br>Stockton on Tees, Durham<br><br><a
+              href="tel:+447423461555">+44 7423461555</a><br><a
+              href="mailto:uk@ileafsolutions.com">uk@ileafsolutions.com</a></div>
+        </div>
+      </div>
+      <hr class="fdivider">
+      <div class="footer-bottom">
+        <div class="footer-badges">
+          <img src="https://www.ileafsolutions.com/assets/images/footerlogos/Clutch.png" alt="Clutch">
+          <img src="https://www.ileafsolutions.com/assets/images/footerlogos/Designrush.png" alt="DesignRush">
+          <img src="https://www.ileafsolutions.com/assets/images/footerlogos/TopDevelopers.png" alt="TopDevelopers">
+          <img src="https://www.ileafsolutions.com/assets/images/footerlogos/Goodfirms.png" alt="GoodFirms">
+          <img src="https://www.ileafsolutions.com/assets/images/footerlogos/Appfutura.png" alt="AppFutura">
+          <img src="https://www.ileafsolutions.com/assets/images/footerlogos/Nasscom.png" alt="Nasscom">
+          <img src="https://www.ileafsolutions.com/assets/images/footerlogos/Gtech.png" alt="GTech">
+        </div>
+        <div class="footer-bottom-row">
+          <div class="footer-socials">
+            <a class="fsoc" href="https://www.linkedin.com/company/ileaf-solutions-pvt-ltd/" target="_blank"><img
+                src="https://www.ileafsolutions.com/assets/images/in.png" alt="LinkedIn"></a>
+            <a class="fsoc" href="https://www.facebook.com/iLeafsolutions/" target="_blank"><img
+                src="https://www.ileafsolutions.com/assets/images/f.png" alt="Facebook"></a>
+            <a class="fsoc" href="https://twitter.com/ileafsolutions" target="_blank"><img
+                src="https://www.ileafsolutions.com/assets/images/x.png" alt="X"></a>
+            <a class="fsoc" href="https://www.youtube.com/@ileafsolution" target="_blank"><img
+                src="https://www.ileafsolutions.com/assets/images/y.png" alt="YouTube"></a>
+          </div>
+          <div class="fcopy"><span>© 2026 All Rights Reserved.</span><a
+              href="https://www.ileafsolutions.com/privacy-policy">Privacy Policy</a><a
+              href="https://www.ileafsolutions.com/cookie-policy">Cookie Policy</a></div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <div class="sticky-bar">
+    <p class="sticky-text"><strong>Let's create</strong> something outstanding</p>
+    <div class="sticky-btns">
+      <a class="sbtn sbtn-outline" href="https://www.ileafsolutions.com/contact-us">Contact Us</a>
+      <a class="sbtn sbtn-green" href="https://outlook.office.com/bookwithme/user/9f5154ed26c749448bcdd39f831b25a5@ileafsolutions.com/meetingtype/1yaBDDQpdUW6SEGH10SeOw2?anonymous" target="_blank">Schedule a Call</a>
+    </div>
+  </div>
+
+  <script>
+    /* MOBILE MEGA MENU TOGGLE */
+    const mobileBtn = document.getElementById('mobile-menu-btn');
+    const navList = document.querySelector('.nav-list');
+    if (mobileBtn && navList) {
+      mobileBtn.addEventListener('click', () => {
+        navList.classList.toggle('active');
+        const icon = mobileBtn.querySelector('i');
+        if (navList.classList.contains('active')) {
+          icon.classList.remove('fa-bars');
+          icon.classList.add('fa-times');
+        } else {
+          icon.classList.remove('fa-times');
+          icon.classList.add('fa-bars');
+        }
+      });
+    }
+
+    /* MOBILE SUB-MENU ACCORDION TOGGLE */
+    const navItems = document.querySelectorAll('.nav-item');
+    navItems.forEach(item => {
+      const link = item.querySelector('.nav-link');
+      if (link && (item.querySelector('.dd-panel') || item.querySelector('.mobile-mega-panel'))) {
+        link.addEventListener('click', (e) => {
+          if (window.innerWidth <= 768) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            const wasActive = item.classList.contains('active');
+
+            // Close other open nav items
+            navItems.forEach(otherItem => {
+              otherItem.classList.remove('active');
+            });
+
+            // If it wasn't active, open it now
+            if (!wasActive) {
+              item.classList.add('active');
+            }
+          }
+        });
+      }
+    });
+
+    /* MOBILE INNER CAPABILITY ACCORDION TOGGLES */
+    const mobCapToggles = document.querySelectorAll('.mob-cap-toggle');
+    mobCapToggles.forEach(toggle => {
+      toggle.addEventListener('click', (e) => {
+        e.preventDefault();
+        const services = toggle.nextElementSibling;
+
+        // Close others
+        mobCapToggles.forEach(t => {
+          if (t !== toggle) {
+            t.classList.remove('active');
+            t.nextElementSibling.style.display = 'none';
+          }
+        });
+
+        toggle.classList.toggle('active');
+        if (toggle.classList.contains('active')) {
+          services.style.display = 'block';
+        } else {
+          services.style.display = 'none';
+        }
+      });
+    });
+
+    /* NAV SHRINK */
+    const nav = document.getElementById('navbar');
+    window.addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 40), { passive: true });
+
+    /* MEGA MENU INTERACTION */
+    const megaData = {
+      "1": {
+        title: "Digital<br>Transformation",
+        desc: "Thrive in the Modern Era. Unlock opportunity, efficiency, & stay ahead. We redefine business value through technology acceleration.",
+        services: [
+          { name: "Custom App Development", url: "https://www.ileafsolutions.com/services/custom-software-development" },
+          { name: "ERP Development", url: "https://www.ileafsolutions.com/services/sap-implementation" },
+          { name: "IoT Solutions", url: "https://www.ileafsolutions.com/services/application-modernization" },
+          { name: "Workflow Management", url: "https://www.ileafsolutions.com/services/web-application-development" },
+          { name: "Directus Solutions", url: "https://www.ileafsolutions.com/services/digital-marketing" }
+        ]
+      },
+      "2": {
+        title: "AI & Data Analytics",
+        desc: "Harness the power of your data with our advanced AI solutions. We build intelligent systems that learn and adapt to your needs.",
+        services: [
+          { name: "Machine Learning Ops", url: "https://www.ileafsolutions.com/services" },
+          { name: "Predictive Analytics", url: "https://www.ileafsolutions.com/services" },
+          { name: "Natural Language Processing", url: "https://www.ileafsolutions.com/services" },
+          { name: "Generative AI Integration", url: "https://www.ileafsolutions.com/services" }
+        ]
+      },
+      "3": {
+        title: "Cloud Computing",
+        desc: "Scalable, secure, and efficient cloud infrastructure for your business. We optimize your cloud footprint for performance and cost.",
+        services: [
+          { name: "Cloud Migration Strategy", url: "https://www.ileafsolutions.com/services" },
+          { name: "Managed Cloud Services", url: "https://www.ileafsolutions.com/services" },
+          { name: "Serverless Computing", url: "https://www.ileafsolutions.com/services" },
+          { name: "DevOps Automation", url: "https://www.ileafsolutions.com/services" }
+        ]
+      },
+      "4": {
+        title: "Smart Consultation",
+        desc: "Expert advice to guide your digital journey and business growth. Our consultants bring decades of industry experience.",
+        services: [
+          { name: "Product Strategy & Research", url: "https://www.ileafsolutions.com/services" },
+          { name: "Technical Infrastructure Audit", url: "https://www.ileafsolutions.com/services" },
+          { name: "Compliance & Security", url: "https://www.ileafsolutions.com/services" },
+          { name: "Process Digitalization", url: "https://www.ileafsolutions.com/services" }
+        ]
+      },
+      "16": {
+        title: "Pricing Models",
+        desc: "Flexible and transparent engagement models tailored to your business needs, ensuring maximum ROI and project transparency.",
+        services: [
+          { name: "Fixed Price Model", url: "https://www.ileafsolutions.com/services" },
+          { name: "Time & Material Basis", url: "https://www.ileafsolutions.com/services" },
+          { name: "Dedicated Delivery Team", url: "https://www.ileafsolutions.com/services" },
+          { name: "Hybrid Partnership Model", url: "https://www.ileafsolutions.com/services" }
+        ]
+      }
+    };
+
+    document.querySelectorAll('.getsubmenus').forEach(el => {
+      el.addEventListener('click', function (e) {
+        e.preventDefault();
+        const id = this.id;
+        const data = megaData[id];
+        if (!data) return;
+
+        // Update active class
+        document.querySelectorAll('.getsubmenus').forEach(a => {
+          a.classList.remove('active');
+          a.style.background = 'transparent';
+        });
+        this.classList.add('active');
+        this.style.background = 'rgba(126, 217, 87, 0.06)';
+
+        // PostHog Tracking: Mega Menu Category
+        posthog.capture('mega_menu_category_selected', {
+          category_id: id,
+          category_title: data.title.replace('<br>', ' ')
+        });
+
+        // Update Col 1 (Details)
+        const detailCol = document.getElementById('menudetails');
+        detailCol.style.opacity = '0';
+        setTimeout(() => {
+          detailCol.innerHTML = `
+            <span class="dditemhead2">${data.title}</span>
+            <div class="about-text">${data.desc}</div>
+            <div class="learn-more-btn-section" style="margin-top: 15px;">
+              <a class="learn-more-btn" href="https://www.ileafsolutions.com/contact-us">Get Started</a>
+            </div>
+          `;
+          detailCol.style.opacity = '1';
+        }, 150);
+
+        // Update Col 3 (Services)
+        const listContainer = document.getElementById('listsubmenus');
+        listContainer.style.opacity = '0';
+        setTimeout(() => {
+          listContainer.innerHTML = data.services.map(s => `
+            <li><a href="${s.url}">${s.name} <span class="arrow">&gt;</span></a></li>
+          `).join('');
+          listContainer.style.opacity = '1';
+        }, 150);
+      });
+    });
+
+    /* TRACK SERVICE CLICKS IN MEGA MENU */
+    document.getElementById('listsubmenus').addEventListener('click', function (e) {
+      const link = e.target.closest('a');
+      if (link) {
+        posthog.capture('mega_menu_service_clicked', {
+          service_name: link.textContent.replace(' >', '').trim(),
+          url: link.href
+        });
+      }
+    });
+
+    /* TRACK HEADER & FOOTER LINKS */
+    document.querySelectorAll('.nav-link, .footer-links a, .social-links a, .sbtn, .learn-more-btn').forEach(el => {
+      el.addEventListener('click', function () {
+        posthog.capture('link_clicked', {
+          link_text: this.textContent.trim(),
+          link_url: this.href,
+          location: this.closest('nav') ? 'header' : (this.closest('footer') ? 'footer' : 'body')
+        });
+      });
+    });
+
+    /* SCROLL REVEAL ANIMATIONS */
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
+    }, { threshold: .1 });
+    document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(el => io.observe(el));
+
+    /* NUMBER COUNTER ANIMATION */
+    const counters = document.querySelectorAll('.counter');
+    const counterObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const counter = entry.target;
+          const target = +counter.getAttribute('data-target');
+          let count = 0;
+          const updateCount = () => {
+            const inc = target / 40;
+            if (count < target) {
+              count += inc;
+              counter.innerText = Math.ceil(count);
+              setTimeout(updateCount, 30);
+            } else {
+              counter.innerText = target;
+            }
+          };
+          updateCount();
+          counterObserver.unobserve(counter);
+        }
+      });
+    }, { threshold: 0.5 });
+    counters.forEach(counter => counterObserver.observe(counter));
+
+    /* FAQ ACCORDION */
+    const faqBtns = document.querySelectorAll('.faq-q');
+    faqBtns.forEach(btn => {
+      btn.addEventListener('click', function() {
+        this.classList.toggle('active');
+        const content = this.nextElementSibling;
+        if (content.style.maxHeight) {
+          content.style.maxHeight = null;
+        } else {
+          content.style.maxHeight = content.scrollHeight + "px";
+        }
+      });
+    });
+
+    /* LIFECYCLE STEP ANIMATION — synced with CSS stepScan (18s cycle) */
+    (function() {
+      const steps = document.querySelectorAll('.lc-step');
+      if (!steps.length) return;
+      const CYCLE = 18000;       // total CSS animation duration in ms
+      // Timing windows (% of cycle) for each step becoming active
+      const schedule = [
+        { start: 0.05, end: 0.30 },   // step 1: 5%–30%
+        { start: 0.37, end: 0.63 },   // step 2: 37%–63%
+        { start: 0.70, end: 0.94 }    // step 3: 70%–94%
+      ];
+      function updateSteps() {
+        const t = (Date.now() % CYCLE) / CYCLE; // normalized time 0–1
+        steps.forEach((step, i) => {
+          const s = schedule[i];
+          step.classList.remove('lc-active', 'lc-done');
+          if (t >= s.start && t <= s.end) {
+            step.classList.add('lc-active');
+          } else if (t > s.end) {
+            step.classList.add('lc-done');
+          }
+        });
+        requestAnimationFrame(updateSteps);
+      }
+      requestAnimationFrame(updateSteps);
+    })();
+
+    /* HERO CONTRACT CAROUSEL */
+    (function() {
+      const pages = document.querySelectorAll('.contract-page');
+      if (!pages.length) return;
+      let current = 0;
+      function showPage(idx) {
+        pages.forEach((p, i) => {
+          p.classList.remove('active', 'prev', 'next');
+          if (i === idx) p.classList.add('active');
+          else if (i === (idx - 1 + pages.length) % pages.length) p.classList.add('prev');
+          else if (i === (idx + 1) % pages.length) p.classList.add('next');
+        });
+        // Update dots on active page
+        const activePage = pages[idx];
+        const dots = activePage.querySelectorAll('.cp-dot');
+        dots.forEach((d, i) => { d.classList.toggle('active', i === idx); });
+      }
+      showPage(0);
+      setInterval(() => {
+        current = (current + 1) % pages.length;
+        showPage(current);
+      }, 4000);
+    })();
+  </script>
+</body>
+</html>
